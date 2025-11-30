@@ -7,6 +7,7 @@ import { BlogPostContent } from "@/components/blog/blog-post-content"
 import { BlogPostCTA } from "@/components/blog/blog-post-cta"
 import { BlogRelatedPosts } from "@/components/blog/blog-related-posts"
 import { BlogAuthor } from "@/components/blog/blog-author"
+import { BlogNewsletter } from "@/components/blog/blog-newsletter"
 import { getBlogPostBySlug } from "@/app/actions/blog"
 import { FloatingCTA } from "@/components/floating-cta"
 
@@ -58,6 +59,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <BlogPostCTA />
           <BlogAuthor author={{ name: post.author, role: "Career Clarity Coach" }} />
         </div>
+        <BlogNewsletter />
         <BlogRelatedPosts currentSlug={post.slug} currentCategory={post.category} />
       </article>
       <Footer />
