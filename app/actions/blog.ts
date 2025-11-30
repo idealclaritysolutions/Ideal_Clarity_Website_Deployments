@@ -10,6 +10,7 @@ export interface BlogPost {
   excerpt: string
   content: string
   author: string
+  publish_date: string
   category: string
   read_time: string
   keywords: string[]
@@ -24,12 +25,12 @@ export async function createBlogPost(data: Omit<BlogPost, "id" | "created_at" | 
   try {
     const result = await sql`
       INSERT INTO blog_posts (
-        title, slug, excerpt, content, author, category, 
+        title, slug, excerpt, content, author, publish_date, category, 
         read_time, keywords, meta_description, published, scheduled_date
       )
       VALUES (
         ${data.title}, ${data.slug}, ${data.excerpt}, ${data.content}, 
-        ${data.author}, ${data.category}, ${data.read_time}, 
+        ${data.author}, ${data.publish_date}, ${data.category}, ${data.read_time}, 
         ${data.keywords}, ${data.meta_description}, ${data.published}, ${data.scheduled_date}
       )
       RETURNING *
@@ -54,6 +55,7 @@ export async function updateBlogPost(id: number, data: Partial<BlogPost>) {
         excerpt = COALESCE(${data.excerpt}, excerpt),
         content = COALESCE(${data.content}, content),
         author = COALESCE(${data.author}, author),
+        publish_date = COALESCE(${data.publish_date}, publish_date),
         category = COALESCE(${data.category}, category),
         read_time = COALESCE(${data.read_time}, read_time),
         keywords = COALESCE(${data.keywords}, keywords),

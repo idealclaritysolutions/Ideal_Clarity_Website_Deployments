@@ -20,6 +20,7 @@ import {
   expandBlogContent,
 } from "@/app/actions/ai-blog-helper"
 import { useRouter } from "next/navigation"
+import RichTextEditor from "@/components/ui/rich-text-editor"
 
 export default function AdminPage() {
   const router = useRouter()
@@ -43,13 +44,14 @@ export default function AdminPage() {
     slug: "",
     excerpt: "",
     content: "",
-    author: "Cynthia Jones",
+    author: "Your Name",
+    publish_date: new Date().toISOString().slice(0, 16),
     category: "Career Clarity",
     read_time: "5 min read",
     keywords: "",
     meta_description: "",
-    published: true,
     scheduled_date: "",
+    published: true,
   })
 
   useEffect(() => {
@@ -105,6 +107,7 @@ export default function AdminPage() {
       meta_description: post.meta_description,
       published: post.published,
       scheduled_date: post.scheduled_date ? new Date(post.scheduled_date).toISOString().slice(0, 16) : "",
+      publish_date: post.publish_date ? new Date(post.publish_date).toISOString().slice(0, 16) : "",
     })
     setEditingPost(post)
     setShowForm(true)
@@ -140,6 +143,7 @@ export default function AdminPage() {
       meta_description: formData.meta_description,
       published: formData.published,
       scheduled_date: formData.scheduled_date || null,
+      publish_date: formData.publish_date,
     }
 
     let result
@@ -158,13 +162,14 @@ export default function AdminPage() {
         slug: "",
         excerpt: "",
         content: "",
-        author: "Cynthia Jones",
+        author: "Your Name",
+        publish_date: new Date().toISOString().slice(0, 16),
         category: "Career Clarity",
         read_time: "5 min read",
         keywords: "",
         meta_description: "",
-        published: true,
         scheduled_date: "",
+        published: true,
       })
       setShowForm(false)
       setEditingPost(null)
@@ -181,13 +186,14 @@ export default function AdminPage() {
       slug: "",
       excerpt: "",
       content: "",
-      author: "Cynthia Jones",
+      author: "Your Name",
+      publish_date: new Date().toISOString().slice(0, 16),
       category: "Career Clarity",
       read_time: "5 min read",
       keywords: "",
       meta_description: "",
-      published: true,
       scheduled_date: "",
+      published: true,
     })
     setEditingPost(null)
     setShowForm(true)
@@ -427,6 +433,31 @@ export default function AdminPage() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
+                  <Label htmlFor="author">Author Name *</Label>
+                  <Input
+                    id="author"
+                    value={formData.author}
+                    onChange={(e) => setFormData({ ...formData, author: e.target.value })}
+                    placeholder="Your Name"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="publishDate">Publish Date *</Label>
+                  <Input
+                    id="publishDate"
+                    type="datetime-local"
+                    value={formData.publish_date}
+                    onChange={(e) => setFormData({ ...formData, publish_date: e.target.value })}
+                  />
+                  <p className="text-sm text-muted-foreground">
+                    The date shown on the blog post (you can backdate if needed)
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
                   <Label htmlFor="category">Category *</Label>
                   <Select
                     value={formData.category}
@@ -458,36 +489,13 @@ export default function AdminPage() {
               </div>
 
               <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="content">Full Article Content *</Label>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={handleExpandContent}
-                    disabled={aiGenerating.content || !formData.title || !formData.content}
-                  >
-                    <Sparkles className="h-3 w-3 mr-1" />
-                    {aiGenerating.content ? "Expanding..." : "Expand with AI"}
-                  </Button>
-                </div>
-                <Textarea
-                  id="content"
-                  value={formData.content}
-                  onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                  placeholder="# Main Heading
-
-Your first paragraph...
-
-## Subheading
-
-More content here..."
-                  rows={15}
-                  className="font-mono text-sm"
+                <Label htmlFor="content">Full Article Content *</Label>
+                <RichTextEditor
+                  content={formData.content}
+                  onChange={(html) => setFormData({ ...formData, content: html })}
                 />
                 <p className="text-sm text-muted-foreground">
-                  Use markdown: # for headings, **bold**, *italic*, - for lists. Add an outline and click "Expand with
-                  AI" to generate full content.
+                  Use the toolbar to format your content with bold, italics, headings, lists, links, and more.
                 </p>
               </div>
 

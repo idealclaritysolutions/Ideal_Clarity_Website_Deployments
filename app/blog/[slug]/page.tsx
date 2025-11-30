@@ -9,7 +9,7 @@ import { BlogRelatedPosts } from "@/components/blog/blog-related-posts"
 import { BlogAuthor } from "@/components/blog/blog-author"
 import { BlogNewsletter } from "@/components/blog/blog-newsletter"
 import { getBlogPostBySlug } from "@/app/actions/blog"
-import { FloatingCTA } from "@/components/floating-cta"
+import { DualFloatingCTA } from "@/components/blog/dual-floating-cta"
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>
@@ -63,7 +63,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <BlogRelatedPosts currentSlug={post.slug} currentCategory={post.category} />
       </article>
       <Footer />
-      <FloatingCTA />
+      <DualFloatingCTA />
     </>
   )
 }
