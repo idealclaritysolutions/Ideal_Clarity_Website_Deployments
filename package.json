@@ -44,6 +44,7 @@
     "@stripe/stripe-js": "latest",
     "@tiptap/core": "latest",
     "@tiptap/extension-color": "latest",
+    "@tiptap/extension-font-family": "latest",
     "@tiptap/extension-highlight": "latest",
     "@tiptap/extension-link": "latest",
     "@tiptap/extension-text-align": "latest",

@@ -1,6 +1,6 @@
 "use client"
 
-import { useEditor, EditorContent } from "@tiptap/react"
+import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import { Link } from "@tiptap/extension-link"
 import { Underline } from "@tiptap/extension-underline"
@@ -8,24 +8,9 @@ import { TextStyle } from "@tiptap/extension-text-style"
 import { Color } from "@tiptap/extension-color"
 import { Highlight } from "@tiptap/extension-highlight"
 import { TextAlign } from "@tiptap/extension-text-align"
+import { FontFamily } from "@tiptap/extension-font-family"
 import { Button } from "@/components/ui/button"
-import {
-  Bold,
-  Italic,
-  UnderlineIcon,
-  Strikethrough,
-  List,
-  ListOrdered,
-  Quote,
-  Undo,
-  Redo,
-  LinkIcon,
-  Palette,
-  AlignLeft,
-  AlignCenter,
-  AlignRight,
-  Highlighter,
-} from "lucide-react"
+import { Bold, Italic, UnderlineIcon, Strikethrough, LinkIcon, Palette, Highlighter } from "lucide-react"
 
 interface RichTextEditorProps {
   content: string
@@ -35,17 +20,35 @@ interface RichTextEditorProps {
 export function RichTextEditor({ content, onChange }: RichTextEditorProps) {
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({
+        hardBreak: {
+          keepMarks: true,
+        },
+        paragraph: {
+          HTMLAttributes: {
+            class: "mb-4",
+          },
+        },
+      }),
       Underline,
       Link.configure({
         openOnClick: false,
+        HTMLAttributes: {
+          class: "text-primary underline",
+        },
       }),
       TextStyle,
       Color,
-      Highlight.configure({ multicolor: true }),
+      Highlight.configure({
+        multicolor: true,
+        HTMLAttributes: {
+          class: "px-1 rounded",
+        },
+      }),
       TextAlign.configure({
         types: ["heading", "paragraph"],
       }),
+      FontFamily,
     ],
     content: content,
     onUpdate: ({ editor }) => {
@@ -53,8 +56,7 @@ export function RichTextEditor({ content, onChange }: RichTextEditorProps) {
     },
     editorProps: {
       attributes: {
-        class:
-          "prose prose-sm sm:prose lg:prose-lg xl:prose-2xl focus:outline-none min-h-[400px] p-4 border rounded-md",
+        class: "prose prose-sm sm:prose lg:prose-lg xl:prose-xl max-w-none focus:outline-none min-h-[400px] p-4",
       },
     },
   })
@@ -78,164 +80,72 @@ export function RichTextEditor({ content, onChange }: RichTextEditorProps) {
   }
 
   return (
-    <div className="border rounded-lg">
-      <div className="border-b p-2 flex flex-wrap gap-1 bg-muted/30">
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          onClick={() => editor.chain().focus().toggleBold().run()}
-          className={editor.isActive("bold") ? "bg-muted" : ""}
+    <div className="border rounded-lg bg-background">
+      {editor && (
+        <BubbleMenu
+          editor={editor}
+          tippyOptions={{ duration: 100 }}
+          className="flex gap-1 bg-popover border rounded-lg shadow-lg p-1"
         >
-          <Bold className="h-4 w-4" />
-        </Button>
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          onClick={() => editor.chain().focus().toggleItalic().run()}
-          className={editor.isActive("italic") ? "bg-muted" : ""}
-        >
-          <Italic className="h-4 w-4" />
-        </Button>
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          onClick={() => editor.chain().focus().toggleUnderline().run()}
-          className={editor.isActive("underline") ? "bg-muted" : ""}
-        >
-          <UnderlineIcon className="h-4 w-4" />
-        </Button>
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          onClick={() => editor.chain().focus().toggleStrike().run()}
-          className={editor.isActive("strike") ? "bg-muted" : ""}
-        >
-          <Strikethrough className="h-4 w-4" />
-        </Button>
-
-        <div className="w-px h-8 bg-border mx-1" />
-
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-          className={editor.isActive("heading", { level: 1 }) ? "bg-muted" : ""}
-        >
-          H1
-        </Button>
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-          className={editor.isActive("heading", { level: 2 }) ? "bg-muted" : ""}
-        >
-          H2
-        </Button>
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-          className={editor.isActive("heading", { level: 3 }) ? "bg-muted" : ""}
-        >
-          H3
-        </Button>
-
-        <div className="w-px h-8 bg-border mx-1" />
-
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          onClick={() => editor.chain().focus().toggleBulletList().run()}
-          className={editor.isActive("bulletList") ? "bg-muted" : ""}
-        >
-          <List className="h-4 w-4" />
-        </Button>
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          onClick={() => editor.chain().focus().toggleOrderedList().run()}
-          className={editor.isActive("orderedList") ? "bg-muted" : ""}
-        >
-          <ListOrdered className="h-4 w-4" />
-        </Button>
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          onClick={() => editor.chain().focus().toggleBlockquote().run()}
-          className={editor.isActive("blockquote") ? "bg-muted" : ""}
-        >
-          <Quote className="h-4 w-4" />
-        </Button>
-
-        <div className="w-px h-8 bg-border mx-1" />
-
-        <Button type="button" variant="ghost" size="sm" onClick={addLink}>
-          <LinkIcon className="h-4 w-4" />
-        </Button>
-        <Button type="button" variant="ghost" size="sm" onClick={setColor}>
-          <Palette className="h-4 w-4" />
-        </Button>
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          onClick={() => editor.chain().focus().toggleHighlight().run()}
-          className={editor.isActive("highlight") ? "bg-muted" : ""}
-        >
-          <Highlighter className="h-4 w-4" />
-        </Button>
-
-        <div className="w-px h-8 bg-border mx-1" />
-
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          onClick={() => editor.chain().focus().setTextAlign("left").run()}
-          className={editor.isActive({ textAlign: "left" }) ? "bg-muted" : ""}
-        >
-          <AlignLeft className="h-4 w-4" />
-        </Button>
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          onClick={() => editor.chain().focus().setTextAlign("center").run()}
-          className={editor.isActive({ textAlign: "center" }) ? "bg-muted" : ""}
-        >
-          <AlignCenter className="h-4 w-4" />
-        </Button>
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          onClick={() => editor.chain().focus().setTextAlign("right").run()}
-          className={editor.isActive({ textAlign: "right" }) ? "bg-muted" : ""}
-        >
-          <AlignRight className="h-4 w-4" />
-        </Button>
-
-        <div className="w-px h-8 bg-border mx-1" />
-
-        <Button type="button" variant="ghost" size="sm" onClick={() => editor.chain().focus().undo().run()}>
-          <Undo className="h-4 w-4" />
-        </Button>
-        <Button type="button" variant="ghost" size="sm" onClick={() => editor.chain().focus().redo().run()}>
-          <Redo className="h-4 w-4" />
-        </Button>
-      </div>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => editor.chain().focus().toggleBold().run()}
+            className={editor.isActive("bold") ? "bg-muted" : ""}
+          >
+            <Bold className="h-4 w-4" />
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => editor.chain().focus().toggleItalic().run()}
+            className={editor.isActive("italic") ? "bg-muted" : ""}
+          >
+            <Italic className="h-4 w-4" />
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => editor.chain().focus().toggleUnderline().run()}
+            className={editor.isActive("underline") ? "bg-muted" : ""}
+          >
+            <UnderlineIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => editor.chain().focus().toggleStrike().run()}
+            className={editor.isActive("strike") ? "bg-muted" : ""}
+          >
+            <Strikethrough className="h-4 w-4" />
+          </Button>
+          <Button type="button" variant="ghost" size="sm" onClick={addLink}>
+            <LinkIcon className="h-4 w-4" />
+          </Button>
+          <Button type="button" variant="ghost" size="sm" onClick={setColor}>
+            <Palette className="h-4 w-4" />
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => editor.chain().focus().toggleHighlight().run()}
+            className={editor.isActive("highlight") ? "bg-muted" : ""}
+          >
+            <Highlighter className="h-4 w-4" />
+          </Button>
+        </BubbleMenu>
+      )}
 
       <EditorContent editor={editor} />
+
+      <div className="border-t p-2 text-xs text-muted-foreground bg-muted/20">
+        Tip: Select text to format it using the floating toolbar. Press Enter for new paragraphs.
+      </div>
     </div>
   )
 }

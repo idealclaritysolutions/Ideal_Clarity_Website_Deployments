@@ -60,7 +60,7 @@ export function DualFloatingCTA() {
           className="rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 px-6 py-6 text-base font-semibold"
         >
           <Mail className="h-5 w-5 mr-2" />
-          <span>Subscribe to Newsletter</span>
+          <span>Subscribe to The Clarity Guide</span>
         </Button>
       </div>
 

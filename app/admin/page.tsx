@@ -443,7 +443,7 @@ export default function AdminPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="publishDate">Publish Date *</Label>
+                  <Label htmlFor="publishDate">Publish Date</Label>
                   <Input
                     id="publishDate"
                     type="datetime-local"
@@ -451,7 +451,7 @@ export default function AdminPage() {
                     onChange={(e) => setFormData({ ...formData, publish_date: e.target.value })}
                   />
                   <p className="text-sm text-muted-foreground">
-                    The date shown on the blog post (you can backdate if needed)
+                    The date shown on the blog post (you can backdate if needed). Leave empty to use current date.
                   </p>
                 </div>
               </div>
