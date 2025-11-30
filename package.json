@@ -43,7 +43,7 @@
     "@stripe/react-stripe-js": "latest",
     "@stripe/stripe-js": "latest",
     "@tiptap/core": "latest",
-    "@tiptap/extension-bubble-menu": "latest",
+    "@tiptap/extension-bubble-menu": "3.11.1",
     "@tiptap/extension-color": "latest",
     "@tiptap/extension-font-family": "latest",
     "@tiptap/extension-highlight": "latest",
