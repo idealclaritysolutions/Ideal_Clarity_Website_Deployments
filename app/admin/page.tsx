@@ -20,7 +20,7 @@ import {
   expandBlogContent,
 } from "@/app/actions/ai-blog-helper"
 import { useRouter } from "next/navigation"
-import RichTextEditor from "@/components/ui/rich-text-editor"
+import { RichTextEditor } from "@/components/blog/rich-text-editor"
 
 export default function AdminPage() {
   const router = useRouter()
