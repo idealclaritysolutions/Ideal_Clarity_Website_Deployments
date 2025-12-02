@@ -45,7 +45,7 @@
     "@tiptap/core": "latest",
     "@tiptap/extension-bubble-menu": "3.11.1",
     "@tiptap/extension-color": "latest",
-    "@tiptap/extension-font-family": "latest",
+    "@tiptap/extension-font-family": "3.11.0",
     "@tiptap/extension-highlight": "latest",
     "@tiptap/extension-link": "latest",
     "@tiptap/extension-text-align": "latest",
