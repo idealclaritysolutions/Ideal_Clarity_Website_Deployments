@@ -21,20 +21,20 @@ export interface Product {
 export const PRODUCTS: Product[] = [
   {
     id: "single-session",
-    name: "Single Clarity Session",
-    subtitle: "One Decision, One Conversation",
-    description: "One 90-minute focused clarity session to tackle your biggest challenge",
+    name: "The Career Clarity Sprint™",
+    subtitle: "One Decision. One Conversation. Done.",
+    description: "One 90-minute focused clarity session to tackle your biggest decision",
     bestFor: [
-      "Should I take this job offer or stay where I am?",
-      "I'm torn between two roles and I can't decide.",
-      "I've been going back and forth on this decision for months — I just need to resolve it.",
-      "I want to venture into entrepreneurship but not sure which business to start.",
+      "You have a specific, contained decision you're stuck on",
+      "You know WHAT you're choosing between, you just can't choose",
+      "You're capable of executing on your own once you're clear",
+      "You don't need ongoing accountability or support, just clarity",
     ],
     whoNeedsThis: [
-      "You have a specific, contained decision you're stuck on",
-      "You know WHAT you're choosing between — you just can't choose",
-      "You're capable of executing on your own once you're clear",
-      "You don't need ongoing accountability or support — just clarity",
+      "Should I take this job offer or stay where I am?",
+      "I'm torn between two roles and I can't decide.",
+      "I've been going back and forth on this decision for months, I just need to resolve it.",
+      "I want to venture into entrepreneurship but not sure which business to start.",
     ],
     priceInCents: 69900, // $699
     stripePriceId: "price_1SXTnBJJZYboQQ44lgl3YNtd",
@@ -52,56 +52,61 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: "3-session-package",
-    name: "3-Session Package",
-    subtitle: "Clarity + Momentum",
-    description: "Three sessions to build momentum and create lasting change",
+    name: "The Momentum Month",
+    subtitle: "Clarity + Momentum in 4 Weeks",
+    description: "Four weekly sessions to create clarity and build unstoppable momentum",
     bestFor: [
-      "You're facing a bigger career move, a pivot, a leap into something new, a transition you've been putting off, and you want more than clarity. You want someone in your corner as you actually make it happen.",
+      "You're facing a bigger career move, a pivot, a leap into something new, a transition you've been putting off, and you want more than clarity.",
+      "You want someone in your corner as you actually make it happen.",
     ],
     whoNeedsThis: [
-      "You're ready to take action but need support to overcome obstacles",
-      "You want to build momentum towards your career goals",
-      "You need someone to hold you accountable and cheer you on",
+      "Should I leave my corporate job to start my own business?",
+      "How do I position myself for a leadership role?",
+      "What's the smartest way to pivot into a new industry?",
+      "I've been dreaming about this change for years, how do I finally do it?",
     ],
-    priceInCents: 149900, // $1,499
+    priceInCents: 249900, // $2,499
     stripePriceId: "price_1SXTuCJJZYboQQ44sKNY3TdC",
     stripePaymentLink: "https://buy.stripe.com/bJe4gAe6KdDr76L8DFdAk02",
-    popular: true,
-    savings: "Save $598",
+    savings: "Save $297",
     features: [
+      "4 sessions over 4 weeks (one per week, 90 minutes each)",
       "Session 1: Uncover what's blocking you and map your path forward",
-      "Session 2 (2 weeks later): Work through the obstacles, fears, and doubts that show up once you start moving",
-      "Session 3 (4 weeks later): Troubleshoot challenges and lock in momentum",
+      "Session 2: Work through the obstacles, fears, and doubts that show up once you start moving",
+      "Session 3: Troubleshoot challenges and lock in momentum",
+      "Session 4: Plan your next 90 days with clarity and confidence",
       "Email/Voxer access between sessions for real-time support",
     ],
     outcome:
       'One month from now, you\'ll be in motion. Not "thinking about it." Not "planning to." Actually doing it, whether that\'s negotiating a new role, launching your business, or walking confidently into a new chapter.',
     impact:
-      "By session 3, you won't just have clarity, you'll trust yourself to navigate hard decisions. You'll recognize your old patterns before they trap you.",
+      "By session 4, you won't just have clarity, you'll trust yourself to navigate hard decisions. You'll recognize your old patterns before they trap you.",
   },
   {
     id: "6-session-deep-dive",
-    name: "6-Session Deep Dive",
-    subtitle: "Major Career Transition",
-    description: "Comprehensive transformation package for complex challenges",
+    name: "The Career Clarity Partnership",
+    subtitle: "12 Weeks of Deep, Sustained Transformation",
+    description: "Six bi-weekly sessions for comprehensive career transformation",
     bestFor: [
-      "You're in the middle of a significant career reinvention, leaving corporate, building something of your own, stepping into a completely new identity, and you need sustained support through the full journey.",
+      "You're in the middle of a significant career reinvention, leaving corporate, building something of your own, stepping into a completely new identity.",
+      "You need sustained support through the full journey.",
     ],
     whoNeedsThis: [
-      "You're embarking on a major career change",
-      "You need deep support throughout your transition",
-      "You want to build a new career identity",
-      "You're looking for long-term guidance and accountability",
+      "How do I transition from employee to entrepreneur without burning my life down?",
+      "I want to step into a leadership role, but I don't feel ready, what needs to shift?",
+      "How do I rebuild my career identity after years of feeling stuck?",
+      "What does success actually look like for me, not what I've been told it should look like?",
     ],
-    priceInCents: 299900, // $2,999
+    priceInCents: 499900, // $4,999
     stripePriceId: "price_1SXTvCJJZYboQQ449SbGqjVy",
     stripePaymentLink: "https://buy.stripe.com/6oUaEY2o20QF2Qv7zBdAk03",
-    savings: "Save $1,195",
+    popular: true, // Mark as most popular
     features: [
-      "6 bi-weekly sessions over 3 months",
+      "6 sessions over 12 weeks (bi-weekly, 90 minutes each)",
       "Deep support through every phase of your transition",
       "Accountability and troubleshooting as you implement",
-      "Email/Voxer access between sessions",
+      "Email/Voxer access between sessions for real-time guidance",
+      "Personalized frameworks and tools tailored to your unique situation",
     ],
     outcome:
       "Three months from now, you'll be on the other side. New role. Business launched. Direction locked in. You'll look back at the version of you who started this journey and realize how far you've come.",
@@ -109,24 +114,24 @@ export const PRODUCTS: Product[] = [
       "You'll fundamentally change how you approach career decisions, faster, clearer, with less second-guessing. This becomes part of who you are.",
   },
   {
-    id: "monthly-retainer",
-    name: "Monthly Retainer",
-    subtitle: "Career Thinking Partner",
-    description: "Ongoing partnership for continuous growth and support",
+    id: "monthly-retainer-standard",
+    name: "The Clarity Retainer (Standard)",
+    subtitle: "Your Career Thinking Partner on Speed Dial",
+    description: "Ongoing partnership for continuous clarity and support",
     bestFor: [
-      "Senior leaders and professionals who face constant complexity, multiple opportunities, evolving decisions, high stakes, and want a trusted thinking partner on speed dial.",
+      "Senior leaders and professionals who face constant complexity, multiple opportunities, evolving decisions, high stakes.",
+      "You want a trusted thinking partner on speed dial.",
     ],
     whoNeedsThis: [
-      "You're a senior leader or professional",
-      "You face constant career challenges and opportunities",
-      "You need ongoing support and accountability",
-      "You want a partner to help you navigate high-stakes decisions",
+      "I'm making decisions every week that impact my career, my team, my future, how do I make sure I'm thinking clearly?",
+      "I need someone who understands the full picture, not just today's problem.",
+      "Every time I solve one thing, three more decisions show up, I need ongoing support.",
+      "I want a partner who challenges my thinking and keeps me sharp.",
     ],
-    priceInCents: 249900, // $2,499/month
+    priceInCents: 199900, // $1,999/month
     stripePriceId: "price_1SXTwmJJZYboQQ44yo13RAqa",
-    stripePaymentLink: "https://buy.stripe.com/7sY5kE6Ei2YNaiXg67dAk04",
+    stripePaymentLink: "https://buy.stripe.com/7sY5kE6Ei2YNaiXg37dAk04",
     recurring: true,
-    savings: "Save $900/month",
     features: [
       "2 scheduled clarity sessions per month (90 minutes each)",
       "Unlimited async support via Voxer or email",
@@ -139,12 +144,43 @@ export const PRODUCTS: Product[] = [
       "Each session sharpens your ability to think clearly under pressure. Over time, you'll navigate ambiguity with ease, it becomes your competitive advantage.",
   },
   {
+    id: "monthly-retainer-premium",
+    name: "The Clarity Retainer (Premium)",
+    subtitle: "Elite Partnership + Quarterly Strategy",
+    description: "Premium ongoing partnership with quarterly strategic planning",
+    bestFor: [
+      "Senior leaders and professionals who face constant complexity, multiple opportunities, evolving decisions, high stakes.",
+      "You want a trusted thinking partner on speed dial with deeper strategic support.",
+    ],
+    whoNeedsThis: [
+      "I need regular clarity sessions plus quarterly strategic planning.",
+      "I want ongoing support that includes big-picture career strategy.",
+      "I need someone who understands both tactical decisions and long-term vision.",
+      "I want a partner for every level of career decision-making.",
+    ],
+    priceInCents: 349900, // $3,499/month
+    stripePriceId: "price_1SXTycJJZYboQQ441PquisoT",
+    stripePaymentLink: "https://buy.stripe.com/28E4gA1jY56V0In1bddAk05",
+    recurring: true,
+    features: [
+      "4 scheduled clarity sessions per month (90 minutes each)",
+      "Quarterly career strategy & planning sessions (2 hours each)",
+      "Unlimited async support via Voxer or email",
+      "Priority scheduling (book within 48 hours when urgent)",
+      "Strategic partner for both immediate decisions and long-term vision",
+    ],
+    outcome:
+      "You make faster, smarter decisions while building toward a bigger vision. Every quarter, you review, adjust, and recommit to what matters most.",
+    impact:
+      "You develop an elite level of clarity and decision-making. Over time, you become someone who navigates complexity with confidence, it's your superpower.",
+  },
+  {
     id: "group-workshop",
     name: "Group Clarity Workshop",
     subtitle: "Crossroads Cohort",
-    description: "Interactive 3-hour workshop for teams and organizations",
+    description: "Interactive workshop for small groups navigating career transitions",
     bestFor: [
-      "A small group (5-8 professionals) who are all navigating career crossroads, considering a pivot, exploring entrepreneurship, or figuring out what's next. Think: peers in transition, alumni groups, mastermind cohorts, or a team of leaders facing change.",
+      "A small group (5-8 professionals) who are all navigating career crossroads, considering a pivot, exploring entrepreneurship, or figuring out what's next.",
     ],
     whoNeedsThis: [
       "You're part of a small group facing similar career challenges",
@@ -155,7 +191,6 @@ export const PRODUCTS: Product[] = [
     priceInCents: 399900, // $3,999
     stripePriceId: "price_1SXTycJJZYboQQ441PquisoT",
     stripePaymentLink: "https://buy.stripe.com/28E4gA1jY56V0In1bddAk05",
-    savings: "Save over $600 per person",
     features: [
       "2-hour facilitated session designed for shared breakthroughs",
       "Each person uncovers what's keeping them stuck",
@@ -167,6 +202,6 @@ export const PRODUCTS: Product[] = [
       "Every participant leaves with a concrete next step, and most take action within 48 hours. There's something about committing in front of others that makes it real.",
     impact:
       "You realize you're not alone, and you gain clarity faster by thinking alongside others who truly understand what you're facing.",
-    hidden: true, // Hide Group Clarity Workshop without deleting it
+    hidden: true,
   },
 ]
