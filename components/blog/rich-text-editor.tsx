@@ -39,9 +39,7 @@ export function RichTextEditor({ content, onChange }: RichTextEditorProps) {
           keepMarks: true,
         },
         paragraph: {
-          HTMLAttributes: {
-            class: "mb-4",
-          },
+          HTMLAttributes: {},
         },
       }),
       Underline,
@@ -69,7 +67,8 @@ export function RichTextEditor({ content, onChange }: RichTextEditorProps) {
     },
     editorProps: {
       attributes: {
-        class: "prose prose-sm sm:prose lg:prose-lg xl:prose-xl max-w-none focus:outline-none min-h-[400px] p-4",
+        class:
+          "prose prose-sm sm:prose lg:prose-lg xl:prose-xl max-w-none focus:outline-none min-h-[400px] p-4 [&_p]:mb-4 [&_p:empty]:h-6 [&_p:empty]:mb-4",
       },
     },
   })
@@ -238,7 +237,7 @@ export function RichTextEditor({ content, onChange }: RichTextEditorProps) {
       <EditorContent editor={editor} />
 
       <div className="border-t p-2 text-xs text-muted-foreground bg-muted/20">
-        Tip: Use the toolbar above to format your text. Press Enter for new paragraphs.
+        Tip: Press Enter once for single spacing, multiple times for larger gaps. Empty lines create visual space.
       </div>
     </div>
   )
