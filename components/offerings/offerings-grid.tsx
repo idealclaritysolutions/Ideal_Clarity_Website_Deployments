@@ -1,38 +1,29 @@
 import { Button } from "@/components/ui/button"
-import { Check, MessageSquare, Package, Rocket, RefreshCw, Info } from "lucide-react"
+import { Check, MessageSquare, Package, Rocket, RefreshCw } from "lucide-react"
 import Link from "next/link"
 import { CheckoutButton } from "@/components/checkout-button"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 export function OfferingsGrid() {
   const offerings = [
     {
       icon: MessageSquare,
       title: "The Career Clarity Sprint™",
-      subtitle: "One Decision. One Conversation. Done.",
+      subtitle: "Find direction and confidence in one focused conversation",
       bestFor: [
-        "You have a specific, contained decision you're stuck on",
-        "You know WHAT you're choosing between, you just can't choose",
-        "You're capable of executing on your own once you're clear",
-        "You don't need ongoing accountability or support, just clarity",
-      ],
-      whoNeedsThis: [
-        "Should I take this job offer or stay where I am?",
-        "I'm torn between two roles and I can't decide.",
-        "I've been going back and forth on this decision for months, I just need to resolve it.",
-        "I want to venture into entrepreneurship but not sure which business to start.",
+        "You are a professional, executive leader or multi-passionate person who feels torn between options - whether it's leaving a job, accepting a new offer, shifting industries, or redefining your next role - and can't afford to keep second-guessing or overthinking.",
       ],
       features: [
-        "90-minute deep-dive session (remote)",
-        "Uncover what's *really* keeping you stuck (not what you think it is)",
-        "Walk away with clarity on your decision and 2-3 concrete next steps",
-        "Relief from the mental spiral that's been draining you",
+        "A 60-minute one-on-one Career Clarity Session that pinpoints the real reason you feel stuck",
+        "A custom Career Decision Map showing your best next step and why it fits",
+        "A Clarity Anchor Summary (written recap) to revisit whenever doubt resurfaces",
+        "3-day follow-up support by voice or email to keep momentum strong",
       ],
       price: "$699",
       impact:
-        "You'll learn the thinking process that got you unstuck, so the next time you're at a crossroads, you'll know how to move through it faster.",
+        'You\'ll learn how to separate fear from truth in future career decisions - a skill that compounds for life. Clients often say: "It felt like finally seeing myself clearly."',
       outcome:
-        "Within one week of our session, you'll have made your decision and taken your first real step. The endless deliberation? Over.",
+        "You'll know exactly which career direction feels right and why. You'll stop looping between \"stay or go,\" \"this or that,\" and make a confident call. You'll walk away grounded, decisive, and calm about what's next.",
+      tagline: "One conversation. One confident career move. More confidence for the future.",
       highlight: false,
       popular: false,
       productId: "single-session",
@@ -40,31 +31,25 @@ export function OfferingsGrid() {
     {
       icon: Package,
       title: "The Momentum Month",
-      subtitle: "Clarity + Momentum in 4 Weeks",
+      subtitle: "From Decision to Direction",
       bestFor: [
-        "You're facing a bigger career move, a pivot, a leap into something new, a transition you've been putting off, and you want more than clarity.",
-        "You want someone in your corner as you actually make it happen.",
-      ],
-      whoNeedsThis: [
-        "Should I leave my corporate job to start my own business?",
-        "How do I position myself for a leadership role?",
-        "What's the smartest way to pivot into a new industry?",
-        "I've been dreaming about this change for years, how do I finally do it?",
+        "You've made a decision - to apply, resign, launch or grow - but struggle with execution, confidence, or follow-through.",
+        "Perfect after a Clarity Sprint or for people in transition who want strategic accountability.",
       ],
       features: [
-        "4 sessions over 4 weeks (one per week, 90 minutes each)",
-        "Session 1: Uncover what's blocking you and map your path forward",
-        "Session 2: Work through the obstacles, fears, and doubts that show up once you start moving",
-        "Session 3: Troubleshoot challenges and lock in momentum",
-        "Session 4: Plan your next 90 days with clarity and confidence",
-        "Email/Voxer access between sessions for real-time support",
+        "4 weeks of private coaching (weekly 60-minute sessions)",
+        "Tailored structure for execution",
+        "Voice/text/email access for on-the-spot career support between sessions",
+        "A tailored Momentum Tracker to visualize progress",
+        "Custom Career Confidence Practices to handle uncertainty, fear, and change",
       ],
       price: "$2,499",
       savings: "Save $297",
       impact:
-        "By session 4, you won't just have clarity, you'll trust yourself to navigate hard decisions. You'll recognize your old patterns before they trap you.",
+        "By the end of the month, you'll have a repeatable system for acting on clarity in your career: no hesitation, no self-sabotage, just steady forward motion.",
       outcome:
-        'One month from now, you\'ll be in motion. Not "thinking about it." Not "planning to." Actually doing it, whether that\'s negotiating a new role, launching your business, or walking confidently into a new chapter.',
+        "You'll move from \"I decided\" to \"I'm doing it\". You'll manage fear, imposter thoughts, and external noise with poise. You'll build steady habits around communication, boundaries, and follow-through.",
+      tagline: "Because clarity means nothing until you act on it.",
       highlight: false,
       popular: false,
       productId: "3-session-package",
@@ -72,29 +57,24 @@ export function OfferingsGrid() {
     {
       icon: Rocket,
       title: "The Career Clarity Partnership",
-      subtitle: "12 Weeks of Deep, Sustained Transformation",
+      subtitle: "3-Month Deep Rebuild",
       bestFor: [
-        "You're in the middle of a significant career reinvention, leaving corporate, building something of your own, stepping into a completely new identity.",
-        "You need sustained support through the full journey.",
-      ],
-      whoNeedsThis: [
-        "How do I transition from employee to entrepreneur without burning my life down?",
-        "I want to step into a leadership role, but I don't feel ready, what needs to shift?",
-        "How do I rebuild my career identity after years of feeling stuck?",
-        "What does success actually look like for me, not what I've been told it should look like?",
+        "You are a mid-career professional, executive leader, or founder ready for a full career reset. You've achieved success on paper but crave work that actually feels aligned.",
+        "You want space to think, a partner to challenge you, and a roadmap that matches who you are now.",
       ],
       features: [
-        "6 sessions over 12 weeks (bi-weekly, 90 minutes each)",
-        "Deep support through every phase of your transition",
-        "Accountability and troubleshooting as you implement",
-        "Email/Voxer access between sessions for real-time guidance",
-        "Personalized frameworks and tools tailored to your unique situation",
+        "Six deep-dive private sessions over 12 weeks, fully tailored to your evolving goals",
+        "Ongoing private voice/text/email access (Mon–Fri) for reflection, strategy, and decisions between sessions",
+        "A shared Career Clarity Journal to track insights, pivots, and new direction",
+        "Optional Career Narrative Review: LinkedIn, resume, or leadership story revamp for your new path",
+        "Priority scheduling, check-ins, and continued guidance",
       ],
       price: "$4,999",
       impact:
-        "You'll fundamentally change how you approach career decisions, faster, clearer, with less second-guessing. This becomes part of who you are.",
+        'You\'ll walk away with a renewed sense of purpose and direction - clarity that integrates both your professional ambition and personal peace. Clients often describe it as "the quarter that changed how I see myself and my work."',
       outcome:
-        "Three months from now, you'll be on the other side. New role. Business launched. Direction locked in. You'll look back at the version of you who started this journey and realize how far you've come.",
+        "You'll gain full clarity on your career direction: role, path, and purpose. You'll rebuild confidence in your professional identity and story. You'll leave reactive decision-making behind and start leading your career intentionally.",
+      tagline: "Because your next chapter deserves more than another promotion: it deserves alignment.",
       highlight: true,
       popular: true,
       productId: "6-session-deep-dive",
@@ -102,29 +82,22 @@ export function OfferingsGrid() {
     {
       icon: RefreshCw,
       title: "The Clarity Retainer",
-      subtitle: "Your Career Thinking Partner on Speed Dial",
+      subtitle: "Ongoing strategic partnership for professionals, founders, and executive leaders",
       bestFor: [
-        "Senior leaders and professionals who face constant complexity, multiple opportunities, evolving decisions, high stakes.",
-        "You want a trusted thinking partner on speed dial.",
-      ],
-      whoNeedsThis: [
-        "I'm making decisions every week that impact my career, my team, my future, how do I make sure I'm thinking clearly?",
-        "I need someone who understands the full picture, not just today's problem.",
-        "Every time I solve one thing, three more decisions show up, I need ongoing support.",
-        "I want a partner who challenges my thinking and keeps me sharp.",
+        "You're an Alumnus of the Momentum Month or Clarity Partnership and want continued access to thoughtful clarity support as you navigate new opportunities, transitions, or leadership challenges.",
       ],
       features: [
-        "Standard: 2 sessions/month ($1,999)",
-        "Premium: 4 sessions/month + quarterly strategy ($3,499)",
-        "Unlimited async support via Voxer or email",
-        "Priority scheduling (book within 48 hours when urgent)",
-        "A thinking partner whenever challenges arise",
+        "Standard ($1,999/month): Two 60-minute private sessions, unlimited voice/text/email access (Mon–Fri)",
+        "Premium ($3,499/month): Includes quarterly Decision Review (90-minute strategy session)",
+        "Access to tailored Clarity Tools & Templates (decision mapping, transition planning, reflection prompts)",
+        "Priority scheduling and client status",
       ],
       price: "From $1,999/mo",
       impact:
-        "Each session sharpens your ability to think clearly under pressure. Over time, you'll navigate ambiguity with ease, it becomes your competitive advantage.",
+        'You\'ll cultivate a rhythm of clarity: knowing how to pause, reflect, and realign as life and work evolve. Over time, this partnership becomes your professional clarity anchor, ensuring that every next step, pivot, or opportunity aligns with who you are and what you truly want. Clients often describe it as "having a trusted strategist who helps me make sense of everything before I act."',
       outcome:
-        "Decisions that used to cost you weeks of agonizing now take one conversation. You move faster, sleep better, and stop losing momentum to indecision.",
+        "You'll have a sounding board for complex decisions: whether it's handling leadership dynamics, weighing new opportunities, or navigating uncertainty. You'll maintain focus, perspective, and calm through ongoing change. You'll move forward consistently, not reactively, with someone who understands your context and goals.",
+      tagline: "Because clarity isn't a one-time event, it's a way of leading your life and career.",
       highlight: false,
       popular: false,
       productId: "monthly-retainer-standard",
@@ -172,31 +145,7 @@ export function OfferingsGrid() {
 
               {/* Title */}
               <div className="mb-6 sm:mb-8">
-                <div className="flex items-center gap-2 mb-2">
-                  <h3 className="text-xl sm:text-2xl md:text-3xl font-bold leading-tight">{offering.title}</h3>
-                  {offering.whoNeedsThis && (
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <button className="text-accent hover:text-accent/80 transition-colors">
-                            <Info className="w-5 h-5" />
-                          </button>
-                        </TooltipTrigger>
-                        <TooltipContent className="max-w-xs p-4">
-                          <p className="font-semibold mb-2 text-sm">Who Needs This:</p>
-                          <ul className="space-y-1 text-sm">
-                            {offering.whoNeedsThis.map((point, idx) => (
-                              <li key={idx} className="flex items-start gap-2">
-                                <span className="text-accent mt-1">•</span>
-                                <span>{point}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  )}
-                </div>
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold leading-tight mb-2">{offering.title}</h3>
                 {offering.subtitle && (
                   <p className="text-base sm:text-lg md:text-xl text-accent font-semibold">{offering.subtitle}</p>
                 )}
@@ -204,19 +153,15 @@ export function OfferingsGrid() {
 
               {/* Best For */}
               <div className="mb-6 sm:mb-8 pb-6 sm:pb-8 border-b border-border">
-                <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-3">Best For:</p>
-                {Array.isArray(offering.bestFor) ? (
-                  <ul className="space-y-2">
-                    {offering.bestFor.map((question, idx) => (
-                      <li key={idx} className="flex items-start gap-2">
-                        <span className="text-accent mt-1">•</span>
-                        <span className="text-sm sm:text-base leading-relaxed text-foreground">{question}</span>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="text-sm sm:text-base leading-relaxed text-foreground">{offering.bestFor}</p>
-                )}
+                <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-3">Best for you if:</p>
+                <ul className="space-y-2">
+                  {offering.bestFor.map((point, idx) => (
+                    <li key={idx} className="flex items-start gap-2">
+                      <span className="text-accent mt-1">•</span>
+                      <span className="text-sm sm:text-base leading-relaxed text-foreground">{point}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
 
               {/* Features */}
@@ -237,7 +182,9 @@ export function OfferingsGrid() {
               {/* Impact & Outcome */}
               <div className="bg-muted/60 p-4 sm:p-6 rounded-xl sm:rounded-2xl mb-6 sm:mb-8 space-y-4 sm:space-y-5">
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-2">Outcome:</p>
+                  <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-2">
+                    Immediate Outcomes:
+                  </p>
                   <p className="text-sm md:text-base leading-relaxed font-medium">{offering.outcome}</p>
                 </div>
                 <div className="pt-3 border-t border-border/50">
@@ -259,6 +206,13 @@ export function OfferingsGrid() {
                   </div>
                 )}
               </div>
+
+              {/* Tagline */}
+              {offering.tagline && (
+                <div className="mb-6 text-center">
+                  <p className="text-sm sm:text-base italic text-muted-foreground font-medium">{offering.tagline}</p>
+                </div>
+              )}
 
               {/* CTAs */}
               <div className="space-y-2 sm:space-y-3">
