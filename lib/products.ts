@@ -53,8 +53,8 @@ export const PRODUCTS: Product[] = [
       "Perfect after a Clarity Sprint or for people in transition who want strategic accountability.",
     ],
     priceInCents: 249900, // $2,499
-    stripePriceId: "price_1SXTuCJJZYboQQ44sKNY3TdC",
-    stripePaymentLink: "https://buy.stripe.com/bJe4gAe6KdDr76L8DFdAk02",
+    stripePriceId: "price_1Sa6rdJJZYboQQ443vC1nMjn",
+    stripePaymentLink: "https://buy.stripe.com/7sY28sd2G2YN3UzaLNdAk06",
     savings: "Save $297",
     features: [
       "4 weeks of private coaching (weekly 60-minute sessions)",
@@ -79,8 +79,8 @@ export const PRODUCTS: Product[] = [
       "You want space to think, a partner to challenge you, and a roadmap that matches who you are now.",
     ],
     priceInCents: 499900, // $4,999
-    stripePriceId: "price_1SXTvCJJZYboQQ449SbGqjVy",
-    stripePaymentLink: "https://buy.stripe.com/6oUaEY2o20QF2Qv7zBdAk03",
+    stripePriceId: "price_1Sa76LJJZYboQQ449JMe8hyL",
+    stripePaymentLink: "https://buy.stripe.com/cNi3cw8Mq8j7gHlbPRdAk07",
     popular: true,
     features: [
       "Six deep-dive private sessions over 12 weeks, fully tailored to your evolving goals",
@@ -96,20 +96,20 @@ export const PRODUCTS: Product[] = [
     tagline: "Because your next chapter deserves more than another promotion: it deserves alignment.",
   },
   {
-    id: "monthly-retainer-standard",
+    id: "monthly-retainer",
     name: "The Clarity Retainer",
     subtitle: "Ongoing strategic partnership for professionals, founders, and executive leaders",
     description: "Stay aligned as your career evolves",
     bestFor: [
       "You're an Alumnus of the Momentum Month or Clarity Partnership and want continued access to thoughtful clarity support as you navigate new opportunities, transitions, or leadership challenges.",
     ],
-    priceInCents: 199900, // $1,999/month
-    stripePriceId: "price_1SXTwmJJZYboQQ44yo13RAqa",
-    stripePaymentLink: "https://buy.stripe.com/7sY5kE6Ei2YNaiXg37dAk04",
+    priceInCents: 249900, // $2,499/month
+    stripePriceId: "price_1Sa7EgJJZYboQQ44fmPEPbT4",
+    stripePaymentLink: "https://buy.stripe.com/9B63cwgeS7f38aP3jldAk08",
     recurring: true,
     features: [
-      "Standard ($1,999/month): Two 60-minute private sessions, unlimited voice/text/email access (Mon–Fri)",
-      "Premium ($3,499/month): Includes quarterly Decision Review (90-minute strategy session)",
+      "Two 60-minute private sessions per month",
+      "Unlimited voice/text/email access (Mon–Fri) for ongoing clarity support",
       "Access to tailored Clarity Tools & Templates (decision mapping, transition planning, reflection prompts)",
       "Priority scheduling and client status",
     ],
@@ -118,37 +118,6 @@ export const PRODUCTS: Product[] = [
     impact:
       'You\'ll cultivate a rhythm of clarity: knowing how to pause, reflect, and realign as life and work evolve. Over time, this partnership becomes your professional clarity anchor, ensuring that every next step, pivot, or opportunity aligns with who you are and what you truly want. Clients often describe it as "having a trusted strategist who helps me make sense of everything before I act."',
     tagline: "Because clarity isn't a one-time event, it's a way of leading your life and career.",
-  },
-  {
-    id: "monthly-retainer-premium",
-    name: "The Clarity Retainer (Premium)",
-    subtitle: "Elite Partnership + Quarterly Strategy",
-    description: "Premium ongoing partnership with quarterly strategic planning",
-    bestFor: [
-      "Senior leaders and professionals who face constant complexity, multiple opportunities, evolving decisions, high stakes.",
-      "You want a trusted thinking partner on speed dial with deeper strategic support.",
-    ],
-    whoNeedsThis: [
-      "I need regular clarity sessions plus quarterly strategic planning.",
-      "I want ongoing support that includes big-picture career strategy.",
-      "I need someone who understands both tactical decisions and long-term vision.",
-      "I want a partner for every level of career decision-making.",
-    ],
-    priceInCents: 349900, // $3,499/month
-    stripePriceId: "price_1SXTycJJZYboQQ441PquisoT",
-    stripePaymentLink: "https://buy.stripe.com/28E4gA1jY56V0In1bddAk05",
-    recurring: true,
-    features: [
-      "4 scheduled clarity sessions per month (90 minutes each)",
-      "Quarterly career strategy & planning sessions (2 hours each)",
-      "Unlimited async support via Voxer or email",
-      "Priority scheduling (book within 48 hours when urgent)",
-      "Strategic partner for both immediate decisions and long-term vision",
-    ],
-    outcome:
-      "You make faster, smarter decisions while building toward a bigger vision. Every quarter, you review, adjust, and recommit to what matters most.",
-    impact:
-      "You develop an elite level of clarity and decision-making. Over time, you become someone who navigates complexity with confidence, it's your superpower.",
   },
   {
     id: "group-workshop",
