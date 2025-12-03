@@ -102,12 +102,13 @@ export function OfferingsGrid() {
         "You're an Alumnus of the Momentum Month or Clarity Partnership and want continued access to thoughtful clarity support as you navigate new opportunities, transitions, or leadership challenges.",
       ],
       features: [
-        "Standard ($1,999/month): Two 60-minute private sessions, unlimited voice/text/email access (Mon–Fri)",
-        "Premium ($3,499/month): Includes quarterly Decision Review (90-minute strategy session)",
+        "Three 60-minute private sessions per month",
+        "Unlimited voice/text/email access (Mon–Fri) for ongoing clarity support",
         "Access to tailored Clarity Tools & Templates (decision mapping, transition planning, reflection prompts)",
+        "Quarterly Decision Review (90-Minute Strategy Session)",
         "Priority scheduling and client status",
       ],
-      price: "From $1,999/mo",
+      price: "$2,499/mo",
       impact: [
         "You'll cultivate a rhythm of clarity: knowing how to pause, reflect, and realign as life and work evolve.",
         "Over time, this partnership becomes your professional clarity anchor, ensuring that every next step, pivot, or opportunity aligns with who you are and what you truly want.",
@@ -118,10 +119,10 @@ export function OfferingsGrid() {
         "You'll maintain focus, perspective, and calm through ongoing change.",
         "You'll move forward consistently, not reactively, with someone who understands your context and goals.",
       ],
-      tagline: "Because clarity isn't a one-time event, it's a way of leading your life and career.",
+      tagline: "Because clarity isn't a one-time event, it's a way of leading your career.",
       highlight: false,
       popular: false,
-      productId: "monthly-retainer-standard",
+      productId: "monthly-retainer",
     },
   ]
 
