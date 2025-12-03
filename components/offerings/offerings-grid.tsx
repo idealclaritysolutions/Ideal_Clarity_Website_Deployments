@@ -48,8 +48,7 @@ export function OfferingsGrid() {
         "A tailored Momentum Tracker to visualize progress",
         "Custom Career Confidence Practices to handle uncertainty, fear, and change",
       ],
-      price: "$2,499",
-      savings: "Save $297",
+      price: "$2,999",
       impact: [
         "By the end of the month, you'll have a repeatable system for acting on clarity in your career.",
         "No hesitation, no self-sabotage, just steady forward motion.",
@@ -276,13 +275,7 @@ export function OfferingsGrid() {
                     {offering.price}
                   </p>
                 </div>
-                {offering.savings && (
-                  <div className="text-right">
-                    <p className="text-sm sm:text-base md:text-lg text-secondary font-bold bg-secondary/10 px-3 py-1 rounded-full">
-                      {offering.savings}
-                    </p>
-                  </div>
-                )}
+                {/* Removed savings display as packages are different offerings */}
               </div>
 
               {/* Tagline */}
