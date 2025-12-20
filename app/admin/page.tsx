@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ArrowLeft, Plus, Edit, Trash2, Mail, Calendar, Sparkles } from "lucide-react"
 import Link from "next/link"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -459,22 +458,19 @@ export default function AdminPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="category">Category *</Label>
-                  <Select
+                  <select
                     value={formData.category}
-                    onValueChange={(value) => setFormData({ ...formData, category: value })}
+                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                    className="w-full px-3 py-2 border border-input bg-background rounded-md text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                   >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Career Clarity">Career Clarity</SelectItem>
-                      <SelectItem value="Career Transitions">Career Transitions</SelectItem>
-                      <SelectItem value="Decision Making">Decision Making</SelectItem>
-                      <SelectItem value="Career Growth">Career Growth</SelectItem>
-                      <SelectItem value="Leadership">Leadership</SelectItem>
-                      <SelectItem value="Professional Growth">Professional Growth</SelectItem>
-                    </SelectContent>
-                  </Select>
+                    <option value="">Select a category</option>
+                    <option value="Career Clarity">Career Clarity</option>
+                    <option value="Career Transitions">Career Transitions</option>
+                    <option value="Decision Making">Decision Making</option>
+                    <option value="Career Growth">Career Growth</option>
+                    <option value="Leadership">Leadership</option>
+                    <option value="Professional Growth">Professional Growth</option>
+                  </select>
                 </div>
 
                 <div className="space-y-2">
