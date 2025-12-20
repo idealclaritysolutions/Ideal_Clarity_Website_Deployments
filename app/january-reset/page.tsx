@@ -40,7 +40,7 @@ export default function JanuaryResetPage() {
             </h1>
 
             <div className="text-xl sm:text-2xl text-white/90 space-y-4 max-w-3xl mx-auto">
-              <p>It's December 19th. You have less than two weeks left in 2025.</p>
+              <p>You have less than two weeks left in 2025.</p>
               <p className="font-semibold">And if we're being honest?</p>
               <p>You're probably in the same place you were on January 1st, 2025.</p>
             </div>
@@ -92,7 +92,7 @@ export default function JanuaryResetPage() {
               <span className="text-secondary font-semibold">Introducing</span>
             </div>
 
-            <h2 className="text-4xl sm:text-5xl font-bold text-accent">The January Reset Intensive</h2>
+            <h2 className="text-4xl sm:text-5xl font-bold text-accent">2026 Intensive Reset</h2>
 
             <p className="text-xl sm:text-2xl text-foreground max-w-3xl mx-auto leading-relaxed">
               A <span className="font-bold text-primary">3-week intensive program</span> (+ 4 weeks accountability)
