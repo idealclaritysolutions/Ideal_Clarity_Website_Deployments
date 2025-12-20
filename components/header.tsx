@@ -3,12 +3,22 @@
 import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { Menu } from "lucide-react"
-import { useState } from "react"
+import { Menu, X } from "lucide-react"
+import { useState, useEffect } from "react"
 
 export function Header() {
   const [open, setOpen] = useState(false)
+
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden"
+    } else {
+      document.body.style.overflow = "unset"
+    }
+    return () => {
+      document.body.style.overflow = "unset"
+    }
+  }, [open])
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80 border-b border-border">
@@ -58,68 +68,81 @@ export function Header() {
           </nav>
 
           <div className="flex md:hidden items-center gap-4">
-            <Sheet open={open} onOpenChange={setOpen}>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="md:hidden">
-                  <Menu className="h-6 w-6" />
-                  <span className="sr-only">Toggle menu</span>
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] sm:w-[400px]">
-                <nav className="flex flex-col gap-6 mt-8 pl-6">
-                  <Link
-                    href="/"
-                    className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors"
-                    onClick={() => setOpen(false)}
-                  >
-                    Home
-                  </Link>
-                  <Link
-                    href="/work-with-me"
-                    className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors"
-                    onClick={() => setOpen(false)}
-                  >
-                    Work With Me
-                  </Link>
-                  <Link
-                    href="/#about"
-                    className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors"
-                    onClick={() => setOpen(false)}
-                  >
-                    About
-                  </Link>
-                  <Link
-                    href="/#how-it-works"
-                    className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors"
-                    onClick={() => setOpen(false)}
-                  >
-                    How It Works
-                  </Link>
-                  <Link
-                    href="/blog"
-                    className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors"
-                    onClick={() => setOpen(false)}
-                  >
-                    The Clarity Guide
-                  </Link>
-                  <Link
-                    href="/contact"
-                    className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors"
-                    onClick={() => setOpen(false)}
-                  >
-                    Contact
-                  </Link>
-                  <Button asChild size="lg" className="rounded-full mt-4">
-                    <Link href="https://calendly.com/idealclaritysolutions/30min" target="_blank">
-                      Book Free Session
-                    </Link>
-                  </Button>
-                </nav>
-              </SheetContent>
-            </Sheet>
+            <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setOpen(!open)}>
+              <Menu className="h-6 w-6" />
+              <span className="sr-only">Toggle menu</span>
+            </Button>
           </div>
         </div>
       </div>
+
+      {open && (
+        <>
+          {/* Backdrop */}
+          <div className="fixed inset-0 bg-black/50 z-40 md:hidden" onClick={() => setOpen(false)} />
+
+          {/* Slide-in menu */}
+          <div className="fixed right-0 top-0 bottom-0 w-[300px] sm:w-[400px] bg-background border-l z-50 md:hidden animate-in slide-in-from-right duration-300">
+            <div className="flex items-center justify-between p-6 border-b">
+              <span className="font-semibold text-lg">Menu</span>
+              <Button variant="ghost" size="icon" onClick={() => setOpen(false)}>
+                <X className="h-6 w-6" />
+                <span className="sr-only">Close menu</span>
+              </Button>
+            </div>
+
+            <nav className="flex flex-col gap-6 mt-8 pl-6">
+              <Link
+                href="/"
+                className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors"
+                onClick={() => setOpen(false)}
+              >
+                Home
+              </Link>
+              <Link
+                href="/work-with-me"
+                className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors"
+                onClick={() => setOpen(false)}
+              >
+                Work With Me
+              </Link>
+              <Link
+                href="/#about"
+                className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors"
+                onClick={() => setOpen(false)}
+              >
+                About
+              </Link>
+              <Link
+                href="/#how-it-works"
+                className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors"
+                onClick={() => setOpen(false)}
+              >
+                How It Works
+              </Link>
+              <Link
+                href="/blog"
+                className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors"
+                onClick={() => setOpen(false)}
+              >
+                The Clarity Guide
+              </Link>
+              <Link
+                href="/contact"
+                className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors"
+                onClick={() => setOpen(false)}
+              >
+                Contact
+              </Link>
+              <Button asChild size="lg" className="rounded-full mt-4 mr-6">
+                <Link href="https://calendly.com/idealclaritysolutions/30min" target="_blank">
+                  Book Free Session
+                </Link>
+              </Button>
+            </nav>
+          </div>
+        </>
+      )}
     </header>
   )
 }

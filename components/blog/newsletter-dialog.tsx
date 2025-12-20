@@ -2,12 +2,11 @@
 
 import type React from "react"
 
-import { useState } from "react"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Mail, CheckCircle2 } from "lucide-react"
+import { Mail, CheckCircle2, X } from "lucide-react"
 import { subscribeToNewsletter } from "@/app/actions/newsletter"
 
 interface NewsletterDialogProps {
@@ -20,6 +19,20 @@ export function NewsletterDialog({ isOpen, onClose }: NewsletterDialogProps) {
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState("")
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden"
+      const handleEscape = (e: KeyboardEvent) => {
+        if (e.key === "Escape") onClose()
+      }
+      document.addEventListener("keydown", handleEscape)
+      return () => {
+        document.body.style.overflow = ""
+        document.removeEventListener("keydown", handleEscape)
+      }
+    }
+  }, [isOpen, onClose])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -42,13 +55,32 @@ export function NewsletterDialog({ isOpen, onClose }: NewsletterDialogProps) {
     setLoading(false)
   }
 
+  if (!isOpen) return null
+
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle className="text-2xl">Join The Clarity Guide</DialogTitle>
-          <DialogDescription>Get weekly insights on making confident career decisions.</DialogDescription>
-        </DialogHeader>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
+      onClick={onClose}
+    >
+      <div
+        className="bg-background border border-border rounded-lg shadow-lg max-w-md w-full p-6"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex items-start justify-between mb-4">
+          <div>
+            <h2 className="text-2xl font-bold">Join The Clarity Guide</h2>
+            <p className="text-muted-foreground text-sm mt-1">
+              Get weekly insights on making confident career decisions.
+            </p>
+          </div>
+          <button
+            onClick={onClose}
+            className="text-muted-foreground hover:text-foreground transition-colors"
+            aria-label="Close"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
 
         {success ? (
           <div className="flex flex-col items-center justify-center py-8">
@@ -78,7 +110,7 @@ export function NewsletterDialog({ isOpen, onClose }: NewsletterDialogProps) {
             </Button>
           </form>
         )}
-      </DialogContent>
-    </Dialog>
+      </div>
+    </div>
   )
 }

@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ArrowLeft, Plus } from "lucide-react"
 import Link from "next/link"
 
@@ -201,20 +200,17 @@ ${newPost.content}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="category">Category *</Label>
-                  <Select
+                  <select
+                    id="category"
                     value={formData.category}
-                    onValueChange={(value) => setFormData({ ...formData, category: value })}
+                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                   >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Career Clarity">Career Clarity</SelectItem>
-                      <SelectItem value="Leadership">Leadership</SelectItem>
-                      <SelectItem value="Decision Making">Decision Making</SelectItem>
-                      <SelectItem value="Professional Growth">Professional Growth</SelectItem>
-                    </SelectContent>
-                  </Select>
+                    <option value="Career Clarity">Career Clarity</option>
+                    <option value="Leadership">Leadership</option>
+                    <option value="Decision Making">Decision Making</option>
+                    <option value="Professional Growth">Professional Growth</option>
+                  </select>
                 </div>
 
                 <div className="space-y-2">

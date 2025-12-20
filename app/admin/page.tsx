@@ -8,7 +8,6 @@ import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ArrowLeft, Plus, Edit, Trash2, Mail, Calendar, Sparkles } from "lucide-react"
 import Link from "next/link"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { createBlogPost, updateBlogPost, deleteBlogPost, getAllPostsForAdmin, type BlogPost } from "@/app/actions/blog"
 import { getAllSubscribers } from "@/app/actions/newsletter"
 import {
@@ -17,7 +16,14 @@ import {
   generateBlogKeywords,
   generateMetaDescription,
   expandBlogContent,
-} from "@/app/actions/ai-blog-helper"
+} from "@/app/actions/ai-blog-helper" // Fixed import path from ai to ai-blog-helper
+
+interface Subscriber {
+  id: string
+  email: string
+  subscribed_at: string
+}
+
 import { useRouter } from "next/navigation"
 import { RichTextEditor } from "@/components/blog/rich-text-editor"
 
@@ -28,7 +34,7 @@ export default function AdminPage() {
   const [showForm, setShowForm] = useState(false)
   const [editingPost, setEditingPost] = useState<BlogPost | null>(null)
   const [posts, setPosts] = useState<BlogPost[]>([])
-  const [subscribers, setSubscribers] = useState<any[]>([])
+  const [subscribers, setSubscribers] = useState<Subscriber[]>([])
   const [loading, setLoading] = useState(false)
   const [aiGenerating, setAiGenerating] = useState({
     title: false,
@@ -37,6 +43,8 @@ export default function AdminPage() {
     metaDescription: false,
     content: false,
   })
+
+  const [activeTab, setActiveTab] = useState("posts") // Added state for tab management
 
   const [formData, setFormData] = useState({
     title: "",
@@ -596,108 +604,128 @@ export default function AdminPage() {
             </CardContent>
           </Card>
         ) : (
-          <Tabs defaultValue="posts" className="space-y-6">
-            <TabsList>
-              <TabsTrigger value="posts">Blog Posts ({posts.length})</TabsTrigger>
-              <TabsTrigger value="subscribers">Newsletter ({subscribers.length})</TabsTrigger>
-            </TabsList>
+          <div className="space-y-6">
+            <div className="flex gap-2 border-b border-border">
+              <button
+                onClick={() => setActiveTab("posts")}
+                className={`px-4 py-2 text-sm font-medium transition-colors relative ${
+                  activeTab === "posts" ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                Blog Posts ({posts.length})
+                {activeTab === "posts" && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary" />}
+              </button>
+              <button
+                onClick={() => setActiveTab("subscribers")}
+                className={`px-4 py-2 text-sm font-medium transition-colors relative ${
+                  activeTab === "subscribers" ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                Newsletter ({subscribers.length})
+                {activeTab === "subscribers" && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary" />}
+              </button>
+            </div>
 
-            <TabsContent value="posts" className="space-y-4">
-              {posts.length === 0 ? (
+            {activeTab === "posts" && (
+              <div className="space-y-4">
+                {posts.length === 0 ? (
+                  <Card>
+                    <CardContent className="py-12 text-center">
+                      <p className="text-muted-foreground mb-4">No blog posts yet. Create your first one!</p>
+                      <Button onClick={handleNewPost}>
+                        <Plus className="h-4 w-4 mr-2" />
+                        Create First Post
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <div className="grid gap-4">
+                    {posts.map((post) => (
+                      <Card key={post.id}>
+                        <CardContent className="p-6">
+                          <div className="flex items-start justify-between gap-4">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-2">
+                                <h3 className="text-xl font-bold">{post.title}</h3>
+                                {!post.published && (
+                                  <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">Draft</span>
+                                )}
+                                {post.scheduled_date && new Date(post.scheduled_date) > new Date() && (
+                                  <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                                    Scheduled: {new Date(post.scheduled_date).toLocaleDateString()}
+                                  </span>
+                                )}
+                              </div>
+                              <p className="text-sm text-muted-foreground mb-2">{post.excerpt}</p>
+                              <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                                <span>{post.category}</span>
+                                <span>•</span>
+                                <span>{post.read_time}</span>
+                                <span>•</span>
+                                <span>{new Date(post.created_at).toLocaleDateString()}</span>
+                              </div>
+                            </div>
+                            <div className="flex gap-2">
+                              <Button variant="outline" size="sm" onClick={() => handleEdit(post)}>
+                                <Edit className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleDelete(post.id)}
+                                className="text-destructive hover:text-destructive"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {activeTab === "subscribers" && (
+              <div className="space-y-4">
                 <Card>
-                  <CardContent className="py-12 text-center">
-                    <p className="text-muted-foreground mb-4">No blog posts yet. Create your first one!</p>
-                    <Button onClick={handleNewPost}>
-                      <Plus className="h-4 w-4 mr-2" />
-                      Create First Post
-                    </Button>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Mail className="h-5 w-5" />
+                      Newsletter Subscribers
+                    </CardTitle>
+                    <CardDescription>
+                      {subscribers.length} subscriber{subscribers.length !== 1 ? "s" : ""} • Managed via Mailerlite
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    {subscribers.length === 0 ? (
+                      <p className="text-muted-foreground text-center py-8">No subscribers yet</p>
+                    ) : (
+                      <div className="space-y-2">
+                        {subscribers.map((sub) => (
+                          <div key={sub.id} className="flex items-center justify-between p-3 border rounded">
+                            <span>{sub.email}</span>
+                            <span className="text-sm text-muted-foreground">
+                              {new Date(sub.subscribed_at).toLocaleDateString()}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    <div className="mt-6 p-4 bg-muted rounded-lg">
+                      <p className="text-sm font-medium mb-2">Mailerlite Integration Active</p>
+                      <p className="text-sm text-muted-foreground">
+                        All subscribers are automatically synced to your Mailerlite account. Manage email campaigns from
+                        your Mailerlite dashboard.
+                      </p>
+                    </div>
                   </CardContent>
                 </Card>
-              ) : (
-                <div className="grid gap-4">
-                  {posts.map((post) => (
-                    <Card key={post.id}>
-                      <CardContent className="p-6">
-                        <div className="flex items-start justify-between gap-4">
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-2">
-                              <h3 className="text-xl font-bold">{post.title}</h3>
-                              {!post.published && (
-                                <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">Draft</span>
-                              )}
-                              {post.scheduled_date && new Date(post.scheduled_date) > new Date() && (
-                                <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
-                                  Scheduled: {new Date(post.scheduled_date).toLocaleDateString()}
-                                </span>
-                              )}
-                            </div>
-                            <p className="text-sm text-muted-foreground mb-2">{post.excerpt}</p>
-                            <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                              <span>{post.category}</span>
-                              <span>•</span>
-                              <span>{post.read_time}</span>
-                              <span>•</span>
-                              <span>{new Date(post.created_at).toLocaleDateString()}</span>
-                            </div>
-                          </div>
-                          <div className="flex gap-2">
-                            <Button variant="outline" size="sm" onClick={() => handleEdit(post)}>
-                              <Edit className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => handleDelete(post.id)}
-                              className="text-destructive hover:text-destructive"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              )}
-            </TabsContent>
-
-            <TabsContent value="subscribers" className="space-y-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Mail className="h-5 w-5" />
-                    Newsletter Subscribers
-                  </CardTitle>
-                  <CardDescription>
-                    {subscribers.length} subscriber{subscribers.length !== 1 ? "s" : ""} • Managed via Mailerlite
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {subscribers.length === 0 ? (
-                    <p className="text-muted-foreground text-center py-8">No subscribers yet</p>
-                  ) : (
-                    <div className="space-y-2">
-                      {subscribers.map((sub) => (
-                        <div key={sub.id} className="flex items-center justify-between p-3 border rounded">
-                          <span>{sub.email}</span>
-                          <span className="text-sm text-muted-foreground">
-                            {new Date(sub.subscribed_at).toLocaleDateString()}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                  <div className="mt-6 p-4 bg-muted rounded-lg">
-                    <p className="text-sm font-medium mb-2">Mailerlite Integration Active</p>
-                    <p className="text-sm text-muted-foreground">
-                      All subscribers are automatically synced to your Mailerlite account. Manage email campaigns from
-                      your Mailerlite dashboard.
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
+              </div>
+            )}
+          </div>
         )}
       </div>
     </div>
