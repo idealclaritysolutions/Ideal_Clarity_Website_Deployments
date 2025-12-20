@@ -189,7 +189,7 @@ export default function JanuaryResetPage() {
                 <li>• Bring it to Session 1</li>
               </ul>
               <p className="mt-4 text-sm text-muted-foreground italic">
-                This is your prep work. You start the intensive with your decision MADE.
+                This is your prep work. We'll finetune your decision in our first intensive reset session.
               </p>
             </div>
 
