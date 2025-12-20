@@ -92,7 +92,7 @@ export default function JanuaryResetPage() {
               <span className="text-secondary font-semibold">Introducing</span>
             </div>
 
-            <h2 className="text-4xl sm:text-5xl font-bold text-accent">2026 Intensive Reset</h2>
+            <h2 className="text-4xl sm:text-5xl font-bold text-accent">2026 Intensive Reset Program</h2>
 
             <p className="text-xl sm:text-2xl text-foreground max-w-3xl mx-auto leading-relaxed">
               A <span className="font-bold text-primary">3-week intensive program</span> (+ 4 weeks accountability)
