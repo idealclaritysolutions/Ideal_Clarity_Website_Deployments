@@ -198,7 +198,15 @@ export function FactsOrFearClient() {
     if (email) {
       setEmailSending(true)
       // Send assessment result email
-      await sendAssessmentResultEmail(email, isFearBased(), answers)
+      try {
+        const result = await sendAssessmentResultEmail(email, isFearBased(), answers)
+        console.log("[v0] Email send result:", result)
+        if (!result.success) {
+          console.error("[v0] Failed to send email:", result.error)
+        }
+      } catch (error) {
+        console.error("[v0] Error in email submission:", error)
+      }
       setEmailSending(false)
       setStep("results")
     }
@@ -290,8 +298,7 @@ function LandingPage({ onStart }: { onStart: () => void }) {
             ?
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto text-balance">
-            Take the 2-minute assessment and find out what's REALLY stopping you from doing the thing you keep putting
-            off.
+            Take the 2-minute assessment and find out what's REALLY stopping you from living the life you truly want.
           </p>
 
           <p className="text-lg text-accent font-medium">
@@ -1520,7 +1527,7 @@ function ResultsPage({
 
         {/* Contact */}
         <div className="text-center text-muted-foreground text-sm mt-12">
-          <p>Questions? Email idealclaritysolutions@gmail.com or call/text for immediate answers.</p>
+          <p>Questions? Email idealclaritysolutions@gmail.com</p>
         </div>
       </div>
     </div>
