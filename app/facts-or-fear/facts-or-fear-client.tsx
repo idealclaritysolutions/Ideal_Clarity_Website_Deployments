@@ -11,7 +11,6 @@ import {
   CheckCircle2,
   X,
   Clock,
-  Shield,
   CreditCard,
   Brain,
   Lightbulb,
@@ -21,6 +20,7 @@ import {
   ArrowRight,
   AlertCircle,
 } from "lucide-react"
+import { sendAssessmentResultEmail } from "@/app/actions/assessment-emails"
 
 type Question = {
   id: number
@@ -167,6 +167,7 @@ export function FactsOrFearClient() {
   const [answers, setAnswers] = useState<Record<number, string>>({})
   const [email, setEmail] = useState("")
   const [showEncouragement, setShowEncouragement] = useState(false)
+  const [emailSending, setEmailSending] = useState(false)
 
   const handleAnswer = (answer: string) => {
     const newAnswers = { ...answers, [questions[currentQuestion].id]: answer }
@@ -192,9 +193,13 @@ export function FactsOrFearClient() {
     }
   }
 
-  const handleEmailSubmit = (e: React.FormEvent) => {
+  const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (email) {
+      setEmailSending(true)
+      // Send assessment result email
+      await sendAssessmentResultEmail(email, isFearBased(), answers)
+      setEmailSending(false)
       setStep("results")
     }
   }
@@ -258,7 +263,7 @@ export function FactsOrFearClient() {
   }
 
   if (step === "email") {
-    return <EmailCapture email={email} setEmail={setEmail} onSubmit={handleEmailSubmit} />
+    return <EmailCapture email={email} setEmail={setEmail} onSubmit={handleEmailSubmit} emailSending={emailSending} />
   }
 
   if (step === "results") {
@@ -272,6 +277,12 @@ function LandingPage({ onStart }: { onStart: () => void }) {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-primary/5 to-background">
       <div className="container mx-auto px-6 py-12 md:py-20 max-w-5xl">
+        <div className="mb-8 p-4 bg-accent/10 border-l-4 border-accent rounded-r-lg">
+          <p className="text-center text-accent font-semibold">
+            The year is ending. Will you start the new one stuck in the same place?
+          </p>
+        </div>
+
         {/* Above the Fold */}
         <div className="text-center mb-16 space-y-6">
           <h1 className="text-4xl md:text-6xl font-bold text-balance">
@@ -282,6 +293,11 @@ function LandingPage({ onStart }: { onStart: () => void }) {
             Take the 2-minute assessment and find out what's REALLY stopping you from doing the thing you keep putting
             off.
           </p>
+
+          <p className="text-lg text-accent font-medium">
+            Before the calendar resets. Before another year of "next year."
+          </p>
+
           <div className="max-w-2xl mx-auto p-8 bg-card border-2 border-primary/20 rounded-2xl">
             <p className="text-lg mb-4 text-foreground">
               You've been telling yourself you're <span className="font-semibold">"not ready yet."</span>
@@ -600,38 +616,32 @@ function LandingPage({ onStart }: { onStart: () => void }) {
           </div>
         </div>
 
-        {/* Final CTA */}
-        <div className="max-w-2xl mx-auto text-center space-y-8">
-          <h2 className="text-3xl md:text-4xl font-bold">Ready to see the truth?</h2>
+        <div className="max-w-3xl mx-auto text-center space-y-6 mb-12">
+          <div className="p-6 bg-gradient-to-r from-accent/20 to-primary/20 rounded-xl border-2 border-accent/30">
+            <p className="text-xl font-bold mb-2">Another year is about to pass.</p>
+            <p className="text-lg text-muted-foreground">
+              Will you enter the new one the same person, telling yourself the same stories...
+            </p>
+            <p className="text-lg font-semibold text-accent mt-2">
+              Or will you finally know the truth about what's holding you back?
+            </p>
+          </div>
+        </div>
 
+        {/* CTA */}
+        <div className="max-w-2xl mx-auto text-center">
           <Button
             onClick={onStart}
             size="lg"
-            className="w-full md:w-auto px-12 py-8 text-2xl font-bold bg-primary hover:bg-primary/90 rounded-full shadow-2xl hover:shadow-primary/50 transition-all hover:scale-105"
+            className="w-full py-8 text-2xl font-bold bg-gradient-to-r from-primary to-accent hover:opacity-90 text-white rounded-full shadow-2xl hover:shadow-3xl transition-all hover:scale-105"
           >
-            START THE ASSESSMENT <ArrowRight className="w-8 h-8 ml-2" />
+            Take the Assessment Now <ArrowRight className="w-8 h-8 ml-3" />
           </Button>
+          <p className="mt-4 text-sm text-muted-foreground">Takes 2 minutes. Completely free. Brutally honest.</p>
 
-          <div className="flex flex-wrap justify-center gap-6 text-sm">
-            <div className="flex items-center gap-2">
-              <Shield className="w-5 h-5 text-secondary" />
-              <span className="text-muted-foreground">100% Private & Confidential</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Clock className="w-5 h-5 text-secondary" />
-              <span className="text-muted-foreground">No time limit - take as long as you need</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <CreditCard className="w-5 h-5 text-secondary" />
-              <span className="text-muted-foreground">Free - no credit card required</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Zap className="w-5 h-5 text-secondary" />
-              <span className="text-muted-foreground">Instant results</span>
-            </div>
-          </div>
-
-          <p className="text-muted-foreground">10 questions. No email required until the end.</p>
+          <p className="mt-2 text-sm text-accent font-medium">
+            Before this year ends. Before you tell yourself "next year" again.
+          </p>
         </div>
       </div>
     </div>
@@ -811,76 +821,66 @@ function EmailCapture({
   email,
   setEmail,
   onSubmit,
+  emailSending,
 }: {
   email: string
   setEmail: (email: string) => void
   onSubmit: (e: React.FormEvent) => void
+  emailSending: boolean
 }) {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-secondary/5 to-background flex items-center justify-center p-6">
-      <Card className="max-w-2xl w-full p-8 md:p-12 space-y-8">
+    <div className="min-h-screen bg-gradient-to-b from-background via-accent/5 to-background flex items-center justify-center p-6">
+      <Card className="max-w-2xl w-full p-12 space-y-8">
         <div className="text-center space-y-4">
-          <div className="w-20 h-20 rounded-full bg-secondary/20 flex items-center justify-center mx-auto">
-            <CheckCircle2 className="w-10 h-10 text-secondary" />
+          <div className="w-16 h-16 rounded-full bg-secondary/20 flex items-center justify-center mx-auto">
+            <CheckCircle2 className="w-8 h-8 text-secondary" />
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold">You Did It. Now Let's Show You The Truth.</h1>
+          <h2 className="text-3xl font-bold">Assessment Complete</h2>
           <p className="text-lg text-muted-foreground">
-            You just answered 10 questions with complete honesty. That takes courage. Most people aren't willing to face
-            the truth about what's stopping them.
+            Enter your email to see your results and discover if you're fear-based or constraint-based stuck.
           </p>
-          <p className="text-lg font-semibold text-primary">You are.</p>
-        </div>
 
-        <div className="p-6 bg-primary/5 rounded-xl border-2 border-primary/20 text-center">
-          <p className="text-xl font-semibold">Your personalized results are ready.</p>
+          <div className="p-4 bg-accent/10 rounded-lg border-l-4 border-accent mt-6">
+            <p className="text-sm font-medium text-accent">
+              Time-sensitive: Your personalized breakthrough plan is ready. Don't let another day pass in the same loop.
+            </p>
+          </div>
         </div>
 
         <form onSubmit={onSubmit} className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-lg font-semibold">
-              Enter your email to see them:
+            <Label htmlFor="email" className="text-lg">
+              Email Address
             </Label>
             <Input
               id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="your.email@example.com"
+              placeholder="your@email.com"
               required
               className="text-lg p-6"
+              disabled={emailSending}
             />
-          </div>
-
-          <div className="flex items-start gap-2">
-            <input type="checkbox" id="consent" className="mt-1" />
-            <Label htmlFor="consent" className="text-sm text-muted-foreground cursor-pointer">
-              Yes, send me insights on breaking through fear and getting unstuck (unsubscribe anytime)
-            </Label>
-          </div>
-
-          <div className="space-y-3 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <Lock className="w-4 h-4" />
-              <span>Your answers and results are completely private. We'll never share your data.</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Shield className="w-4 h-4" />
-              <span>No spam. Just your results + helpful insights when relevant.</span>
-            </div>
           </div>
 
           <Button
             type="submit"
             size="lg"
-            className="w-full py-6 text-xl font-bold bg-primary hover:bg-primary/90 rounded-full"
+            className="w-full py-6 text-xl font-bold bg-gradient-to-r from-secondary to-primary hover:opacity-90 text-white rounded-full"
+            disabled={emailSending}
           >
-            SHOW ME MY RESULTS <ArrowRight className="w-6 h-6 ml-2" />
+            {emailSending ? "Sending..." : "Show Me My Results"}
+            <ArrowRight className="w-6 h-6 ml-2" />
           </Button>
-
-          <p className="text-center text-sm text-muted-foreground">
-            Your results will also be emailed to you so you can review them later.
-          </p>
         </form>
+
+        <div className="space-y-4">
+          <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+            <Lock className="w-4 h-4" />
+            <span>Your email is safe. I respect your inbox.</span>
+          </div>
+        </div>
       </Card>
     </div>
   )
@@ -899,274 +899,358 @@ function ResultsPage({
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-primary/5 to-background">
-      <div className="container mx-auto px-6 py-12 max-w-4xl">
-        {/* Results Header */}
-        <div className="text-center mb-12 space-y-6">
-          <div className="inline-block px-6 py-3 bg-accent/20 text-accent rounded-full text-sm font-bold uppercase tracking-wide">
-            Your Results
-          </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-balance">
-            {isFearBased ? (
-              <>
-                This is <span className="text-accent">FEAR</span>, Not Facts.
-              </>
-            ) : (
-              <>
-                You Have a Real Constraint. But You're <span className="text-primary">Still Stuck</span>.
-              </>
-            )}
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Based on your answers, here's the truth you've been avoiding:
-          </p>
+      <div className="container mx-auto px-6 py-12 md:py-20 max-w-4xl">
+        <div className="mb-8 p-6 bg-gradient-to-r from-accent/20 to-primary/20 rounded-xl border-2 border-accent/30 text-center">
+          <p className="text-lg font-bold mb-2">The calendar is about to reset.</p>
+          <p className="text-muted-foreground">Will you start fresh, or carry the same patterns into another year?</p>
         </div>
 
-        {/* Diagnosis */}
-        <Card className="p-8 md:p-12 mb-12 bg-gradient-to-br from-accent/10 to-background border-2 border-accent/30">
-          <h2 className="text-2xl font-bold mb-6">Your Primary Excuse Pattern:</h2>
-          <div className="p-6 bg-background rounded-lg border-l-4 border-accent mb-6">
-            <p className="text-lg font-semibold italic">{answers[3] || "Your stated reason for waiting"}</p>
+        {/* Results */}
+        <Card className="p-12 mb-12 bg-gradient-to-br from-card to-muted/20">
+          <div className="text-center space-y-6 mb-8">
+            <div
+              className={`inline-block px-8 py-3 rounded-full ${isFearBased ? "bg-accent/20 border-2 border-accent" : "bg-primary/20 border-2 border-primary"}`}
+            >
+              <p className="text-sm font-bold uppercase tracking-wide">Your Result</p>
+            </div>
+            <h1 className="text-4xl md:text-5xl font-bold">
+              {isFearBased ? (
+                <>
+                  You're <span className="text-accent">FEAR-BASED</span> Stuck
+                </>
+              ) : (
+                <>
+                  You're <span className="text-primary">CONSTRAINT-BASED</span> Stuck
+                </>
+              )}
+            </h1>
           </div>
 
           {isFearBased ? (
             <div className="space-y-6">
-              <p className="text-lg">
-                Here's what's <span className="font-bold">ACTUALLY</span> happening:
-              </p>
-              <p className="text-lg">You're using "{answers[3]?.replace(/"/g, "")}" as protection. Protection from:</p>
-              <div className="grid md:grid-cols-2 gap-4">
-                {[
-                  "Being seen publicly",
-                  "Being judged or criticized",
-                  'Being "found out" as not good enough',
-                  "Failing where everyone can see",
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-2 p-3 bg-background rounded-lg">
-                    <AlertCircle className="w-5 h-5 text-accent shrink-0" />
-                    <span>{item}</span>
+              <div className="p-6 bg-background rounded-lg border-l-4 border-accent">
+                <h3 className="text-xl font-bold mb-3 text-accent">Here's what that means:</h3>
+                <p className="text-lg mb-4">
+                  Your obstacle SOUNDS like a fact. But it's actually <strong>FEAR</strong> disguised as logic.
+                </p>
+                <p className="text-muted-foreground mb-4">
+                  Your stated excuse: <em>"{answers[3]}"</em>
+                </p>
+                <p className="font-semibold">The pattern:</p>
+                <p>
+                  Even if that obstacle disappeared tomorrow, you'd find another reason to wait. Because{" "}
+                  <strong>the obstacle isn't the issue. The fear is.</strong>
+                </p>
+              </div>
+
+              <Card className="p-8 md:p-12 mb-12 bg-card border-2">
+                <h2 className="text-2xl font-bold mb-6">The Pattern You're Stuck In</h2>
+                <div className="space-y-4 mb-6">
+                  {[
+                    { step: 1, text: "You decide you're going to start" },
+                    {
+                      step: 2,
+                      text: isFearBased
+                        ? `Fear shows up disguised as "${answers[3]?.replace(/"/g, "")}"`
+                        : 'You hit your constraint and tell yourself "I can\'t start yet"',
+                    },
+                    { step: 3, text: 'You tell yourself "I\'ll start once I solve this"' },
+                    { step: 4, text: 'You work on "solving" the obstacle (but it never feels fully solved)' },
+                    { step: 5, text: "Repeat" },
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-start gap-4 p-4 bg-muted/30 rounded-lg">
+                      <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
+                        <span className="font-bold">{item.step}</span>
+                      </div>
+                      <p className="mt-1">{item.text}</p>
+                    </div>
+                  ))}
+                </div>
+                <div className="p-6 bg-accent/10 rounded-lg border-l-4 border-accent">
+                  <p className="font-semibold text-lg">
+                    You've been in this loop for: <span className="text-accent">{answers[2]}</span>
+                  </p>
+                  <p className="mt-2 text-muted-foreground">And you'll stay in it until you see it clearly.</p>
+                </div>
+              </Card>
+
+              <Card className="p-8 md:p-12 mb-12 bg-gradient-to-br from-destructive/5 to-background border-2 border-destructive/20">
+                <h2 className="text-2xl font-bold mb-6">What This Is Costing You</h2>
+                <p className="text-lg mb-6">Every month you stay stuck, you're losing:</p>
+                <div className="grid md:grid-cols-2 gap-4 mb-8">
+                  {[
+                    {
+                      icon: X,
+                      title: "Opportunities",
+                      desc: "Promotions, clients, partnerships, visibility you didn't go for",
+                    },
+                    { icon: X, title: "Momentum", desc: 'Other people are building while you\'re "preparing"' },
+                    { icon: X, title: "Mental energy", desc: "The same internal debate on repeat is exhausting" },
+                    { icon: X, title: "Time", desc: "Another 30 days your future self will never get back" },
+                  ].map((item, i) => (
+                    <div key={i} className="p-4 bg-background rounded-lg border-l-4 border-destructive">
+                      <div className="flex items-center gap-2 mb-2">
+                        <item.icon className="w-5 h-5 text-destructive" />
+                        <p className="font-bold">{item.title}</p>
+                      </div>
+                      <p className="text-sm text-muted-foreground">{item.desc}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="space-y-6 p-6 bg-background rounded-lg">
+                  <p className="font-semibold text-lg">If nothing changes:</p>
+                  <div className="space-y-3">
+                    {[
+                      { time: "3 months from now", desc: "Still stuck. More frustrated. Deeper shame." },
+                      {
+                        time: "6 months from now",
+                        desc: "Still at the same crossroads. Watching others do what you want to do.",
+                      },
+                      { time: "1 year from now", desc: "Looking back at today wishing you'd moved." },
+                      { time: "5 years from now", desc: 'Still wondering "what if?"' },
+                    ].map((item, i) => (
+                      <div key={i} className="flex items-start gap-3">
+                        <span className="font-bold text-destructive shrink-0">{item.time}:</span>
+                        <span className="text-muted-foreground">{item.desc}</span>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-              <div className="p-6 bg-accent/20 rounded-lg space-y-3">
-                <p className="font-semibold text-lg">Here's the test:</p>
-                <p>If your obstacle disappeared tomorrow... you'd find another reason to wait.</p>
-                <p className="font-bold text-accent text-xl">Because the obstacle isn't the issue. The fear is.</p>
-              </div>
+                </div>
+
+                <div className="mt-8 p-6 bg-gradient-to-r from-secondary/20 to-primary/20 rounded-lg border-2 border-secondary">
+                  <p className="font-semibold text-lg mb-3">Or... 30 days from now:</p>
+                  <p className="text-lg">
+                    You've actually <span className="font-bold text-secondary">DONE</span> the thing. Posted the
+                    content. Launched the business. Had the conversation. <span className="font-bold">Moved.</span>
+                  </p>
+                </div>
+              </Card>
+
+              <Card className="p-8 md:p-12 mb-12 bg-gradient-to-br from-secondary/10 to-background border-2 border-secondary">
+                <h2 className="text-2xl font-bold mb-6">The Good News</h2>
+                <p className="text-lg mb-6">Here's what changes everything:</p>
+                <div className="p-6 bg-background rounded-lg border-l-4 border-secondary mb-6">
+                  <p className="text-xl font-semibold">
+                    {isFearBased
+                      ? "Once you SEE that it's fear (not facts), you can choose differently."
+                      : "Once you see the pattern, you can solve the constraint AND build momentum at the same time."}
+                  </p>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <p className="font-semibold mb-3 flex items-center gap-2">
+                      <X className="w-5 h-5 text-destructive" />
+                      You don't need to:
+                    </p>
+                    <div className="space-y-2">
+                      {[
+                        "Wait until you feel ready (that day never comes)",
+                        "Wait until you feel confident (confidence comes AFTER action)",
+                        "Wait for perfect conditions (they don't exist)",
+                      ].map((item, i) => (
+                        <p key={i} className="text-sm text-muted-foreground pl-7">
+                          {item}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <p className="font-semibold mb-3 flex items-center gap-2">
+                      <CheckCircle2 className="w-5 h-5 text-secondary" />
+                      You just need to:
+                    </p>
+                    <div className="space-y-2">
+                      {["Move anyway.", "While scared.", "Imperfectly."].map((item, i) => (
+                        <p key={i} className="text-sm font-medium pl-7">
+                          {item}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-6 p-6 bg-secondary/20 rounded-lg text-center">
+                  <p className="text-xl font-bold">And that's exactly what I help you do.</p>
+                </div>
+              </Card>
             </div>
           ) : (
             <div className="space-y-6">
-              <p className="text-lg">
-                You have a <span className="font-bold">REAL</span> constraint.
-              </p>
-              <p className="text-lg">And it IS real. But here's what's also true:</p>
-              <div className="p-6 bg-primary/10 rounded-lg border-l-4 border-primary">
-                <p className="font-semibold text-lg mb-3">
-                  You've been using it as a reason to do NOTHING while you wait.
+              <div className="p-6 bg-background rounded-lg border-l-4 border-primary">
+                <h3 className="text-xl font-bold mb-3 text-primary">Here's what that means:</h3>
+                <p className="text-lg mb-4">
+                  You have a <strong>REAL constraint</strong>. It IS real.
                 </p>
+                <p className="text-muted-foreground mb-4">
+                  Your constraint: <em>"{answers[3]}"</em>
+                </p>
+                <p className="font-semibold mb-2">But here's the problem:</p>
                 <p>
-                  Instead of solving the constraint AND building momentum, you're "stuck waiting" for conditions to be
-                  perfect.
+                  You've been using it as a reason to do <strong>NOTHING</strong> while you wait. Instead of solving the
+                  constraint AND building momentum, you're "stuck waiting" for conditions to be perfect.
                 </p>
               </div>
+
+              <Card className="p-8 md:p-12 mb-12 bg-card border-2">
+                <h2 className="text-2xl font-bold mb-6">The Pattern You're Stuck In</h2>
+                <div className="space-y-4 mb-6">
+                  {[
+                    { step: 1, text: "You decide you're going to start" },
+                    {
+                      step: 2,
+                      text: isFearBased
+                        ? `Fear shows up disguised as "${answers[3]?.replace(/"/g, "")}"`
+                        : 'You hit your constraint and tell yourself "I can\'t start yet"',
+                    },
+                    { step: 3, text: 'You tell yourself "I\'ll start once I solve this"' },
+                    { step: 4, text: 'You work on "solving" the obstacle (but it never feels fully solved)' },
+                    { step: 5, text: "Repeat" },
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-start gap-4 p-4 bg-muted/30 rounded-lg">
+                      <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
+                        <span className="font-bold">{item.step}</span>
+                      </div>
+                      <p className="mt-1">{item.text}</p>
+                    </div>
+                  ))}
+                </div>
+                <div className="p-6 bg-primary/10 rounded-lg border-l-4 border-primary">
+                  <p className="font-semibold text-lg">
+                    You've been in this loop for: <span className="text-primary">{answers[2]}</span>
+                  </p>
+                  <p className="mt-2 text-muted-foreground">And you'll stay in it until you see it clearly.</p>
+                </div>
+              </Card>
+
+              <Card className="p-8 md:p-12 mb-12 bg-gradient-to-br from-destructive/5 to-background border-2 border-destructive/20">
+                <h2 className="text-2xl font-bold mb-6">What This Is Costing You</h2>
+                <p className="text-lg mb-6">Every month you stay stuck, you're losing:</p>
+                <div className="grid md:grid-cols-2 gap-4 mb-8">
+                  {[
+                    {
+                      icon: X,
+                      title: "Opportunities",
+                      desc: "Promotions, clients, partnerships, visibility you didn't go for",
+                    },
+                    { icon: X, title: "Momentum", desc: 'Other people are building while you\'re "preparing"' },
+                    { icon: X, title: "Mental energy", desc: "The same internal debate on repeat is exhausting" },
+                    { icon: X, title: "Time", desc: "Another 30 days your future self will never get back" },
+                  ].map((item, i) => (
+                    <div key={i} className="p-4 bg-background rounded-lg border-l-4 border-destructive">
+                      <div className="flex items-center gap-2 mb-2">
+                        <item.icon className="w-5 h-5 text-destructive" />
+                        <p className="font-bold">{item.title}</p>
+                      </div>
+                      <p className="text-sm text-muted-foreground">{item.desc}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="space-y-6 p-6 bg-background rounded-lg">
+                  <p className="font-semibold text-lg">If nothing changes:</p>
+                  <div className="space-y-3">
+                    {[
+                      { time: "3 months from now", desc: "Still stuck. More frustrated. Deeper shame." },
+                      {
+                        time: "6 months from now",
+                        desc: "Still at the same crossroads. Watching others do what you want to do.",
+                      },
+                      { time: "1 year from now", desc: "Looking back at today wishing you'd moved." },
+                      { time: "5 years from now", desc: 'Still wondering "what if?"' },
+                    ].map((item, i) => (
+                      <div key={i} className="flex items-start gap-3">
+                        <span className="font-bold text-destructive shrink-0">{item.time}:</span>
+                        <span className="text-muted-foreground">{item.desc}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="mt-8 p-6 bg-gradient-to-r from-secondary/20 to-primary/20 rounded-lg border-2 border-secondary">
+                  <p className="font-semibold text-lg mb-3">Or... 30 days from now:</p>
+                  <p className="text-lg">
+                    You've actually <span className="font-bold text-secondary">DONE</span> the thing. Posted the
+                    content. Launched the business. Had the conversation. <span className="font-bold">Moved.</span>
+                  </p>
+                </div>
+              </Card>
+
+              <Card className="p-8 md:p-12 mb-12 bg-gradient-to-br from-secondary/10 to-background border-2 border-secondary">
+                <h2 className="text-2xl font-bold mb-6">The Good News</h2>
+                <p className="text-lg mb-6">Here's what changes everything:</p>
+                <div className="p-6 bg-background rounded-lg border-l-4 border-secondary mb-6">
+                  <p className="text-xl font-semibold">
+                    {isFearBased
+                      ? "Once you SEE that it's fear (not facts), you can choose differently."
+                      : "Once you see the pattern, you can solve the constraint AND build momentum at the same time."}
+                  </p>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <p className="font-semibold mb-3 flex items-center gap-2">
+                      <X className="w-5 h-5 text-destructive" />
+                      You don't need to:
+                    </p>
+                    <div className="space-y-2">
+                      {[
+                        "Wait until you feel ready (that day never comes)",
+                        "Wait until you feel confident (confidence comes AFTER action)",
+                        "Wait for perfect conditions (they don't exist)",
+                      ].map((item, i) => (
+                        <p key={i} className="text-sm text-muted-foreground pl-7">
+                          {item}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <p className="font-semibold mb-3 flex items-center gap-2">
+                      <CheckCircle2 className="w-5 h-5 text-secondary" />
+                      You just need to:
+                    </p>
+                    <div className="space-y-2">
+                      {["Move anyway.", "While scared.", "Imperfectly."].map((item, i) => (
+                        <p key={i} className="text-sm font-medium pl-7">
+                          {item}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-6 p-6 bg-secondary/20 rounded-lg text-center">
+                  <p className="text-xl font-bold">And that's exactly what I help you do.</p>
+                </div>
+              </Card>
             </div>
           )}
         </Card>
 
-        {/* The Pattern */}
-        <Card className="p-8 md:p-12 mb-12 bg-card border-2">
-          <h2 className="text-2xl font-bold mb-6">The Pattern You're Stuck In</h2>
-          <div className="space-y-4 mb-6">
-            {[
-              { step: 1, text: "You decide you're going to start" },
-              {
-                step: 2,
-                text: isFearBased
-                  ? `Fear shows up disguised as "${answers[3]?.replace(/"/g, "")}"`
-                  : 'You hit your constraint and tell yourself "I can\'t start yet"',
-              },
-              { step: 3, text: 'You tell yourself "I\'ll start once I solve this"' },
-              { step: 4, text: 'You work on "solving" the obstacle (but it never feels fully solved)' },
-              { step: 5, text: "Repeat" },
-            ].map((item, i) => (
-              <div key={i} className="flex items-start gap-4 p-4 bg-muted/30 rounded-lg">
-                <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
-                  <span className="font-bold">{item.step}</span>
-                </div>
-                <p className="mt-1">{item.text}</p>
-              </div>
-            ))}
-          </div>
-          <div className="p-6 bg-accent/10 rounded-lg border-l-4 border-accent">
-            <p className="font-semibold text-lg">
-              You've been in this loop for: <span className="text-accent">{answers[2]}</span>
-            </p>
-            <p className="mt-2 text-muted-foreground">And you'll stay in it until you see it clearly.</p>
-          </div>
-        </Card>
-
-        {/* What This Is Costing You */}
-        <Card className="p-8 md:p-12 mb-12 bg-gradient-to-br from-destructive/5 to-background border-2 border-destructive/20">
-          <h2 className="text-2xl font-bold mb-6">What This Is Costing You</h2>
-          <p className="text-lg mb-6">Every month you stay stuck, you're losing:</p>
-          <div className="grid md:grid-cols-2 gap-4 mb-8">
-            {[
-              {
-                icon: X,
-                title: "Opportunities",
-                desc: "Promotions, clients, partnerships, visibility you didn't go for",
-              },
-              { icon: X, title: "Momentum", desc: 'Other people are building while you\'re "preparing"' },
-              { icon: X, title: "Mental energy", desc: "The same internal debate on repeat is exhausting" },
-              { icon: X, title: "Time", desc: "Another 30 days your future self will never get back" },
-            ].map((item, i) => (
-              <div key={i} className="p-4 bg-background rounded-lg border-l-4 border-destructive">
-                <div className="flex items-center gap-2 mb-2">
-                  <item.icon className="w-5 h-5 text-destructive" />
-                  <p className="font-bold">{item.title}</p>
-                </div>
-                <p className="text-sm text-muted-foreground">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="space-y-6 p-6 bg-background rounded-lg">
-            <p className="font-semibold text-lg">If nothing changes:</p>
-            <div className="space-y-3">
-              {[
-                { time: "3 months from now", desc: "Still stuck. More frustrated. Deeper shame." },
-                {
-                  time: "6 months from now",
-                  desc: "Still at the same crossroads. Watching others do what you want to do.",
-                },
-                { time: "1 year from now", desc: "Looking back at today wishing you'd moved." },
-                { time: "5 years from now", desc: 'Still wondering "what if?"' },
-              ].map((item, i) => (
-                <div key={i} className="flex items-start gap-3">
-                  <span className="font-bold text-destructive shrink-0">{item.time}:</span>
-                  <span className="text-muted-foreground">{item.desc}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="mt-8 p-6 bg-gradient-to-r from-secondary/20 to-primary/20 rounded-lg border-2 border-secondary">
-            <p className="font-semibold text-lg mb-3">Or... 30 days from now:</p>
-            <p className="text-lg">
-              You've actually <span className="font-bold text-secondary">DONE</span> the thing. Posted the content.
-              Launched the business. Stepped into the role. Had the conversation.{" "}
-              <span className="font-bold">Moved.</span>
-            </p>
-          </div>
-        </Card>
-
-        {/* The Good News */}
-        <Card className="p-8 md:p-12 mb-12 bg-gradient-to-br from-secondary/10 to-background border-2 border-secondary">
-          <h2 className="text-2xl font-bold mb-6">The Good News</h2>
-          <p className="text-lg mb-6">Here's what changes everything:</p>
-          <div className="p-6 bg-background rounded-lg border-l-4 border-secondary mb-6">
-            <p className="text-xl font-semibold">
+        {/* The Solution */}
+        <Card id="offer" className="p-12 bg-gradient-to-br from-secondary/10 to-primary/10 border-2 border-primary">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">The 4-Week Unstuck Intensive</h2>
+            <p className="text-xl text-muted-foreground">
               {isFearBased
-                ? "Once you SEE that it's fear (not facts), you can choose differently."
-                : "Once you see the pattern, you can solve the constraint AND build momentum at the same time."}
+                ? "We expose the fear, dismantle it, and get you moving by Week 4."
+                : "We solve the constraint AND build momentum (no more 'stuck waiting')."}
             </p>
-          </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            <div>
-              <p className="font-semibold mb-3 flex items-center gap-2">
-                <X className="w-5 h-5 text-destructive" />
-                You don't need to:
+            <div className="mt-6 p-4 bg-accent/10 rounded-lg border-l-4 border-accent">
+              <p className="font-semibold text-accent">
+                Start before the year ends. Break through before the calendar resets.
               </p>
-              <div className="space-y-2">
-                {[
-                  "Wait until you feel ready (that day never comes)",
-                  "Wait until you feel confident (confidence comes AFTER action)",
-                  "Wait for perfect conditions (they don't exist)",
-                ].map((item, i) => (
-                  <p key={i} className="text-sm text-muted-foreground pl-7">
-                    {item}
-                  </p>
-                ))}
-              </div>
-            </div>
-            <div>
-              <p className="font-semibold mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-secondary" />
-                You just need to:
+              <p className="text-sm text-muted-foreground mt-2">
+                Limited spots available. First session within 3-7 days of enrollment.
               </p>
-              <div className="space-y-2">
-                {["Move anyway.", "While scared.", "Imperfectly."].map((item, i) => (
-                  <p key={i} className="text-sm font-medium pl-7">
-                    {item}
-                  </p>
-                ))}
-              </div>
             </div>
           </div>
 
-          <div className="mt-6 p-6 bg-secondary/20 rounded-lg text-center">
-            <p className="text-xl font-bold">And that's exactly what we help you do.</p>
-          </div>
-        </Card>
-
-        {/* Your Two Options */}
-        <div className="mb-12 space-y-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-center">You're at a decision point right now.</h2>
-
-          <div className="grid md:grid-cols-2 gap-6">
-            <Card className="p-8 bg-muted/30 border-2 border-muted space-y-4">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center">
-                  <span className="text-2xl font-bold">1</span>
-                </div>
-                <h3 className="text-xl font-bold">Keep doing what you've been doing</h3>
-              </div>
-              <div className="space-y-2 text-muted-foreground">
-                <p>• Close this page.</p>
-                <p>• Tell yourself "I'll think about it."</p>
-                <p>• Go back to the loop.</p>
-                <p>• Stay stuck for another 3 months, 6 months, year.</p>
-                <p>• Keep watching other people do what you want to do.</p>
-              </div>
-            </Card>
-
-            <Card className="p-8 bg-gradient-to-br from-primary/10 to-secondary/10 border-2 border-primary shadow-xl space-y-4">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
-                  <span className="text-2xl font-bold text-primary">2</span>
-                </div>
-                <h3 className="text-xl font-bold text-primary">Break the pattern in the next 4 weeks</h3>
-              </div>
-              <p className="font-semibold text-lg">The 4-Week Unstuck Intensive</p>
-              <div className="space-y-2">
-                <p className="font-medium">In 4 weeks:</p>
-                <div className="space-y-1 text-sm">
-                  <p>
-                    <span className="font-semibold">Week 1:</span> I expose your excuse pattern (you see it clearly for
-                    the first time)
-                  </p>
-                  <p>
-                    <span className="font-semibold">Week 2:</span> We dismantle the fear (you learn to distinguish fear
-                    from facts)
-                  </p>
-                  <p>
-                    <span className="font-semibold">Week 3:</span> We build your movement plan (your smallest viable
-                    first action)
-                  </p>
-                  <p>
-                    <span className="font-semibold">Week 4:</span> You DO the thing (post the content, launch the
-                    business, have the conversation - whatever you've been avoiding)
-                  </p>
-                </div>
-              </div>
-            </Card>
-          </div>
-        </div>
-
-        {/* The 4-Week Intensive */}
-        <Card className="p-8 md:p-12 mb-12 bg-gradient-to-br from-primary/5 to-accent/5 border-2 border-primary">
-          <h2 className="text-3xl font-bold mb-8 text-center">The 4-Week Unstuck Intensive</h2>
-
+          {/* Existing program details will be here, assuming they are part of the original code */}
+          {/* Placeholder for existing program details */}
           <div className="space-y-6 mb-8">
             {[
               {
@@ -1337,46 +1421,44 @@ function ResultsPage({
             <p className="text-lg text-muted-foreground mb-6">
               4 weeks to break free from what's been keeping you stuck
             </p>
-          </div>
 
-          <div className="max-w-2xl mx-auto mb-8 space-y-4">
-            <h3 className="font-semibold text-lg">What you're paying for:</h3>
-            <div className="grid md:grid-cols-2 gap-3">
-              {[
-                "4 weeks of intensive 1:1 support",
-                "4.5-5 hours of live coaching",
-                "20 days of daily access to me (Mon-Fri)",
-                "Custom roadmaps and deliverables",
-                "The solution to what's been keeping you stuck",
-                "Proof you did it by Week 4",
-              ].map((item, i) => (
-                <div key={i} className="flex items-start gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-secondary shrink-0 mt-0.5" />
-                  <span className="text-sm">{item}</span>
-                </div>
-              ))}
+            <div className="mt-4 inline-block px-4 py-2 bg-accent/20 rounded-full">
+              <p className="text-sm font-semibold text-accent">⏰ Only 5 spots. Close before New Year's.</p>
             </div>
           </div>
 
-          <div className="max-w-xl mx-auto space-y-4">
+          <div className="space-y-4">
             <Button
               onClick={() => (window.location.href = "https://buy.stripe.com/bJecN6bYCbvj8aP8DFdAk09")}
               size="lg"
-              className="w-full py-6 text-xl font-bold bg-primary hover:bg-primary/90 rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
+              className="w-full py-8 text-2xl font-bold bg-accent hover:bg-accent/90 text-white rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
             >
-              Pay in Full - $2,997
+              Pay in Full - $2,997 <ArrowRight className="w-6 h-6 ml-2" />
             </Button>
+            <p className="text-center text-sm text-muted-foreground">Secure your spot. Start immediately.</p>
+          </div>
 
+          <div className="relative py-4">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-border"></div>
+            </div>
+            <div className="relative flex justify-center">
+              <span className="bg-card px-4 text-sm text-muted-foreground">or</span>
+            </div>
+          </div>
+
+          <div className="space-y-4">
             <Button
               onClick={() => (window.location.href = "https://buy.stripe.com/9B6eVe7Im56V9eT3jldAk0a")}
               variant="outline"
               size="lg"
               className="w-full py-6 text-xl font-bold border-2 border-primary text-primary hover:bg-primary/10 rounded-full"
             >
-              Payment Plan - $1,500 Today
+              Payment Plan - $1,500 × 2 <CreditCard className="w-6 h-6 ml-2" />
             </Button>
-
-            <p className="text-center text-sm text-muted-foreground">Payment plan: $1,500 today + $1,500 in 2 weeks</p>
+            <p className="text-center text-sm text-muted-foreground">
+              $1,500 today + $1,500 in 2 weeks. Same program, flexible payment.
+            </p>
           </div>
 
           <div className="mt-8 p-6 bg-background rounded-lg border-2 border-secondary/30">
@@ -1386,7 +1468,7 @@ function ResultsPage({
                 • If you've been stuck for {answers[2]}, how much has staying hidden cost you in lost opportunities?
               </p>
               <p>• How much mental energy have you wasted on the same internal debate?</p>
-              <p>• What's it worth to FINALLY break through?</p>
+              <p>• What's it worth to FINALLY break through before another year passes?</p>
             </div>
             <p className="mt-4 text-center font-semibold text-lg">You decide.</p>
           </div>
@@ -1426,35 +1508,19 @@ function ResultsPage({
           </div>
         </Card>
 
-        {/* Final CTA */}
-        <Card className="p-8 md:p-12 text-center bg-gradient-to-br from-accent/10 to-primary/10 border-2 border-accent shadow-2xl">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">This is your moment.</h2>
-          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            You took the assessment. You faced the truth. You saw the pattern clearly. Now you get to choose: stay
-            stuck, or break free.
+        <div className="mt-12 text-center space-y-4">
+          <p className="text-xl font-bold">Don't carry this into another year.</p>
+          <p className="text-lg text-muted-foreground">
+            4 weeks from now, you'll look back at this moment as the day everything changed.
           </p>
-          <div className="max-w-xl mx-auto space-y-4">
-            <Button
-              onClick={() => (window.location.href = "https://buy.stripe.com/bJecN6bYCbvj8aP8DFdAk09")}
-              size="lg"
-              className="w-full py-6 text-xl font-bold bg-accent hover:bg-accent/90 text-white rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-105"
-            >
-              I'm Ready - Let's Do This <ArrowRight className="w-6 h-6 ml-2" />
-            </Button>
-            <p className="text-sm text-muted-foreground">
-              4 weeks from now, you'll look back at this moment as the day everything changed.
-            </p>
-          </div>
-        </Card>
+          <p className="text-accent font-semibold">
+            Before the calendar resets. Before "next year" becomes another empty promise.
+          </p>
+        </div>
 
         {/* Contact */}
         <div className="text-center text-muted-foreground text-sm mt-12">
-          <p>
-            Questions? Email{" "}
-            <a href="mailto:idealclaritysolutions@gmail.com" className="underline hover:text-primary">
-              idealclaritysolutions@gmail.com
-            </a>
-          </p>
+          <p>Questions? Email idealclaritysolutions@gmail.com or call/text for immediate answers.</p>
         </div>
       </div>
     </div>
