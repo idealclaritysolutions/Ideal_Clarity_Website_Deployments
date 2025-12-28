@@ -1251,7 +1251,7 @@ function ResultsPage({
                 Start before the year ends. Break through before the calendar resets.
               </p>
               <p className="text-sm text-muted-foreground mt-2">
-                Limited spots available. First session within 3-7 days of enrollment.
+                Only 5 spots available. First session within 3-7 days of enrollment.
               </p>
             </div>
           </div>
