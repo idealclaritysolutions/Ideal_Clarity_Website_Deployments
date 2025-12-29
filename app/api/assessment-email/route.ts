@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
     console.log("[v0] MailerLite API key found")
 
     // Determine group based on assessment result
-    const groupId = isFearBased ? "123456789" : "987654321"
+    const groupId = isFearBased ? "175087415702062888" : "175087438358643867"
     const groupName = isFearBased ? "Fear-Based Assessment" : "Constraint-Based Assessment"
 
     console.log("[v0] Adding subscriber to group:", groupName, `(${groupId})`)
