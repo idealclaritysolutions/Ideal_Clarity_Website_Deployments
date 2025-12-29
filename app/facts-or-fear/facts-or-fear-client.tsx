@@ -20,7 +20,6 @@ import {
   ArrowRight,
   AlertCircle,
 } from "lucide-react"
-import { sendAssessmentResultEmail } from "@/app/actions/assessment-emails"
 
 type Question = {
   id: number
@@ -197,12 +196,23 @@ export function FactsOrFearClient() {
     e.preventDefault()
     if (email) {
       setEmailSending(true)
-      // Send assessment result email
       try {
-        const result = await sendAssessmentResultEmail(email, isFearBased(), answers)
-        console.log("[v0] Email send result:", result)
-        if (!result.success) {
-          console.error("[v0] Failed to send email:", result.error)
+        const result = await fetch("/api/assessment-email", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+            isFearBased: isFearBased(),
+            answers: answers,
+          }),
+        })
+
+        const data = await result.json()
+        console.log("[v0] Email API response:", data)
+        if (!data.success) {
+          console.error("[v0] Failed to send email:", data.error)
         }
       } catch (error) {
         console.error("[v0] Error in email submission:", error)
