@@ -12,7 +12,7 @@ export async function GET(request: Request) {
     const totalResult = await sql`
       SELECT COUNT(*) as total
       FROM assessment_completions
-      WHERE completed_at >= NOW() - INTERVAL '${days} days'
+      WHERE completed_at >= NOW() - INTERVAL '1 day' * ${days}
     `
 
     // Get results breakdown
@@ -22,7 +22,7 @@ export async function GET(request: Request) {
         COUNT(*) as count,
         ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER(), 1) as percentage
       FROM assessment_completions
-      WHERE completed_at >= NOW() - INTERVAL '${days} days'
+      WHERE completed_at >= NOW() - INTERVAL '1 day' * ${days}
       GROUP BY result_type
       ORDER BY count DESC
     `
@@ -37,7 +37,7 @@ export async function GET(request: Request) {
         COUNT(CASE WHEN result_type = 'mixed' THEN 1 END) as mixed,
         COUNT(CASE WHEN result_type = 'unclear' THEN 1 END) as unclear
       FROM assessment_completions
-      WHERE completed_at >= NOW() - INTERVAL '${days} days'
+      WHERE completed_at >= NOW() - INTERVAL '1 day' * ${days}
       GROUP BY DATE(completed_at)
       ORDER BY date ASC
     `
@@ -45,12 +45,12 @@ export async function GET(request: Request) {
     // Get average completion time
     const avgTimeResult = await sql`
       SELECT 
-        AVG(time_to_complete) as avg_seconds,
-        MIN(time_to_complete) as min_seconds,
-        MAX(time_to_complete) as max_seconds
+        AVG(completion_time_seconds) as avg_seconds,
+        MIN(completion_time_seconds) as min_seconds,
+        MAX(completion_time_seconds) as max_seconds
       FROM assessment_completions
-      WHERE completed_at >= NOW() - INTERVAL '${days} days'
-        AND time_to_complete IS NOT NULL
+      WHERE completed_at >= NOW() - INTERVAL '1 day' * ${days}
+        AND completion_time_seconds IS NOT NULL
     `
 
     // Get device breakdown
@@ -59,7 +59,7 @@ export async function GET(request: Request) {
         device_type,
         COUNT(*) as count
       FROM assessment_completions
-      WHERE completed_at >= NOW() - INTERVAL '${days} days'
+      WHERE completed_at >= NOW() - INTERVAL '1 day' * ${days}
         AND device_type IS NOT NULL
       GROUP BY device_type
       ORDER BY count DESC
@@ -71,8 +71,8 @@ export async function GET(request: Request) {
         id,
         completed_at,
         result_type,
-        user_name,
-        time_to_complete,
+        name,
+        completion_time_seconds,
         device_type
       FROM assessment_completions
       ORDER BY completed_at DESC
@@ -91,7 +91,13 @@ export async function GET(request: Request) {
       },
     })
   } catch (error) {
-    console.error("Error fetching analytics:", error)
-    return NextResponse.json({ success: false, error: "Failed to fetch analytics" }, { status: 500 })
+    console.error("[v0] Error fetching analytics:", error)
+    return NextResponse.json(
+      {
+        success: false,
+        error: error instanceof Error ? error.message : "Failed to fetch analytics",
+      },
+      { status: 500 },
+    )
   }
 }

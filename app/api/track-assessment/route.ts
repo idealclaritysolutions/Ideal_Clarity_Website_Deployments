@@ -5,23 +5,21 @@ const sql = neon(process.env.DATABASE_URL!)
 
 export async function POST(request: Request) {
   try {
-    const { resultType, userName, userEmail, answers, timeToComplete, deviceType, referrer } = await request.json()
+    const { resultType, name, answers, completionTime, deviceType, referrer } = await request.json()
 
     const result = await sql`
       INSERT INTO assessment_completions (
         result_type,
-        user_name,
-        user_email,
+        name,
         answers,
-        time_to_complete,
+        completion_time_seconds,
         device_type,
         referrer
       ) VALUES (
         ${resultType},
-        ${userName || null},
-        ${userEmail || null},
+        ${name || null},
         ${JSON.stringify(answers)},
-        ${timeToComplete || null},
+        ${completionTime || null},
         ${deviceType || null},
         ${referrer || null}
       )
@@ -33,7 +31,13 @@ export async function POST(request: Request) {
       data: result[0],
     })
   } catch (error) {
-    console.error("Error tracking assessment:", error)
-    return NextResponse.json({ success: false, error: "Failed to track assessment" }, { status: 500 })
+    console.error("[v0] Error tracking assessment:", error)
+    return NextResponse.json(
+      {
+        success: false,
+        error: error instanceof Error ? error.message : "Failed to track assessment",
+      },
+      { status: 500 },
+    )
   }
 }
