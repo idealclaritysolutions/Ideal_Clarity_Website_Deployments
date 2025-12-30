@@ -458,17 +458,39 @@ function LandingPage({ onStart }: { onStart: () => void }) {
           </h1>
 
           <div className="max-w-3xl mx-auto space-y-6">
-            <p className="text-xl md:text-2xl text-foreground text-balance">
-              Take the 2-minute assessment and find out what's REALLY stopping you from living the life you want - starting the business, posting content on social media, going after a better role, seeking out leadership opportunities, etc.
-            </p>
-            <p className="text-lg text-muted-foreground text-balance">
-              You've been telling yourself you're "not ready yet." That you need more time. More experience. More
-              clarity.
-            </p>
-            <p className="text-lg text-muted-foreground text-balance">But what if those aren't real obstacles?</p>
-            <p className="text-lg font-semibold text-accent">What if they're just fear... dressed up as logic?</p>
-            <p className="text-lg text-foreground font-medium">This assessment will show you the truth.</p>
+            <div className="space-y-4">
+              <p className="text-xl md:text-2xl text-foreground text-balance font-semibold">
+                Take the 2-minute assessment and find out what's REALLY stopping you from:
+              </p>
+              <ul className="text-lg text-foreground space-y-2 text-left max-w-2xl mx-auto">
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1">•</span>
+                  <span>Starting that business</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1">•</span>
+                  <span>Posting content and building visibility</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1">•</span>
+                  <span>Going after the role or promotion you want</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1">•</span>
+                  <span>Stepping into leadership</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="space-y-4 pt-4">
+              <p className="text-lg text-muted-foreground text-balance">
+                You've been telling yourself you're "not ready yet." That you need more time, experience, or clarity.
+              </p>
+              <p className="text-lg text-muted-foreground text-balance">But what if those aren't real obstacles?</p>
+              <p className="text-lg font-semibold text-accent">What if they're just fear dressed up as logic?</p>
+            </div>
           </div>
+          {/* </CHANGE> */}
 
           <div className="py-6">
             <Button onClick={onStart} size="lg" className="text-xl px-12 py-8 h-auto font-bold shadow-lg">
@@ -1630,7 +1652,7 @@ function FearBasedResultsPage({
             </a>
           </div>
         </Card>
-        <Card className="p-8 md:p-10 mb-12 bg-gradient-to-br from-destructive/5 to-background border-2 border-destructive/20">
+        <Card className="p-8 md:p-10 mb-8 bg-gradient-to-br from-destructive/5 to-background border-2 border-destructive/20">
           <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">Here's why you need to decide soon:</h2>
 
           <div className="space-y-6 max-w-2xl mx-auto">
@@ -1800,7 +1822,7 @@ function ConstraintBasedResultsPage({
 
         {/* Section 4: The Good News */}
         <div className="bg-gradient-to-r from-green-50 to-blue-50 border-2 border-green-200 rounded-lg p-8 mb-16">
-          <h2 className="text-3xl font-bold text-foreground mb-4">Here's what changes everything:</h2>
+          <h2 className="text-3xl font-bold text-foreground mb-6">Here's what changes everything:</h2>
           <p className="text-2xl font-bold text-foreground mb-6">
             You can solve the constraint AND build momentum at the same time.
           </p>
@@ -2325,7 +2347,7 @@ function MixedStuckResultsPage({
         </div>
 
         {/* Final CTA */}
-        <div className="text-center space-y-6 bg-gradient-to-r from-primary/10 to-accent/10 rounded-lg p-12">
+        <div className="text-center bg-gradient-to-r from-primary/10 to-accent/10 rounded-lg p-12">
           <a
             href="https://calendly.com/idealclaritysolutions/30min?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGnfqyAlAkP6ZG5gpzpFLwKP3eDvA3MWaRZx_0UP9105gVdlU8KBjmPNAqC7P8_aem_CBjoNu5mIUQN-Q7kij4JYQ&month=2025-12"
             target="_blank"
@@ -2510,7 +2532,6 @@ function UnclearResultsPage({
     </div>
   )
 }
-
 // Export FactsOrFearClient and default export
 export { FactsOrFearClient }
 export default FactsOrFearClient
