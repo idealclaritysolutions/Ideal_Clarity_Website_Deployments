@@ -484,7 +484,7 @@ function LandingPage({ onStart }: { onStart: () => void }) {
 
             <div className="space-y-4 pt-4">
               <p className="text-lg text-muted-foreground text-balance">
-                You've been telling yourself you're "not ready yet." That you need more time, experience, or clarity.
+                Have you been telling yourself you're "not ready yet?" That you need more time, experience, or clarity?
               </p>
               <p className="text-lg text-muted-foreground text-balance">But what if those aren't real obstacles?</p>
               <p className="text-lg font-semibold text-accent">What if they're just fear dressed up as logic?</p>
