@@ -489,9 +489,7 @@ function LandingPage({ onStart }: { onStart: () => void }) {
               <p className="text-lg text-muted-foreground text-balance">But what if those aren't real obstacles?</p>
               <p className="text-lg font-semibold text-accent">What if they're just fear dressed up as logic?</p>
             </div>
-            {/* </CHANGE> */}
           </div>
-          {/* </CHANGE> */}
 
           <div className="py-4">
             <Button onClick={onStart} size="lg" className="text-xl px-12 py-8 h-auto font-bold shadow-lg">
@@ -499,27 +497,26 @@ function LandingPage({ onStart }: { onStart: () => void }) {
             </Button>
             <p className="text-sm text-muted-foreground mt-3">2 minutes. Completely private. Brutally honest.</p>
           </div>
-          {/* </CHANGE> */}
 
           <div className="max-w-5xl mx-auto my-12">
             <div className="grid md:grid-cols-2 gap-8 items-stretch">
               {/* Left side - Excuses/Surface Reasons */}
-              <Card className="p-8 bg-muted/30 border-2 relative overflow-hidden">
+              <Card className="p-8 bg-muted/50 border-2 relative overflow-hidden">
                 <img
                   src="/person-thinking-with-question-marks-floating-aroun.jpg"
                   alt="Person thinking with doubts"
-                  className="absolute top-0 left-0 w-full h-32 object-cover opacity-20"
+                  className="absolute top-0 left-0 w-full h-32 object-cover opacity-40"
                 />
                 <div className="relative z-10 space-y-4 mt-24">
                   <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mx-auto mb-4">
-                    <Brain className="w-8 h-8 text-muted-foreground" />
+                    <Brain className="w-8 h-8 text-foreground" />
                   </div>
                   <h3 className="text-xl font-bold text-center mb-6">What You Tell Yourself</h3>
                   {["I need more experience first", "I'm not ready yet", "I don't have the time right now"].map(
                     (thought, i) => (
-                      <div key={i} className="flex items-start gap-3 p-3 bg-background rounded-lg">
-                        <div className="w-2 h-2 rounded-full bg-muted-foreground mt-2 shrink-0" />
-                        <span className="text-sm italic text-muted-foreground">{thought}</span>
+                      <div key={i} className="flex items-start gap-3 p-3 bg-background/90 rounded-lg shadow-sm">
+                        <div className="w-2 h-2 rounded-full bg-foreground/60 mt-2 shrink-0" />
+                        <span className="text-sm font-medium text-foreground/80">{thought}</span>
                       </div>
                     ),
                   )}
@@ -531,7 +528,7 @@ function LandingPage({ onStart }: { onStart: () => void }) {
                 <img
                   src="/lightbulb-moment-clarity-breakthrough-understandin.jpg"
                   alt="Moment of clarity"
-                  className="absolute top-0 left-0 w-full h-32 object-cover opacity-20"
+                  className="absolute top-0 left-0 w-full h-32 object-cover opacity-40"
                 />
                 <div className="relative z-10 space-y-4 mt-24">
                   <div className="w-16 h-16 rounded-full bg-accent/20 flex items-center justify-center mx-auto mb-4">
@@ -542,7 +539,7 @@ function LandingPage({ onStart }: { onStart: () => void }) {
                     (truth, i) => (
                       <div
                         key={i}
-                        className="flex items-start gap-3 p-3 bg-background rounded-lg border-l-4 border-accent"
+                        className="flex items-start gap-3 p-3 bg-background/90 rounded-lg border-l-4 border-accent shadow-sm"
                       >
                         <div className="w-2 h-2 rounded-full bg-accent mt-2 shrink-0" />
                         <span className="text-sm font-semibold text-accent">{truth}</span>
@@ -2129,7 +2126,7 @@ function MixedStuckResultsPage({
             <p className="text-lg">
               You have a <strong>REAL constraint:</strong> {constraint}
             </p>
-            <p>This is legitimate. It's not just fear. It's not an excuse.</p>
+            <p>This is legitimate. It's not just fear. It's not an excuse. It's a legitimate obstacle.</p>
             <p className="font-bold">
               But there's something else going on too: Even if your constraint was solved tomorrow, you'd still
               hesitate. Because fear is ALSO present.
@@ -2200,7 +2197,7 @@ function MixedStuckResultsPage({
                 Step 2: Map the constraint solution (Weeks 3-4)
               </h3>
               <ul className="list-disc pl-6 space-y-1 text-foreground/90">
-                <li>Build the timeline to solve it</li>
+                <li>Build the timeline to solve the constraint</li>
                 <li>Identify what you can do NOW</li>
                 <li>Create momentum while solving</li>
               </ul>
