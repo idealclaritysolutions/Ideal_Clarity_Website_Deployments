@@ -363,7 +363,7 @@ function FactsOrFearClient() {
         <section className="container mx-auto px-4 py-12 md:py-20">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-4 text-balance">Are Your Reasons FACTS... or FEAR?</h1>
-            <p className="text-xl md:text-2xl text-muted-foreground mb-2">
+            <p className="text-xl md:text-2xl text-muted-foreground mb-2 font-bold">
               Take the 2-minute assessment and find out what's REALLY stopping you from:
             </p>
             <ul className="text-lg md:text-xl text-muted-foreground mb-2 space-y-1 max-w-2xl mx-auto text-left list-disc list-inside">
@@ -378,7 +378,7 @@ function FactsOrFearClient() {
                 You've been telling yourself you're "not ready yet." That you need more time, experience, or clarity.
               </p>
               <p className="text-muted-foreground">But what if those aren't real obstacles?</p>
-              <p className="text-muted-foreground font-medium">What if they're just fear dressed up as logic?</p>
+              <p className="text-muted-foreground font-bold">What if they're just fear dressed up as logic?</p>
             </div>
 
             <div className="py-4">
@@ -614,7 +614,7 @@ function FactsOrFearClient() {
                 <p className="text-muted-foreground italic mb-4">
                   "I sat with some questions for a few minutes before answering. The results were spot-on."
                 </p>
-                <p className="font-semibold">- Jennifer K.</p>
+                <p className="font-semibold">- Olufunmi S.</p>
               </div>
             </div>
           </div>
