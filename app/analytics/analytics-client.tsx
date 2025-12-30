@@ -44,13 +44,20 @@ interface AnalyticsData {
     device_type: string
     count: number
   }>
+  referrerBreakdown: Array<{
+    referrer: string
+    count: number
+    percentage: number
+  }>
   recentCompletions: Array<{
     id: number
     completed_at: string
     result_type: string
-    user_name: string
-    time_to_complete: number
+    name: string
+    email: string
+    completion_time_seconds: number
     device_type: string
+    referrer: string
   }>
 }
 
@@ -204,6 +211,7 @@ export function AssessmentAnalytics() {
           <TabsTrigger value="trends">Trends</TabsTrigger>
           <TabsTrigger value="breakdown">Result Breakdown</TabsTrigger>
           <TabsTrigger value="devices">Devices</TabsTrigger>
+          <TabsTrigger value="sources">Sources</TabsTrigger>
           <TabsTrigger value="recent">Recent</TabsTrigger>
         </TabsList>
 
@@ -372,6 +380,36 @@ export function AssessmentAnalytics() {
           </Card>
         </TabsContent>
 
+        <TabsContent value="sources" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Traffic Sources</CardTitle>
+              <CardDescription>Where people are finding the assessment</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ChartContainer
+                config={{
+                  count: {
+                    label: "Count",
+                    color: "hsl(var(--chart-1))",
+                  },
+                }}
+                className="h-[300px]"
+              >
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={data.referrerBreakdown}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="referrer" angle={-45} textAnchor="end" height={100} />
+                    <YAxis />
+                    <ChartTooltip content={<ChartTooltipContent />} />
+                    <Bar dataKey="count" fill="hsl(var(--chart-3))" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </ChartContainer>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
         <TabsContent value="recent" className="space-y-4">
           <Card>
             <CardHeader>
@@ -383,11 +421,13 @@ export function AssessmentAnalytics() {
                 {data.recentCompletions.map((completion) => (
                   <div key={completion.id} className="flex items-center justify-between p-3 border rounded-lg">
                     <div>
-                      <div className="font-medium">{completion.user_name || "Anonymous"}</div>
+                      <div className="font-medium">{completion.name || "Anonymous"}</div>
+                      {completion.email && <div className="text-sm text-muted-foreground">{completion.email}</div>}
                       <div className="text-sm text-muted-foreground">
                         {formatResultType(completion.result_type)}
-                        {completion.time_to_complete && ` • ${formatTime(completion.time_to_complete)}`}
+                        {completion.completion_time_seconds && ` • ${formatTime(completion.completion_time_seconds)}`}
                         {completion.device_type && ` • ${completion.device_type}`}
+                        {completion.referrer && ` • from ${completion.referrer}`}
                       </div>
                     </div>
                     <div className="text-sm text-muted-foreground">

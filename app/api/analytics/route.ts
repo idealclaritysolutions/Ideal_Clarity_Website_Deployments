@@ -65,6 +65,19 @@ export async function GET(request: Request) {
       ORDER BY count DESC
     `
 
+    // Get referrer breakdown
+    const referrerBreakdown = await sql`
+      SELECT 
+        referrer,
+        COUNT(*) as count,
+        ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER(), 1) as percentage
+      FROM assessment_completions
+      WHERE completed_at >= NOW() - INTERVAL '1 day' * ${days}
+        AND referrer IS NOT NULL
+      GROUP BY referrer
+      ORDER BY count DESC
+    `
+
     // Get recent completions
     const recentCompletions = await sql`
       SELECT 
@@ -72,8 +85,10 @@ export async function GET(request: Request) {
         completed_at,
         result_type,
         name,
+        email,
         completion_time_seconds,
-        device_type
+        device_type,
+        referrer
       FROM assessment_completions
       ORDER BY completed_at DESC
       LIMIT 20
@@ -87,11 +102,12 @@ export async function GET(request: Request) {
         dailyTrend,
         averageTime: avgTimeResult[0],
         deviceBreakdown,
+        referrerBreakdown,
         recentCompletions,
       },
     })
   } catch (error) {
-    console.error("[v0] Error fetching analytics:", error)
+    console.error("Error fetching analytics:", error)
     return NextResponse.json(
       {
         success: false,
