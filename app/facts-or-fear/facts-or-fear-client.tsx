@@ -462,7 +462,7 @@ function LandingPage({ onStart }: { onStart: () => void }) {
               <p className="text-xl md:text-2xl text-foreground text-balance font-semibold">
                 Take the 2-minute assessment and find out what's REALLY stopping you from:
               </p>
-              <ul className="text-lg text-foreground space-y-2 text-left max-w-2xl mx-auto">
+              <ul className="text-lg text-foreground space-y-1 text-left max-w-2xl mx-auto">
                 <li className="flex items-start gap-3">
                   <span className="text-primary mt-1">•</span>
                   <span>Starting that business</span>
