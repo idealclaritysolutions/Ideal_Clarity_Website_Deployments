@@ -513,7 +513,7 @@ function LandingPage({ onStart }: { onStart: () => void }) {
                     <Brain className="w-8 h-8 text-muted-foreground" />
                   </div>
                   <h3 className="text-xl font-bold text-center mb-6">What You Tell Yourself</h3>
-                  {["I need more experience first", "I'm not ready yet", "What if people judge me?"].map(
+                  {["I need more experience first", "I'm not ready yet", "I don't have the time right now"].map(
                     (thought, i) => (
                       <div key={i} className="flex items-start gap-3 p-3 bg-background rounded-lg">
                         <div className="w-2 h-2 rounded-full bg-muted-foreground mt-2 shrink-0" />
