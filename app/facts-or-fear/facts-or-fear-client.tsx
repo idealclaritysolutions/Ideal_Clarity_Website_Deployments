@@ -26,8 +26,8 @@ function calculateResultType(answers: Record<string, string>): ResultType {
   const q4 = answers["4"] || ""
   const q6 = answers["6"] || ""
   const q7 = answers["7"] || ""
-  const q9a = answers["9a"] || ""
-  const q9b = answers["9b"] || ""
+  const q9a = answers["9A"] || ""
+  const q9b = answers["9B"] || ""
   const q10 = answers["10"] || ""
 
   // Check for constraint indicators
