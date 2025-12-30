@@ -7,19 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card } from "@/components/ui/card"
-import {
-  CheckCircle2,
-  X,
-  Clock,
-  CreditCard,
-  Brain,
-  Lightbulb,
-  Target,
-  Zap,
-  Lock,
-  ArrowRight,
-  AlertCircle,
-} from "lucide-react"
+import { CheckCircle2, X, Clock, CreditCard, Brain, Lightbulb, Lock, ArrowRight, AlertCircle } from "lucide-react"
 
 type Question = {
   id: number
@@ -330,372 +318,252 @@ export function FactsOrFearClient() {
 
 function LandingPage({ onStart }: { onStart: () => void }) {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-primary/5 to-background">
-      <div className="container mx-auto px-6 py-12 md:py-20 max-w-5xl">
-        <div className="mb-8 p-4 bg-accent/10 border-l-4 border-accent rounded-r-lg">
-          <p className="text-center text-accent font-semibold">
-            The year is ending. Will you start the new one stuck in the same place?
-          </p>
-        </div>
-
-        {/* Above the Fold */}
-        <div className="text-center mb-16 space-y-6">
-          <h1 className="text-4xl md:text-6xl font-bold text-balance">
+    <div className="min-h-screen bg-background">
+      {/* Hero Section */}
+      <div className="container mx-auto px-6 py-16 md:py-24 max-w-6xl">
+        <div className="text-center mb-16 space-y-8">
+          <h1 className="text-5xl md:text-7xl font-bold text-balance leading-tight">
             Are Your Reasons <span className="text-primary">FACTS</span>... or <span className="text-accent">FEAR</span>
             ?
           </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto text-balance">
-            Take the 2-minute assessment and find out what's REALLY stopping you from living the life you truly want.
-          </p>
 
-          <p className="text-lg text-accent font-medium">
-            Before the calendar resets. Before another year of "next year."
-          </p>
-
-          <div className="max-w-2xl mx-auto p-8 bg-card border-2 border-primary/20 rounded-2xl">
-            <p className="text-lg mb-4 text-foreground">
-              You've been telling yourself you're <span className="font-semibold">"not ready yet."</span>
+          <div className="max-w-3xl mx-auto space-y-6">
+            <p className="text-xl md:text-2xl text-foreground text-balance">
+              Take the 2-minute assessment and find out what's REALLY stopping you.
             </p>
-            <p className="text-lg mb-4 text-foreground">That you need more time. More experience. More clarity.</p>
-            <p className="text-lg mb-4 text-foreground">But what if those aren't real obstacles?</p>
-            <p className="text-lg font-semibold text-primary">What if they're just fear... dressed up as logic?</p>
-            <p className="text-lg mt-4 text-foreground">This assessment will show you the truth.</p>
+            <p className="text-lg text-muted-foreground text-balance">
+              You've been telling yourself you're "not ready yet." That you need more time. More experience. More
+              clarity.
+            </p>
+            <p className="text-lg text-muted-foreground text-balance">But what if those aren't real obstacles?</p>
+            <p className="text-lg font-semibold text-accent">What if they're just fear... dressed up as logic?</p>
+            <p className="text-lg text-foreground font-medium">This assessment will show you the truth.</p>
           </div>
-        </div>
 
-        {/* Visual Split */}
-        <div className="grid md:grid-cols-2 gap-8 mb-20 max-w-4xl mx-auto">
-          <Card className="p-8 bg-muted/50 border-2 border-muted space-y-4">
-            <h3 className="text-xl font-semibold text-center mb-6">What You Tell Yourself</h3>
-            <div className="space-y-3">
-              {['"I need more experience first"', '"I\'m not ready yet"', '"What if people judge me?"'].map(
-                (thought, i) => (
-                  <div key={i} className="flex items-start gap-2 p-3 bg-background rounded-lg">
-                    <Brain className="w-5 h-5 text-muted-foreground shrink-0 mt-0.5" />
-                    <span className="text-sm italic">{thought}</span>
+          {/* Visual Concept - Split Image */}
+          <div className="max-w-5xl mx-auto my-12">
+            <div className="grid md:grid-cols-2 gap-6 items-center">
+              <Card className="p-8 bg-muted/30 border-2">
+                <div className="space-y-4">
+                  <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mx-auto mb-4">
+                    <Brain className="w-8 h-8 text-muted-foreground" />
                   </div>
-                ),
-              )}
-            </div>
-          </Card>
+                  {["I need more experience first", "I'm not ready yet", "What if people judge me?"].map(
+                    (thought, i) => (
+                      <div key={i} className="flex items-start gap-3 p-3 bg-background rounded-lg">
+                        <div className="w-2 h-2 rounded-full bg-muted-foreground mt-2 shrink-0" />
+                        <span className="text-sm italic text-muted-foreground">{thought}</span>
+                      </div>
+                    ),
+                  )}
+                </div>
+              </Card>
 
-          <Card className="p-8 bg-accent/10 border-2 border-accent space-y-4">
-            <h3 className="text-xl font-semibold text-center mb-6 text-accent">What's Actually True</h3>
-            <div className="space-y-3">
-              {['"I\'m scared of failing"', '"I\'m terrified of being seen"', "\"I'm afraid I'm not good enough\""].map(
-                (truth, i) => (
-                  <div key={i} className="flex items-start gap-2 p-3 bg-background rounded-lg border-l-4 border-accent">
-                    <AlertCircle className="w-5 h-5 text-accent shrink-0 mt-0.5" />
-                    <span className="text-sm font-medium">{truth}</span>
+              <div className="flex justify-center">
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <ArrowRight className="w-12 h-12 text-accent" />
                   </div>
-                ),
-              )}
-            </div>
-          </Card>
-        </div>
-
-        {/* The Problem */}
-        <div className="max-w-3xl mx-auto mb-20 space-y-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-center">You know exactly what you want to do</h2>
-          <div className="grid gap-3">
-            {[
-              "Start posting content on LinkedIn or Instagram",
-              "Launch the business or side project",
-              "Step into that leadership role",
-              "Have the difficult conversation",
-              "Put yourself out there",
-            ].map((item, i) => (
-              <div key={i} className="flex items-center gap-3 p-4 bg-card rounded-lg border">
-                <CheckCircle2 className="w-6 h-6 text-secondary shrink-0" />
-                <span className="text-lg">{item}</span>
+                  <div className="text-center py-4">
+                    <p className="text-sm font-semibold text-accent">This assessment reveals the truth</p>
+                  </div>
+                </div>
               </div>
-            ))}
-          </div>
-          <p className="text-xl text-center text-muted-foreground">You've known for months. Maybe years.</p>
-          <p className="text-xl text-center font-semibold text-accent">But you keep stopping yourself.</p>
-        </div>
 
-        {/* Excuses */}
-        <Card className="max-w-3xl mx-auto mb-20 p-8 md:p-12 bg-gradient-to-br from-muted/30 to-background border-2">
-          <h3 className="text-2xl font-bold mb-8 text-center">You tell yourself:</h3>
+              <Card className="p-8 bg-accent/5 border-2 border-accent">
+                <div className="space-y-4">
+                  <div className="w-16 h-16 rounded-full bg-accent/20 flex items-center justify-center mx-auto mb-4">
+                    <AlertCircle className="w-8 h-8 text-accent" />
+                  </div>
+                  {["I'm scared of failing", "I'm terrified of being seen", "I'm afraid I'm not good enough"].map(
+                    (truth, i) => (
+                      <div
+                        key={i}
+                        className="flex items-start gap-3 p-3 bg-background rounded-lg border-l-4 border-accent"
+                      >
+                        <div className="w-2 h-2 rounded-full bg-accent mt-2 shrink-0" />
+                        <span className="text-sm font-semibold text-accent">{truth}</span>
+                      </div>
+                    ),
+                  )}
+                </div>
+              </Card>
+            </div>
+          </div>
+
+          {/* Primary CTA */}
           <div className="space-y-4">
-            {[
-              '"I\'m not ready yet. I need more preparation."',
-              '"I don\'t have enough experience or credentials."',
-              '"What if people judge me or think I\'m not good enough?"',
-              '"I need to wait for the right time."',
-              '"I don\'t think I can actually do this."',
-            ].map((excuse, i) => (
-              <div key={i} className="p-4 bg-background rounded-lg border-l-4 border-primary/50">
-                <p className="italic text-muted-foreground">{excuse}</p>
-              </div>
-            ))}
-          </div>
-          <div className="mt-8 p-6 bg-primary/10 border-l-4 border-primary rounded-r-lg">
-            <p className="text-lg">
-              And these feel <span className="font-bold">REAL</span>. They sound logical. Responsible. Like legitimate
-              reasons to wait.
-            </p>
-          </div>
-        </Card>
+            <Button onClick={onStart} size="lg" className="text-xl px-12 py-8 h-auto font-bold">
+              START THE ASSESSMENT
+            </Button>
+            <p className="text-sm text-muted-foreground">2 minutes. Completely private. Brutally honest.</p>
 
-        {/* The Question */}
-        <div className="max-w-3xl mx-auto mb-20 text-center space-y-6">
-          <h2 className="text-3xl md:text-4xl font-bold">But here's the question you've been avoiding:</h2>
-          <div className="p-8 bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 rounded-2xl border-2 border-primary">
-            <p className="text-2xl md:text-3xl font-bold text-balance">
-              Are these <span className="text-primary">FACTS</span> that need solving?
-              <br />
-              Or <span className="text-accent">FEAR</span> disguised as logic?
-            </p>
-          </div>
-          <div className="grid md:grid-cols-2 gap-6 mt-8">
-            <Card className="p-6 bg-primary/10 border-primary">
-              <h3 className="text-xl font-bold mb-3">If they're FACTS:</h3>
-              <p className="text-muted-foreground">
-                You're right to wait. There's a real constraint you need to solve first.
-              </p>
-            </Card>
-            <Card className="p-6 bg-accent/10 border-accent">
-              <h3 className="text-xl font-bold mb-3 text-accent">If they're FEAR:</h3>
-              <p className="text-foreground">
-                You're giving your life away to an excuse. And you'll stay stuck until you see it clearly.
-              </p>
-            </Card>
-          </div>
-        </div>
-
-        {/* Two Types */}
-        <div className="max-w-4xl mx-auto mb-20 space-y-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-center">The Two Types of Stuck</h2>
-          <p className="text-xl text-center text-muted-foreground">Most people are stuck for one of two reasons:</p>
-
-          <div className="grid md:grid-cols-2 gap-8">
-            <Card className="p-8 bg-accent/5 border-2 border-accent">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center">
-                  <span className="text-2xl font-bold">1</span>
-                </div>
-                <h3 className="text-2xl font-bold">FEAR-BASED STUCK</h3>
+            {/* Trust Indicators */}
+            <div className="flex flex-wrap justify-center gap-6 mt-6 text-sm text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-primary" />
+                <span>100% Private & Confidential</span>
               </div>
-              <p className="text-sm text-muted-foreground mb-4">70% of people</p>
-              <div className="space-y-4">
-                <div>
-                  <p className="font-semibold mb-2">Your obstacle SOUNDS like a fact:</p>
-                  <p className="text-muted-foreground italic">"I need more experience." "I'm not ready yet."</p>
-                </div>
-                <div>
-                  <p className="font-semibold mb-2">But it's actually FEAR:</p>
-                  <p className="text-foreground">
-                    Fear of failing publicly. Fear of being judged. Fear of being "found out."
-                  </p>
-                </div>
-                <div className="p-4 bg-background rounded-lg border-l-4 border-accent">
-                  <p className="font-semibold text-accent">The pattern:</p>
-                  <p className="text-sm">
-                    Even if your stated obstacle disappeared tomorrow, you'd find another reason to wait. Because the
-                    obstacle isn't the issue. The fear is.
-                  </p>
-                </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-primary" />
+                <span>No time limit - take as long as you need</span>
               </div>
-            </Card>
-
-            <Card className="p-8 bg-primary/5 border-2 border-primary">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
-                  <span className="text-2xl font-bold">2</span>
-                </div>
-                <h3 className="text-2xl font-bold">CONSTRAINT-BASED STUCK</h3>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-primary" />
+                <span>Free - no credit card required</span>
               </div>
-              <p className="text-sm text-muted-foreground mb-4">30% of people</p>
-              <div className="space-y-4">
-                <div>
-                  <p className="font-semibold mb-2">You have a REAL obstacle:</p>
-                  <p className="text-muted-foreground italic">"I'm in a non-compete." "I need to save $15K first."</p>
-                </div>
-                <div>
-                  <p className="font-semibold mb-2">And it IS real. But:</p>
-                  <p className="text-foreground">You've been using it as a reason to do NOTHING while you wait.</p>
-                </div>
-                <div className="p-4 bg-background rounded-lg border-l-4 border-primary">
-                  <p className="font-semibold text-primary">The pattern:</p>
-                  <p className="text-sm">
-                    Instead of solving the constraint AND building momentum, you're "stuck waiting" for conditions to be
-                    perfect.
-                  </p>
-                </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-primary" />
+                <span>Instant results</span>
               </div>
-            </Card>
-          </div>
-
-          <div className="text-center p-8 bg-gradient-to-r from-primary/10 to-accent/10 rounded-2xl border">
-            <p className="text-2xl font-bold">This assessment will tell you which type YOU are.</p>
+            </div>
           </div>
         </div>
 
         {/* What You'll Discover */}
-        <div className="max-w-3xl mx-auto mb-20">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">What You'll Discover in 2 Minutes</h2>
-          <div className="grid gap-6">
+        <div className="max-w-4xl mx-auto mb-20">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">In 2 minutes, you'll discover:</h2>
+          <div className="grid md:grid-cols-2 gap-6">
             {[
-              { icon: Target, title: "Your primary excuse pattern", desc: "The story you keep telling yourself" },
-              { icon: Brain, title: "Whether it's FACT or FEAR", desc: "Real constraint vs. avoidance mechanism" },
               {
-                icon: Lock,
-                title: "What's ACTUALLY keeping you stuck",
-                desc: "The hidden blocker you can't see on your own",
+                title: "Your primary excuse pattern",
+                description: "The story you keep telling yourself",
               },
-              { icon: Zap, title: "Your exact next step", desc: "What you need to do to break free" },
+              {
+                title: "Whether it's FACT or FEAR",
+                description: "Real constraint vs. avoidance mechanism",
+              },
+              {
+                title: "What's ACTUALLY keeping you stuck",
+                description: "The hidden blocker you can't see on your own",
+              },
+              {
+                title: "Your exact next step",
+                description: "What you need to do to break free",
+              },
             ].map((item, i) => (
-              <Card key={i} className="p-6 hover:shadow-lg transition-shadow">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                    <item.icon className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold mb-1">{item.title}</h3>
-                    <p className="text-muted-foreground">{item.desc}</p>
-                  </div>
-                  <CheckCircle2 className="w-6 h-6 text-secondary shrink-0 mt-2" />
-                </div>
+              <Card key={i} className="p-6 hover:border-primary transition-colors">
+                <h3 className="text-lg font-bold mb-2">{item.title}</h3>
+                <p className="text-muted-foreground">{item.description}</p>
               </Card>
             ))}
           </div>
-          <p className="text-center text-lg text-muted-foreground mt-8">No fluff. No theory. Just the truth.</p>
+          <p className="text-center mt-8 text-lg font-medium text-primary">No fluff. No theory. Just the truth.</p>
         </div>
 
         {/* Who This Is For */}
-        <div className="max-w-3xl mx-auto mb-20">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Who This Is For</h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            <Card className="p-8 bg-secondary/5 border-2 border-secondary">
-              <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
-                <CheckCircle2 className="w-6 h-6 text-secondary" />
-                This IS for you if:
-              </h3>
-              <div className="space-y-3">
-                {[
-                  'You\'ve been "about to start" for 3+ months',
-                  "You know what you want but can't get yourself to do it",
-                  "You're tired of your own excuses (but don't know how to break free)",
-                  "You're ready to see the truth (even if it's uncomfortable)",
-                  "You want to STOP spinning and START moving",
-                ].map((item, i) => (
-                  <div key={i} className="flex items-start gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-secondary shrink-0 mt-0.5" />
-                    <span>{item}</span>
-                  </div>
-                ))}
+        <div className="max-w-4xl mx-auto mb-20">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">This assessment is for you if:</h2>
+          <div className="space-y-4 mb-12">
+            {[
+              'You\'ve been "about to start" for 3+ months',
+              "You know what you want but can't get yourself to do it",
+              "You're tired of your own excuses (but don't know how to break free)",
+              "You're ready to see the truth (even if it's uncomfortable)",
+            ].map((item, i) => (
+              <div key={i} className="flex items-start gap-4 p-4 bg-primary/5 rounded-lg border-l-4 border-primary">
+                <CheckCircle2 className="w-6 h-6 text-primary shrink-0 mt-0.5" />
+                <span className="text-lg">{item}</span>
               </div>
-            </Card>
+            ))}
+          </div>
 
-            <Card className="p-8 bg-muted/30 border-2 border-muted">
-              <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
-                <X className="w-6 h-6 text-destructive" />
-                This is NOT for you if:
-              </h3>
-              <div className="space-y-3">
-                {[
-                  "You're still exploring options (you don't know what you want yet)",
-                  "You're not willing to be honest with yourself",
-                  "You just want someone to validate your excuses",
-                ].map((item, i) => (
-                  <div key={i} className="flex items-start gap-2">
-                    <X className="w-5 h-5 text-destructive shrink-0 mt-0.5" />
-                    <span className="text-muted-foreground">{item}</span>
-                  </div>
-                ))}
-              </div>
-            </Card>
+          <div className="border-t-2 pt-12">
+            <h3 className="text-2xl font-bold text-center mb-8 text-muted-foreground">This is NOT for you if:</h3>
+            <div className="space-y-4">
+              {[
+                "You're still exploring options (you don't know what you want yet)",
+                "You're not willing to be honest with yourself",
+                "You just want someone to validate your excuses",
+              ].map((item, i) => (
+                <div key={i} className="flex items-start gap-4 p-4 bg-muted/30 rounded-lg">
+                  <X className="w-6 h-6 text-muted-foreground shrink-0 mt-0.5" />
+                  <span className="text-lg text-muted-foreground">{item}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
         {/* Before You Start */}
-        <Card className="max-w-3xl mx-auto mb-20 p-8 md:p-12 bg-gradient-to-br from-primary/5 to-accent/5 border-2 border-primary/30">
-          <h2 className="text-3xl font-bold text-center mb-8">Before You Start: A Note About Honesty</h2>
-          <div className="space-y-6 text-lg">
-            <p className="text-center font-medium">This assessment only works if you're brutally honest.</p>
-            <div className="p-6 bg-background rounded-lg space-y-3">
-              <p>Not the version of yourself you show on LinkedIn.</p>
-              <p>Not the version you tell your friends.</p>
-              <p className="font-bold text-primary">The version that exists at 2am when you can't sleep.</p>
-            </div>
-            <div className="space-y-3">
-              <p className="font-semibold">There are no "right" answers.</p>
-              <p className="font-semibold">No one is judging you.</p>
-              <p className="font-semibold">This is just you and the truth.</p>
-            </div>
-            <div className="p-6 bg-secondary/10 rounded-lg space-y-3 border-l-4 border-secondary">
-              <p>Take your time.</p>
-              <p>Read each question carefully.</p>
-              <p>Sit with it if you need to.</p>
-              <p>Choose the answer that feels MOST true (even if it's uncomfortable).</p>
-            </div>
-            <p className="text-center text-muted-foreground">
-              Your results are completely private. Only you will see them (unless you choose to share).
+        <Card className="max-w-3xl mx-auto mb-20 p-8 md:p-12 bg-gradient-to-br from-primary/5 to-background border-2">
+          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">A note about honesty:</h2>
+          <div className="space-y-4 text-lg text-foreground">
+            <p>
+              This assessment only works if you're brutally honest. Not the version of yourself you show on LinkedIn.
+              Not the version you tell your friends. The version that exists at 2am when you can't sleep.
             </p>
-            <p className="text-center font-bold text-xl text-primary">
+            <p>There are no "right" answers. No one is judging you. This is just you and the truth.</p>
+            <p>
+              Take your time. Read each question carefully. Sit with it if you need to. Choose the answer that feels
+              MOST true (even if it's uncomfortable).
+            </p>
+            <p>Your results are completely private. Only you will see them (unless you choose to share).</p>
+            <p className="font-semibold text-primary">
               The more honest you are, the more accurate your results will be. And the clearer your path forward
               becomes.
             </p>
           </div>
         </Card>
 
-        {/* Testimonials */}
+        {/* Social Proof */}
         <div className="max-w-4xl mx-auto mb-20">
-          <h3 className="text-2xl font-bold text-center mb-8">What others have said:</h3>
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">What others have said:</h2>
           <div className="grid md:grid-cols-3 gap-6">
             {[
               {
                 quote:
-                  "I was scared to be honest at first. But the results were so accurate it was almost scary. This assessment saw through my excuses better than I could.",
-                name: "Sarah M.",
+                  "This assessment saw through my excuses better than I could. The results were uncomfortably accurate.",
+                author: "Sarah M.",
               },
               {
-                quote:
-                  "I've taken a lot of assessments. This was the first one where I felt safe being completely real. And the results were exactly what I needed to hear.",
-                name: "Marcus T.",
+                quote: "I felt safe being completely real. The results were exactly what I needed to hear.",
+                author: "Marcus T.",
               },
               {
-                quote:
-                  "I sat with some questions for a few minutes before answering. That pause made all the difference. The results were spot-on.",
-                name: "Jennifer K.",
+                quote: "I sat with some questions for a few minutes before answering. The results were spot-on.",
+                author: "Jennifer K.",
               },
             ].map((testimonial, i) => (
-              <Card key={i} className="p-6 bg-card hover:shadow-lg transition-shadow">
-                <p className="text-sm text-muted-foreground mb-4 italic">"{testimonial.quote}"</p>
-                <p className="font-semibold">- {testimonial.name}</p>
+              <Card key={i} className="p-6 bg-card">
+                <p className="text-foreground mb-4 italic">"{testimonial.quote}"</p>
+                <p className="text-sm text-muted-foreground font-medium">— {testimonial.author}</p>
               </Card>
             ))}
           </div>
         </div>
 
-        <div className="max-w-3xl mx-auto text-center space-y-6 mb-12">
-          <div className="p-6 bg-gradient-to-r from-accent/20 to-primary/20 rounded-xl border-2 border-accent/30">
-            <p className="text-xl font-bold mb-2">Another year is about to pass.</p>
-            <p className="text-lg text-muted-foreground">
-              Will you enter the new one the same person, telling yourself the same stories...
-            </p>
-            <p className="text-lg font-semibold text-accent mt-2">
-              Or will you finally know the truth about what's holding you back?
-            </p>
+        {/* Final CTA */}
+        <div className="max-w-3xl mx-auto text-center space-y-8">
+          <h2 className="text-3xl md:text-4xl font-bold">Ready to see the truth?</h2>
+          <div className="space-y-4">
+            <Button onClick={onStart} size="lg" className="text-xl px-12 py-8 h-auto font-bold">
+              START THE ASSESSMENT
+            </Button>
+            <p className="text-sm text-muted-foreground">2 minutes. Completely private. Brutally honest.</p>
+
+            {/* Trust Indicators */}
+            <div className="flex flex-wrap justify-center gap-6 mt-6 text-sm text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-primary" />
+                <span>100% Private & Confidential</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-primary" />
+                <span>No time limit</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-primary" />
+                <span>Free - no credit card required</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-primary" />
+                <span>Instant results</span>
+              </div>
+            </div>
+
+            <p className="text-sm text-muted-foreground mt-8">10 questions. No email required until the end.</p>
           </div>
-        </div>
-
-        {/* CTA */}
-        <div className="max-w-2xl mx-auto text-center">
-          <Button
-            onClick={onStart} // Fixed to use onStart prop instead of setStep
-            size="lg"
-            className="w-full py-8 text-2xl font-bold bg-gradient-to-r from-primary to-accent hover:opacity-90 text-white rounded-full shadow-2xl hover:shadow-3xl transition-all hover:scale-105"
-          >
-            Take the Assessment Now <ArrowRight className="w-8 h-8 ml-3" />
-          </Button>
-          <p className="mt-4 text-sm text-muted-foreground">Takes 2 minutes. Completely free. Brutally honest.</p>
-
-          <p className="mt-2 text-sm text-accent font-medium">
-            Before this year ends. Before you tell yourself "next year" again.
-          </p>
         </div>
       </div>
     </div>
