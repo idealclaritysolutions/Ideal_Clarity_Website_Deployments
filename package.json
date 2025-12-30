@@ -13,6 +13,8 @@
     "@ai-sdk/groq": "1.0.12",
     "@hookform/resolvers": "^3.10.0",
     "@neondatabase/serverless": "1.0.2",
+    "@radix-ui/react-checkbox": "^1.1.2",
+    "@radix-ui/react-radio-group": "^1.2.1",
     "@react-pdf/renderer": "4.3.2",
     "@stripe/react-stripe-js": "5.4.0",
     "@stripe/stripe-js": "8.5.2",
