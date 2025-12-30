@@ -882,7 +882,6 @@ function FactsOrFearClient() {
             <Button type="submit" size="lg" className="w-full text-lg py-6">
               SHOW ME MY RESULTS
             </Button>
-            
           </form>
         </div>
       </div>
@@ -1039,7 +1038,7 @@ function FactsOrFearClient() {
               <Button size="lg" onClick={() => window.open(calendlyLink, "_blank")} className="text-xl px-10 py-7 mb-3">
                 BOOK YOUR FREE CLARITY CALL
               </Button>
-              <p className="text-sm text-muted-foreground">15 minutes. No pressure. Just clarity.</p>
+              <p className="text-sm text-muted-foreground">30 minutes. No pressure. Just clarity.</p>
             </section>
           </div>
         </div>
@@ -1094,7 +1093,7 @@ function FactsOrFearClient() {
               <Button size="lg" onClick={() => window.open(calendlyLink, "_blank")} className="text-xl px-10 py-7 mb-3">
                 BOOK YOUR FREE CLARITY CALL
               </Button>
-              <p className="text-sm text-muted-foreground">15 minutes. No pressure. Just clarity.</p>
+              <p className="text-sm text-muted-foreground">30 minutes. No pressure. Just clarity.</p>
             </section>
           </div>
         </div>
@@ -1129,7 +1128,7 @@ function FactsOrFearClient() {
               <Button size="lg" onClick={() => window.open(calendlyLink, "_blank")} className="text-xl px-10 py-7 mb-3">
                 BOOK YOUR FREE CLARITY CALL
               </Button>
-              <p className="text-sm text-muted-foreground">15 minutes. No pressure. Just clarity.</p>
+              <p className="text-sm text-muted-foreground">30 minutes. No pressure. Just clarity.</p>
             </section>
           </div>
         </div>
@@ -1173,7 +1172,7 @@ function FactsOrFearClient() {
             <Button size="lg" onClick={() => window.open(calendlyLink, "_blank")} className="text-xl px-10 py-7 mb-3">
               BOOK YOUR FREE CLARITY CALL
             </Button>
-            <p className="text-sm text-muted-foreground">15 minutes. No pressure. Just clarity.</p>
+            <p className="text-sm text-muted-foreground">30 minutes. No pressure. Just clarity.</p>
 
             <p className="mt-6 text-muted-foreground">
               You don't have to stay stuck in uncertainty. Let's figure this out together.
