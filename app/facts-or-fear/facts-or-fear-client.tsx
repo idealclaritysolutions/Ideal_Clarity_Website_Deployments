@@ -882,9 +882,7 @@ function FactsOrFearClient() {
             <Button type="submit" size="lg" className="w-full text-lg py-6">
               SHOW ME MY RESULTS
             </Button>
-            <p className="text-xs text-center text-muted-foreground">
-              Your results will also be emailed to you so you can review them later.
-            </p>
+            
           </form>
         </div>
       </div>
