@@ -5,9 +5,10 @@ export async function POST(request: NextRequest) {
     console.log("[v0] =================================")
     console.log("[v0] API route called: /api/assessment-email")
 
-    const { email, isFearBased, answers } = await request.json()
+    const { email, firstName, q3Answer, deadline, isFearBased, answers } = await request.json()
 
     console.log("[v0] Email:", email)
+    console.log("[v0] First Name:", firstName)
     console.log("[v0] isFearBased:", isFearBased)
 
     const apiKey = process.env.MAILERLITE_API_KEY
@@ -28,6 +29,10 @@ export async function POST(request: NextRequest) {
     const subscriberData = {
       email: email,
       fields: {
+        name: firstName,
+        first_name: firstName,
+        q3_answer: q3Answer,
+        deadline_date: deadline,
         assessment_type: isFearBased ? "fear-based" : "constraint-based",
         assessment_date: new Date().toISOString(),
       },

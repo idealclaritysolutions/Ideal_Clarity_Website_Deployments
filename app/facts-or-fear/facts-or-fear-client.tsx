@@ -165,6 +165,7 @@ export function FactsOrFearClient() {
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [answers, setAnswers] = useState<Record<number, string>>({})
   const [email, setEmail] = useState("")
+  const [firstName, setFirstName] = useState("") // Added firstName state
   const [showEncouragement, setShowEncouragement] = useState(false)
   const [emailSending, setEmailSending] = useState(false)
 
@@ -194,7 +195,8 @@ export function FactsOrFearClient() {
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (email) {
+    if (email && firstName) {
+      // Added check for firstName
       setEmailSending(true)
       try {
         const result = await fetch("/api/assessment-email", {
@@ -202,8 +204,9 @@ export function FactsOrFearClient() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
+          body: JSON.JSON.stringify({
             email: email,
+            firstName: firstName, // Added firstName to payload
             isFearBased: isFearBased(),
             answers: answers,
           }),
@@ -281,7 +284,16 @@ export function FactsOrFearClient() {
   }
 
   if (step === "email") {
-    return <EmailCapture email={email} setEmail={setEmail} onSubmit={handleEmailSubmit} emailSending={emailSending} />
+    return (
+      <EmailCapture
+        email={email}
+        setEmail={setEmail}
+        firstName={firstName}
+        setFirstName={setFirstName}
+        onSubmit={handleEmailSubmit}
+        emailSending={emailSending}
+      />
+    )
   }
 
   if (step === "results") {
@@ -648,7 +660,7 @@ function LandingPage({ onStart }: { onStart: () => void }) {
         {/* CTA */}
         <div className="max-w-2xl mx-auto text-center">
           <Button
-            onClick={onStart}
+            onClick={onStart} // Fixed to use onStart prop instead of setStep
             size="lg"
             className="w-full py-8 text-2xl font-bold bg-gradient-to-r from-primary to-accent hover:opacity-90 text-white rounded-full shadow-2xl hover:shadow-3xl transition-all hover:scale-105"
           >
@@ -837,11 +849,15 @@ function AssessmentScreen({
 function EmailCapture({
   email,
   setEmail,
+  firstName,
+  setFirstName,
   onSubmit,
   emailSending,
 }: {
   email: string
   setEmail: (email: string) => void
+  firstName: string
+  setFirstName: (firstName: string) => void
   onSubmit: (e: React.FormEvent) => void
   emailSending: boolean
 }) {
@@ -854,7 +870,7 @@ function EmailCapture({
           </div>
           <h2 className="text-3xl font-bold">Assessment Complete</h2>
           <p className="text-lg text-muted-foreground">
-            Enter your email to see your results and discover if you're fear-based or constraint-based stuck.
+            Enter your name and email to see your results and discover if you're fear-based or constraint-based stuck.
           </p>
 
           <div className="p-4 bg-accent/10 rounded-lg border-l-4 border-accent mt-6">
@@ -865,6 +881,21 @@ function EmailCapture({
         </div>
 
         <form onSubmit={onSubmit} className="space-y-6">
+          <div className="space-y-2">
+            <Label htmlFor="firstName" className="text-lg">
+              First Name
+            </Label>
+            <Input
+              id="firstName"
+              type="text"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              placeholder="Your first name"
+              required
+              className="text-lg p-6"
+              disabled={emailSending}
+            />
+          </div>
           <div className="space-y-2">
             <Label htmlFor="email" className="text-lg">
               Email Address
@@ -895,7 +926,7 @@ function EmailCapture({
         <div className="space-y-4">
           <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
             <Lock className="w-4 h-4" />
-            <span>Your email is safe. I respect your inbox.</span>
+            <span>Your information is safe. I respect your inbox.</span>
           </div>
         </div>
       </Card>
@@ -1036,7 +1067,7 @@ function ResultsPage({
                 </div>
 
                 <div className="mt-8 p-6 bg-gradient-to-r from-secondary/20 to-primary/20 rounded-lg border-2 border-secondary">
-                  <p className="font-semibold text-lg mb-3">Or... 30 days from now:</p>
+                  <p className="font-semibold text-lg">Or... 30 days from now:</p>
                   <p className="text-lg">
                     You've actually <span className="font-bold text-secondary">DONE</span> the thing. Posted the
                     content. Launched the business. Had the conversation. <span className="font-bold">Moved.</span>
