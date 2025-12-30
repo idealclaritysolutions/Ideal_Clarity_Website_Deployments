@@ -477,7 +477,7 @@ function LandingPage({ onStart }: { onStart: () => void }) {
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-primary mt-1">•</span>
-                  <span>Stepping into leadership</span>
+                  <span>Stepping into leadership, etc.</span>
                 </li>
               </ul>
             </div>
