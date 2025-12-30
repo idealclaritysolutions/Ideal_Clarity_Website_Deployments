@@ -195,33 +195,44 @@ export function FactsOrFearClient() {
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    console.log("[v0] Starting email submission with:", { email, firstName, isFearBased: isFearBased() })
+
     if (email && firstName) {
-      // Added check for firstName
       setEmailSending(true)
       try {
+        console.log("[v0] Making API call to /api/assessment-email")
         const result = await fetch("/api/assessment-email", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.JSON.stringify({
+          body: JSON.stringify({
             email: email,
-            firstName: firstName, // Added firstName to payload
+            firstName: firstName,
             isFearBased: isFearBased(),
             answers: answers,
           }),
         })
 
+        console.log("[v0] API response status:", result.status, result.statusText)
         const data = await result.json()
         console.log("[v0] Email API response:", data)
+
         if (!data.success) {
           console.error("[v0] Failed to send email:", data.error)
+          alert("There was an issue sending the email. Please try again or contact support.")
+        } else {
+          console.log("[v0] Email sent successfully!")
         }
       } catch (error) {
         console.error("[v0] Error in email submission:", error)
+        alert("Failed to submit email. Please check your connection and try again.")
       }
       setEmailSending(false)
       setStep("results")
+    } else {
+      console.error("[v0] Missing email or firstName:", { email, firstName })
+      alert("Please enter both your name and email address.")
     }
   }
 
