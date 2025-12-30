@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -239,101 +239,151 @@ function FactsOrFearClient() {
     answers["4"]?.includes("Other genuine")
   const isFearBased = answers["4"] && !isConstraintBased
 
-  // Dynamically update questions based on Q4 answer
-  const currentQuestions = ((): Question[] => {
-    const baseQuestions = [
-      questions[0], // Q1
-      questions[1], // Q2
-      questions[2], // Q3
-      questions[3], // Q4
-    ]
+  const currentQuestions = useMemo((): Question[] => {
+    console.log("[v0] Building currentQuestions array")
+    console.log("[v0] isFearBased:", isFearBased)
+    console.log("[v0] isConstraintBased:", isConstraintBased)
+    console.log("[v0] Current answers:", answers)
 
-    if (isConstraintBased) {
-      baseQuestions.push({
-        id: "4B",
-        header: `Question 4B of 10 | ✓ Your answers are private | 💭 Take your time`,
-        question: `You selected: "${answers["4"]}". Help me understand: Is this constraint...`,
-        options: [
-          'Solvable with a clear timeline (e.g., "Non-compete expires in 6 months" or "I need to save $10K")',
-          'Solvable but timeline unclear (e.g., "I need to save money but don\'t know how long")',
-          'Ongoing/long-term (e.g., "I have young kids for the next 5 years")',
-          "Honestly, I'm not sure if it's solvable or just an excuse",
-        ],
-      })
+    try {
+      const baseQuestions = [
+        questions[0], // Q1
+        questions[1], // Q2
+        questions[2], // Q3
+        questions[3], // Q4
+      ]
+
+      if (isConstraintBased) {
+        console.log("[v0] Adding question 4B")
+        baseQuestions.push({
+          id: "4B",
+          header: `Question 4B of 10 | ✓ Your answers are private | 💭 Take your time`,
+          question: `You selected: "${answers["4"]}". Help me understand: Is this constraint...`,
+          options: [
+            'Solvable with a clear timeline (e.g., "Non-compete expires in 6 months" or "I need to save $10K")',
+            'Solvable but timeline unclear (e.g., "I need to save money but don\'t know how long")',
+            'Ongoing/long-term (e.g., "I have young kids for the next 5 years")',
+            "Honestly, I'm not sure if it's solvable or just an excuse",
+          ],
+        })
+      }
+
+      baseQuestions.push(
+        questions[4], // Q5
+        questions[5], // Q6
+        questions[6], // Q7
+        questions[7], // Q8
+      )
+
+      if (isFearBased) {
+        console.log("[v0] Adding question 9A (fear-based)")
+        baseQuestions.push({
+          id: "9A",
+          header: "Question 9 of 10 | ✓ Your answers are private | 💭 Take your time",
+          question:
+            "Take a deep breath. This is the most important question. If you're being COMPLETELY honest with yourself - no pretending, no \"should\" - what's the REAL reason you haven't started?",
+          subtext: "(Choose the answer that feels most true in your gut, even if you've never admitted it out loud)",
+          options: [
+            "I'm terrified of failing publicly and everyone seeing it",
+            "I'm scared of being judged, criticized, or rejected by people I know",
+            "Deep down, I don't actually believe I'm good enough to succeed at this",
+            "I'm afraid of what happens if it WORKS (visibility, expectations, my life changing)",
+            "Wait - actually, I think I DO have a real constraint I haven't admitted",
+            "Honestly? I'm not actually sure. That's why I'm taking this assessment.",
+          ],
+          encouragement:
+            "💡 Remember: Whatever you choose is valid. There's no judgment here. This is about YOU seeing the truth clearly.",
+        })
+      } else if (isConstraintBased) {
+        console.log("[v0] Adding question 9B (constraint-based)")
+        baseQuestions.push({
+          id: "9B",
+          header: "Question 9 of 10 | ✓ Your answers are private | 💭 Take your time",
+          question:
+            "You said you have a real constraint. Let's go deeper. If your constraint was solved tomorrow, would you start immediately?",
+          subtext:
+            "(For example: If the non-compete expired, if you had the money saved, if you had childcare, if you completed the certification)",
+          options: [
+            "Yes, I'd start immediately with no hesitation",
+            "Probably yes, but I'd still feel nervous or find another reason",
+            "Maybe - I think there's something else holding me back too",
+            "No - there's another constraint I haven't named yet",
+            "Honestly, I'm not sure",
+          ],
+          encouragement:
+            "💡 Be honest. If you'd start immediately, your constraint is REAL. If you would still hesitate, fear is also present.",
+        })
+      }
+
+      // Always include Q10
+      console.log("[v0] Adding question 10")
+      console.log("[v0] questions[9] exists:", !!questions[9])
+      if (!questions[9]) {
+        console.error("[v0] ERROR: questions[9] (Question 10) is missing!")
+        throw new Error("Question 10 is missing from questions array")
+      }
+      baseQuestions.push(questions[9])
+
+      console.log("[v0] Final questions array length:", baseQuestions.length)
+      console.log("[v0] Final questions IDs:", baseQuestions.map((q) => q.id).join(", "))
+
+      return baseQuestions
+    } catch (error) {
+      console.error("[v0] Error building currentQuestions:", error)
+      throw error
     }
-
-    baseQuestions.push(
-      questions[4], // Q5
-      questions[5], // Q6
-      questions[6], // Q7
-      questions[7], // Q8
-    )
-
-    if (isFearBased) {
-      baseQuestions.push({
-        id: "9A",
-        header: "Question 9 of 10 | ✓ Your answers are private | 💭 Take your time",
-        question:
-          "Take a deep breath. This is the most important question. If you're being COMPLETELY honest with yourself - no pretending, no \"should\" - what's the REAL reason you haven't started?",
-        subtext: "(Choose the answer that feels most true in your gut, even if you've never admitted it out loud)",
-        options: [
-          "I'm terrified of failing publicly and everyone seeing it",
-          "I'm scared of being judged, criticized, or rejected by people I know",
-          "Deep down, I don't actually believe I'm good enough to succeed at this",
-          "I'm afraid of what happens if it WORKS (visibility, expectations, my life changing)",
-          "Wait - actually, I think I DO have a real constraint I haven't admitted",
-          "Honestly? I'm not actually sure. That's why I'm taking this assessment.",
-        ],
-        encouragement:
-          "💡 Remember: Whatever you choose is valid. There's no judgment here. This is about YOU seeing the truth clearly.",
-      })
-    } else if (isConstraintBased) {
-      baseQuestions.push({
-        id: "9B",
-        header: "Question 9 of 10 | ✓ Your answers are private | 💭 Take your time",
-        question:
-          "You said you have a real constraint. Let's go deeper. If your constraint was solved tomorrow, would you start immediately?",
-        subtext:
-          "(For example: If the non-compete expired, if you had the money saved, if you had childcare, if you completed the certification)",
-        options: [
-          "Yes, I'd start immediately with no hesitation",
-          "Probably yes, but I'd still feel nervous or find another reason",
-          "Maybe - I think there's something else holding me back too",
-          "No - there's another constraint I haven't named yet",
-          "Honestly, I'm not sure",
-        ],
-        encouragement:
-          "💡 Be honest. If you'd start immediately, your constraint is REAL. If you would still hesitate, fear is also present.",
-      })
-    }
-
-    // Always include Q10
-    baseQuestions.push(questions[9])
-
-    return baseQuestions
-  })()
+  }, [isFearBased, isConstraintBased, answers])
 
   const handleAnswer = (answer: string) => {
-    const currentQ = currentQuestions[currentQuestionIndex]
-    setAnswers((prev) => ({ ...prev, [currentQ.id]: answer }))
+    console.log("[v0] handleAnswer called")
+    console.log("[v0] currentQuestionIndex:", currentQuestionIndex)
+    console.log("[v0] currentQuestions length:", currentQuestions.length)
 
-    if (currentQ.encouragementAfter) {
-      setEncouragementText(currentQ.encouragementAfter.text)
-      setShowEncouragement(true)
-    } else if (currentQ.encouragement) {
-      setEncouragementText(currentQ.encouragement)
-      setShowEncouragement(true)
-    } else {
-      moveToNext()
+    try {
+      const currentQ = currentQuestions[currentQuestionIndex]
+      console.log("[v0] Current question ID:", currentQ.id)
+      console.log("[v0] Selected answer:", answer)
+
+      setAnswers((prev) => {
+        const newAnswers = { ...prev, [currentQ.id]: answer }
+        console.log("[v0] Updated answers:", newAnswers)
+        return newAnswers
+      })
+
+      if (currentQ.encouragementAfter) {
+        console.log("[v0] Showing encouragementAfter")
+        setEncouragementText(currentQ.encouragementAfter.text)
+        setShowEncouragement(true)
+      } else if (currentQ.encouragement) {
+        console.log("[v0] Showing encouragement")
+        setEncouragementText(currentQ.encouragement)
+        setShowEncouragement(true)
+      } else {
+        console.log("[v0] Moving to next question directly")
+        moveToNext()
+      }
+    } catch (error) {
+      console.error("[v0] Error in handleAnswer:", error)
+      throw error
     }
   }
 
   const moveToNext = () => {
-    if (currentQuestionIndex < currentQuestions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1)
-    } else {
-      // Show email capture
-      setStep("email")
+    console.log("[v0] moveToNext called")
+    console.log("[v0] currentQuestionIndex:", currentQuestionIndex)
+    console.log("[v0] currentQuestions.length:", currentQuestions.length)
+
+    try {
+      if (currentQuestionIndex < currentQuestions.length - 1) {
+        console.log("[v0] Moving to next question:", currentQuestionIndex + 1)
+        setCurrentQuestionIndex(currentQuestionIndex + 1)
+      } else {
+        console.log("[v0] Assessment complete - showing email capture")
+        setStep("email")
+      }
+    } catch (error) {
+      console.error("[v0] Error in moveToNext:", error)
+      throw error
     }
   }
 
