@@ -482,22 +482,24 @@ function LandingPage({ onStart }: { onStart: () => void }) {
               </ul>
             </div>
 
-            <div className="space-y-4 pt-4">
+            <div className="space-y-2 pt-2">
               <p className="text-lg text-muted-foreground text-balance">
                 You've been telling yourself you're "not ready yet." That you need more time, experience, or clarity.
               </p>
               <p className="text-lg text-muted-foreground text-balance">But what if those aren't real obstacles?</p>
               <p className="text-lg font-semibold text-accent">What if they're just fear dressed up as logic?</p>
             </div>
+            {/* </CHANGE> */}
           </div>
           {/* </CHANGE> */}
 
-          <div className="py-6">
+          <div className="py-4">
             <Button onClick={onStart} size="lg" className="text-xl px-12 py-8 h-auto font-bold shadow-lg">
               START THE ASSESSMENT
             </Button>
             <p className="text-sm text-muted-foreground mt-3">2 minutes. Completely private. Brutally honest.</p>
           </div>
+          {/* </CHANGE> */}
 
           <div className="max-w-5xl mx-auto my-12">
             <div className="grid md:grid-cols-2 gap-8 items-stretch">
