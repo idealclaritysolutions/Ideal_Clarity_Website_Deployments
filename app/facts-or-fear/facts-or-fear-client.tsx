@@ -613,6 +613,13 @@ function LandingPage({ onStart }: { onStart: () => void }) {
             ))}
           </div>
           <p className="text-center mt-8 text-lg font-medium text-primary">No fluff. No theory. Just the truth.</p>
+
+          <div className="text-center mt-8">
+            <Button onClick={onStart} size="lg" className="text-xl px-12 py-6 h-auto font-bold">
+              START THE ASSESSMENT
+            </Button>
+            <p className="text-sm text-muted-foreground mt-3">Takes only 2 minutes</p>
+          </div>
         </div>
 
         {/* Who This Is For */}
@@ -647,6 +654,13 @@ function LandingPage({ onStart }: { onStart: () => void }) {
               ))}
             </div>
           </div>
+
+          <div className="text-center mt-12">
+            <Button onClick={onStart} size="lg" className="text-xl px-12 py-6 h-auto font-bold">
+              START THE ASSESSMENT
+            </Button>
+            <p className="text-sm text-muted-foreground mt-3">Takes only 2 minutes</p>
+          </div>
         </div>
 
         {/* Before You Start */}
@@ -667,6 +681,12 @@ function LandingPage({ onStart }: { onStart: () => void }) {
               The more honest you are, the more accurate your results will be. And the clearer your path forward
               becomes.
             </p>
+          </div>
+          <div className="max-w-3xl mx-auto text-center mb-20">
+            <Button onClick={onStart} size="lg" className="text-xl px-12 py-6 h-auto font-bold">
+              START THE ASSESSMENT
+            </Button>
+            <p className="text-sm text-muted-foreground mt-3">Takes only 2 minutes</p>
           </div>
         </Card>
 
