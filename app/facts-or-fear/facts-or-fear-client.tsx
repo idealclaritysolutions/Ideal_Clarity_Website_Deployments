@@ -32,6 +32,7 @@ function calculateResultType(answers: Record<number, string>): ResultType {
 
   // Check for constraint indicators
   const hasConstraint =
+    q4.includes("constraint") ||
     q4.includes("Money") ||
     q4.includes("Legal") ||
     q4.includes("Time") ||
@@ -217,9 +218,9 @@ const questions: Question[] = [
   },
 ]
 
-function AssessmentFlow() {
+function FactsOrFearClient() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
-  const [answers, setAnswers] = useState<Record<string, string>>({})
+  const [answers, setAnswers] = useState<Record<number, string>>({})
   const [showIntro, setShowIntro] = useState(true)
   const [showEncouragement, setShowEncouragement] = useState(false)
   const [encouragementText, setEncouragementText] = useState("")
@@ -730,6 +731,7 @@ function IntroScreen({ onStart }: { onStart: () => void }) {
               title: "Choose the answer that feels MOST true",
               desc: 'Not what you think you "should" say. What\'s actually true.',
             },
+            // CHANGE: Fixed invalid escape sequences - removed backslashes before quotes
             {
               title: "Be honest even if it's uncomfortable",
               desc: "The discomfort is the signal you're getting close to the truth.",
@@ -1212,8 +1214,6 @@ function FearBasedResultsPage({
             </ul>
           </div>
         </Card>
-
-        {/* Section 4: The Good News */}
         <Card className="p-8 md:p-10 mb-8 bg-gradient-to-br from-secondary/10 to-background border-2 border-secondary">
           <h2 className="text-2xl md:text-3xl font-bold mb-6">Here's what changes everything:</h2>
           <div className="p-6 bg-background rounded-lg border-l-4 border-secondary mb-8">
@@ -1249,8 +1249,6 @@ function FearBasedResultsPage({
             <p className="text-2xl font-bold">And that's exactly what we help you do.</p>
           </div>
         </Card>
-
-        {/* Section 5: Your Two Options */}
         <div className="mb-8">
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-center">You're at a decision point right now.</h2>
 
@@ -1319,55 +1317,7 @@ function FearBasedResultsPage({
             </Card>
           </div>
         </div>
-
-        {/* Section 6: Why This Works */}
-        <Card className="p-8 md:p-10 mb-8 bg-card border-2">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4">Why This Works</h2>
-          <p className="text-xl text-muted-foreground mb-8">
-            This isn't therapy. This isn't cheerleading. This is excuse-catching, fear-dismantling, get-you-moving
-            coaching.
-          </p>
-
-          <div className="space-y-4">
-            <div className="flex items-start gap-4 p-5 bg-muted/30 rounded-lg">
-              <CheckCircle2 className="w-6 h-6 text-secondary shrink-0 mt-1" />
-              <div>
-                <p className="font-semibold text-lg mb-1">I catch your excuses in real-time</p>
-                <p className="text-muted-foreground">The moment you try to retreat, I call it</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-4 p-5 bg-muted/30 rounded-lg">
-              <CheckCircle2 className="w-6 h-6 text-secondary shrink-0 mt-1" />
-              <div>
-                <p className="font-semibold text-lg mb-1">Daily support when fear shows up</p>
-                <p className="text-muted-foreground">You don't do this alone</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-4 p-5 bg-muted/30 rounded-lg">
-              <CheckCircle2 className="w-6 h-6 text-secondary shrink-0 mt-1" />
-              <div>
-                <p className="font-semibold text-lg mb-1">You actually DO the thing by Week 4</p>
-                <p className="text-muted-foreground">Not "think about it" or "plan for it" - DO IT</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-4 p-5 bg-muted/30 rounded-lg">
-              <CheckCircle2 className="w-6 h-6 text-secondary shrink-0 mt-1" />
-              <div>
-                <p className="font-semibold text-lg mb-1">You build the excuse-catching muscle</p>
-                <p className="text-muted-foreground">So you can do this on your own going forward</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-8 p-6 bg-accent/10 rounded-lg border-l-4 border-accent text-center">
-            <p className="text-xl font-bold">
-              This works IF you show up. And if you show up fully, you WILL break through.
-            </p>
-          </div>
-        </Card>
-
-        {/* Section 7: The 4-Week Breakdown */}
-        <Card className="p-8 md:p-10 mb-8 bg-gradient-to-br from-primary/5 to-background border-2">
+        <Card className="p-8 md:p-10 mb-8 bg-gradient-to-br from-primary/10 to-accent/10 border-2">
           <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center">The 4-Week Breakdown</h2>
 
           <div className="space-y-4">
@@ -1543,8 +1493,6 @@ function FearBasedResultsPage({
             ))}
           </div>
         </Card>
-
-        {/* Section 8: Who This Is For */}
         <Card className="p-8 md:p-10 mb-8 bg-card border-2">
           <div className="grid md:grid-cols-2 gap-8">
             {/* For You If */}
@@ -1584,10 +1532,8 @@ function FearBasedResultsPage({
             </div>
           </div>
         </Card>
-
-        {/* Section 9: What Happens Next */}
-        <Card className="p-8 md:p-10 mb-8 bg-gradient-to-br from-primary/10 to-accent/10 border-2">
-          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">
+        <Card className="p-8 md:p-10 mb-8 bg-gradient-to-br from-primary/5 to-background border-2">
+          <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center">
             Ready to break through? Here's what happens when you apply:
           </h2>
 
@@ -1619,8 +1565,6 @@ function FearBasedResultsPage({
             ))}
           </div>
         </Card>
-
-        {/* Final CTA Section */}
         <Card className="p-8 md:p-12 mb-8 bg-gradient-to-br from-accent/20 to-primary/20 border-2 border-accent shadow-xl">
           <div className="text-center mb-8">
             <div className="flex items-baseline justify-center gap-3 mb-4">
@@ -1686,8 +1630,6 @@ function FearBasedResultsPage({
             </a>
           </div>
         </Card>
-
-        {/* Optional Urgency Section */}
         <Card className="p-8 md:p-10 mb-12 bg-gradient-to-br from-destructive/5 to-background border-2 border-destructive/20">
           <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">Here's why you need to decide soon:</h2>
 
@@ -2159,37 +2101,7 @@ function MixedStuckResultsPage({
           </div>
         </div>
 
-        {/* Section 2: The Pattern */}
-        <div className="bg-muted/30 rounded-lg p-8 mb-12">
-          <h2 className="text-3xl font-bold text-foreground mb-6">Here's what's been happening:</h2>
-          <div className="space-y-4 text-lg text-foreground/90">
-            <p>
-              You use the constraint as your "main reason" for being stuck. But underneath, fear is running the show.
-            </p>
-            <p className="font-bold">The truth:</p>
-            <ul className="list-disc pl-6 space-y-2">
-              <li>The constraint gives you a "legitimate" excuse</li>
-              <li>But fear is what's ACTUALLY keeping you frozen</li>
-              <li>Even when you make progress on the constraint, you don't move forward</li>
-            </ul>
-            <div className="bg-white border-l-4 border-amber-500 p-6 mt-6 rounded">
-              <p className="font-bold mb-3">Example: "I need to save $10K first."</p>
-              <p className="mb-2">
-                <strong className="text-blue-600">Constraint:</strong> Real. You do need savings.
-              </p>
-              <p>
-                <strong className="text-red-600">Fear:</strong> "But even when I have $10K, I'll find another reason to
-                wait because I'm terrified of failing."
-              </p>
-              <p className="mt-4 font-bold">
-                See the difference? Both are present. But if we only solve the constraint and ignore the fear... you'll
-                STILL be stuck 6 months from now.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Section 3: Why Fear Comes First */}
+        {/* Section 2: Why Fear Comes First */}
         <div className="mb-12">
           <h2 className="text-3xl font-bold text-foreground mb-8">Here's why we address fear BEFORE the constraint:</h2>
           <div className="space-y-6">
@@ -2226,7 +2138,7 @@ function MixedStuckResultsPage({
           </div>
         </div>
 
-        {/* Section 4: The Solution */}
+        {/* Section 3: The Solution */}
         <div className="bg-gradient-to-r from-green-50 to-blue-50 border-2 border-green-200 rounded-lg p-8 mb-12">
           <h2 className="text-3xl font-bold text-foreground mb-6">Here's what we do:</h2>
           <div className="space-y-6">
@@ -2597,40 +2509,6 @@ function UnclearResultsPage({
       </div>
     </div>
   )
-}
-
-function FactsOrFearClient() {
-  const [step, setStep] = useState<"landing" | "intro" | "assessment" | "email" | "results">("landing")
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
-  const [answers, setAnswers] = useState<Record<number, string>>({})
-  const [email, setEmail] = useState("")
-  const [firstName, setFirstName] = useState("") // Added firstName state
-  const [showEncouragement, setShowEncouragement] = useState(false)
-  const [emailSending, setEmailSending] = useState(false)
-
-  // Render logic for AssessmentFlow is now handled within AssessmentFlow component
-
-  if (step === "landing") {
-    return <LandingPage onStart={() => setStep("intro")} />
-  }
-
-  if (step === "intro") {
-    return <IntroScreen onStart={() => setStep("assessment")} />
-  }
-
-  if (step === "assessment") {
-    return <AssessmentFlow />
-  }
-
-  if (step === "email") {
-    return <AssessmentFlow />
-  }
-
-  if (step === "results") {
-    return <AssessmentFlow />
-  }
-
-  return null
 }
 
 // Export FactsOrFearClient and default export
