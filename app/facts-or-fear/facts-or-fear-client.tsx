@@ -206,6 +206,8 @@ function FactsOrFearClient() {
   const [email, setEmail] = useState("")
   const [firstName, setFirstName] = useState("")
   const [subscribe, setSubscribe] = useState(true)
+  const [startTime] = useState(Date.now())
+  const [tracked, setTracked] = useState(false)
 
   // Determine if user selected fear or constraint in Q4
   const isFearBased = answers["4"]?.includes("Fear of")
@@ -340,6 +342,48 @@ function FactsOrFearClient() {
     }
 
     setStep("results")
+
+    trackCompletion()
+  }
+
+  const trackCompletion = async () => {
+    if (tracked) return // Prevent double-tracking
+
+    const timeToComplete = Math.floor((Date.now() - startTime) / 1000) // in seconds
+    const resultType = calculateResultType(answers)
+
+    // Detect device type
+    const getDeviceType = () => {
+      const ua = navigator.userAgent
+      if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) return "tablet"
+      if (
+        /Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)
+      )
+        return "mobile"
+      return "desktop"
+    }
+
+    const deviceType = getDeviceType()
+    const referrer = document.referrer || "direct"
+
+    try {
+      await fetch("/api/track-assessment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          resultType,
+          userName: firstName || null,
+          userEmail: email || null,
+          answers,
+          timeToComplete,
+          deviceType,
+          referrer,
+        }),
+      })
+      setTracked(true)
+    } catch (error) {
+      console.error("Failed to track assessment:", error)
+    }
   }
 
   const currentQuestionData = currentQuestions[currentQuestion]
