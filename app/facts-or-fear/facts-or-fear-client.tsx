@@ -460,7 +460,7 @@ function LandingPage({ onStart }: { onStart: () => void }) {
           <div className="max-w-3xl mx-auto space-y-6">
             <div className="space-y-4">
               <p className="text-xl md:text-2xl text-foreground text-balance font-semibold">
-                Take the FREE, 2-minute assessment and find out what's REALLY stopping you from:
+                Take the 2-minute assessment and find out what's REALLY stopping you from:
               </p>
               <ul className="text-lg text-foreground space-y-1 text-left max-w-2xl mx-auto">
                 <li className="flex items-start gap-3">
@@ -493,7 +493,7 @@ function LandingPage({ onStart }: { onStart: () => void }) {
 
           <div className="py-4">
             <Button onClick={onStart} size="lg" className="text-xl px-12 py-8 h-auto font-bold shadow-lg">
-              START THE ASSESSMENT
+              START FREE ASSESSMENT
             </Button>
             <p className="text-sm text-muted-foreground mt-3">2 minutes. Completely private. Brutally honest.</p>
           </div>
@@ -557,7 +557,7 @@ function LandingPage({ onStart }: { onStart: () => void }) {
           {/* Primary CTA */}
           <div className="space-y-4">
             <Button onClick={onStart} size="lg" className="text-xl px-12 py-8 h-auto font-bold">
-              START THE ASSESSMENT
+              START FREE ASSESSMENT
             </Button>
             <p className="text-sm text-muted-foreground">2 minutes. Completely private. Brutally honest.</p>
 
@@ -615,7 +615,7 @@ function LandingPage({ onStart }: { onStart: () => void }) {
 
           <div className="text-center mt-8">
             <Button onClick={onStart} size="lg" className="text-xl px-12 py-6 h-auto font-bold">
-              START THE ASSESSMENT
+              START FREE ASSESSMENT
             </Button>
             <p className="text-sm text-muted-foreground mt-3">Takes only 2 minutes</p>
           </div>
@@ -656,7 +656,7 @@ function LandingPage({ onStart }: { onStart: () => void }) {
 
           <div className="text-center mt-12">
             <Button onClick={onStart} size="lg" className="text-xl px-12 py-6 h-auto font-bold">
-              START THE ASSESSMENT
+              START FREE ASSESSMENT
             </Button>
             <p className="text-sm text-muted-foreground mt-3">Takes only 2 minutes</p>
           </div>
@@ -683,7 +683,7 @@ function LandingPage({ onStart }: { onStart: () => void }) {
           </div>
           <div className="max-w-3xl mx-auto text-center mb-20">
             <Button onClick={onStart} size="lg" className="text-xl px-12 py-6 h-auto font-bold">
-              START THE ASSESSMENT
+              START FREE ASSESSMENT
             </Button>
             <p className="text-sm text-muted-foreground mt-3">Takes only 2 minutes</p>
           </div>
@@ -721,7 +721,7 @@ function LandingPage({ onStart }: { onStart: () => void }) {
           <h2 className="text-3xl md:text-4xl font-bold">Ready to see the truth?</h2>
           <div className="space-y-4">
             <Button onClick={onStart} size="lg" className="text-xl px-12 py-8 h-auto font-bold">
-              START THE ASSESSMENT
+              START FREE ASSESSMENT
             </Button>
             <p className="text-sm text-muted-foreground">2 minutes. Completely private. Brutally honest.</p>
 
@@ -1255,7 +1255,7 @@ function FearBasedResultsPage({
             </ul>
           </div>
         </Card>
-        <Card className="p-8 md:p-10 mb-8 bg-gradient-to-br from-secondary/10 to-background border-2 border-secondary">
+        <Card className="p-8 md:p-10 mb-8 bg-gradient-to-br from-primary/10 to-accent/10 border-2">
           <h2 className="text-2xl md:text-3xl font-bold mb-6">Here's what changes everything:</h2>
           <div className="p-6 bg-background rounded-lg border-l-4 border-secondary mb-8">
             <p className="text-2xl font-bold">Once you SEE that it's fear (not facts), you can choose differently.</p>
@@ -1854,7 +1854,7 @@ function ConstraintBasedResultsPage({
             </li>
             <li className="flex items-start gap-3">
               <span className="text-green-600 font-bold">✓</span>
-              <span>Shows you what you CAN do NOW (while solving it)</span>
+              <span>Shows you what you can do NOW (while solving it)</span>
             </li>
             <li className="flex items-start gap-3">
               <span className="text-green-600 font-bold">✓</span>
