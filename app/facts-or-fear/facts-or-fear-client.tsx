@@ -1729,7 +1729,7 @@ function ConstraintBasedResultsPage({
   email,
   firstName,
 }: {
-  answers: Record<number, string>
+  answers: Record<string | number, string>
   email: string
   firstName: string
 }) {
@@ -1737,9 +1737,9 @@ function ConstraintBasedResultsPage({
   const q4Answer = answers[4] || "your obstacle"
   const timeStuck = answers[2] || "months"
 
-  const handleDownloadPDF = () => {
-    console.log("[v0] Downloading PDF for:", firstName)
-    window.open(`/api/download-constraint-framework?name=${encodeURIComponent(firstName)}`, "_blank")
+  const handleGetFramework = () => {
+    console.log("[v0] Requesting framework via email for:", firstName)
+    window.location.href = `mailto:idealclaritysolutions@gmail.com?subject=Request: Constraint Solution Framework&body=Hi! I just completed the assessment and would love to receive the Constraint Solution Framework.%0A%0AName: ${firstName}%0AEmail: ${email}`
   }
 
   return (
@@ -1888,49 +1888,16 @@ function ConstraintBasedResultsPage({
         {/* Section 5: Free Resource - Prominent */}
         <div className="bg-accent/20 border-4 border-accent rounded-lg p-10 mb-16 shadow-lg">
           <h2 className="text-4xl font-bold text-foreground mb-4">Download: The Constraint Solution Framework</h2>
-          <p className="text-xl text-muted-foreground mb-8">What's inside:</p>
-          <ul className="space-y-4 mb-8 text-lg">
-            <li className="flex items-start gap-3">
-              <span className="text-accent font-bold text-2xl">✓</span>
-              <span>
-                <strong>Constraint Diagnosis Worksheet</strong> - Identify if your constraint is real or fear-based
-              </span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="text-accent font-bold text-2xl">✓</span>
-              <span>
-                <strong>Timeline Calculator</strong> - Map out exactly when your constraint will be solved
-              </span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="text-accent font-bold text-2xl">✓</span>
-              <span>
-                <strong>Momentum-while-Waiting Action Plan</strong> - 30 specific things you can do NOW while solving
-                the constraint
-              </span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="text-accent font-bold text-2xl">✓</span>
-              <span>
-                <strong>Week-by-Week Roadmap Template</strong> - Break down your constraint solution into manageable
-                steps
-              </span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="text-accent font-bold text-2xl">✓</span>
-              <span>
-                <strong>Milestone Tracker</strong> - Stay accountable and measure progress
-              </span>
-            </li>
-          </ul>
-          <p className="text-lg text-foreground/90 mb-8">
-            This framework has helped hundreds of people stop "stuck waiting" and start building. And it's yours. Free.
+          <p className="text-xl text-muted-foreground mb-8 text-balance">
+            I created a FREE step-by-step framework to help you solve your constraint while building momentum. Most
+            people sit stuck waiting. You can do both at the same time.
           </p>
+          {/* CHANGE: Updated button to email request instead of PDF download */}
           <button
-            onClick={handleDownloadPDF}
+            onClick={handleGetFramework}
             className="inline-block w-full md:w-auto px-12 py-6 bg-accent text-accent-foreground rounded-lg text-xl font-bold hover:bg-accent/90 transition-colors text-center shadow-lg"
           >
-            📥 DOWNLOAD THE FREE FRAMEWORK (PDF)
+            📧 REQUEST THE FREE FRAMEWORK
           </button>
         </div>
 
@@ -2045,11 +2012,12 @@ function ConstraintBasedResultsPage({
               <li>• Templates and examples</li>
               <li>• Everything you need to solve your constraint AND build momentum</li>
             </ul>
+            {/* CHANGE: Updated button to email request instead of PDF download */}
             <button
-              onClick={handleDownloadPDF}
+              onClick={handleGetFramework}
               className="inline-block w-full px-8 py-4 bg-accent text-accent-foreground rounded-lg text-lg font-bold hover:bg-accent/90 transition-colors text-center mb-6 mt-4"
             >
-              📥 DOWNLOAD FREE FRAMEWORK (PDF)
+              📧 REQUEST FREE FRAMEWORK
             </button>
             <p className="text-sm text-foreground/70">This is perfect if:</p>
             <ul className="space-y-1 text-sm text-foreground/70">
@@ -2113,11 +2081,12 @@ function ConstraintBasedResultsPage({
 
         {/* Final CTA */}
         <div className="text-center space-y-6">
+          {/* CHANGE: Updated button to email request instead of PDF download */}
           <button
-            onClick={handleDownloadPDF}
+            onClick={handleGetFramework}
             className="inline-block w-full md:w-auto px-12 py-6 bg-accent text-accent-foreground rounded-lg text-2xl font-bold hover:bg-accent/90 transition-colors shadow-lg"
           >
-            📥 DOWNLOAD THE FREE FRAMEWORK (PDF)
+            📧 REQUEST THE FREE FRAMEWORK
           </button>
           <div>
             <a
