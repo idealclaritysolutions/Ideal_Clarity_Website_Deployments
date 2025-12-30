@@ -195,7 +195,19 @@ export function FactsOrFearClient() {
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    const q3Answer = answers["3"] || ""
+    const deadline = new Date()
+    deadline.setDate(deadline.getDate() + 7)
+    const deadlineFormatted = deadline.toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    })
+
     console.log("[v0] Starting email submission with:", { email, firstName, isFearBased: isFearBased() })
+    console.log("[v0] Q3 Answer:", q3Answer)
+    console.log("[v0] Deadline:", deadlineFormatted)
 
     if (email && firstName) {
       setEmailSending(true)
@@ -211,6 +223,8 @@ export function FactsOrFearClient() {
             firstName: firstName,
             isFearBased: isFearBased(),
             answers: answers,
+            q3Answer: q3Answer,
+            deadline: deadlineFormatted,
           }),
         })
 
