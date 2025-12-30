@@ -22,13 +22,13 @@ import {
 
 type ResultType = "fear-based" | "constraint-based" | "mixed" | "unclear"
 
-function calculateResultType(answers: Record<number, string>): ResultType {
-  const q4 = answers[4] || ""
-  const q6 = answers[6] || ""
-  const q7 = answers[7] || ""
+function calculateResultType(answers: Record<string, string>): ResultType {
+  const q4 = answers["4"] || ""
+  const q6 = answers["6"] || ""
+  const q7 = answers["7"] || ""
   const q9a = answers["9a"] || ""
   const q9b = answers["9b"] || ""
-  const q10 = answers[10] || ""
+  const q10 = answers["10"] || ""
 
   // Check for constraint indicators
   const hasConstraint =
@@ -220,7 +220,7 @@ const questions: Question[] = [
 
 function FactsOrFearClient() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
-  const [answers, setAnswers] = useState<Record<number, string>>({})
+  const [answers, setAnswers] = useState<Record<string, string>>({})
   const [showIntro, setShowIntro] = useState(true)
   const [showEncouragement, setShowEncouragement] = useState(false)
   const [encouragementText, setEncouragementText] = useState("")
