@@ -123,7 +123,7 @@ const questions: Question[] = [
   {
     id: 9,
     question:
-      "Take a deep breath. This is the most important question.\nIf you're being COMPLETELY honest with yourself - no pretending, no \"should\" - what's the REAL reason you haven't started?\n(Choose the answer that feels most true in your gut, even if you've never admitted it out loud)",
+      "If you're being COMPLETELY honest with yourself - no pretending, no \"should\" - what's the REAL reason you haven't started?\n(Choose the answer that feels most true in your gut, even if you've never admitted it out loud)",
     options: [
       "I'm terrified of failing publicly and everyone seeing it",
       "I'm scared of being judged, criticized, or rejected by people I know",
@@ -132,6 +132,8 @@ const questions: Question[] = [
       "I have a legitimate constraint I truly cannot solve right now (non-compete, money, time, legal, health, etc.)",
       "Honestly? I'm not actually sure. That's why I'm taking this assessment.",
     ],
+    encouragement:
+      "💡 Remember: Whatever you choose is valid. There's no judgment here. This is about YOU seeing the truth clearly.",
   },
   {
     id: 10,
@@ -145,8 +147,415 @@ const questions: Question[] = [
       "No - I'd likely find another reason to wait or delay",
       "I'm honestly not sure - I want to, but I don't know if I'd follow through",
     ],
+    encouragement:
+      "✓ You did it. You answered honestly. That's the hardest part. Now let's show you what your answers reveal.",
   },
 ]
+
+function AssessmentFlow() {
+  const [currentQuestion, setCurrentQuestion] = useState(0)
+  const [answers, setAnswers] = useState<Record<string, string>>({})
+  const [showIntro, setShowIntro] = useState(true)
+  const [showEncouragement, setShowEncouragement] = useState(false)
+  const [encouragementText, setEncouragementText] = useState("")
+
+  // Determine which questions to show based on Q4 answer
+  const isConstraintBased =
+    answers["4"]?.includes("constraint") ||
+    answers["4"]?.includes("Money") ||
+    answers["4"]?.includes("Legal") ||
+    answers["4"]?.includes("Time") ||
+    answers["4"]?.includes("Skill") ||
+    answers["4"]?.includes("Health") ||
+    answers["4"]?.includes("Other genuine")
+  const isFearBased = answers["4"] && !isConstraintBased
+
+  const questions = [
+    {
+      id: "1",
+      header: "Question 1 of 10 | ✓ Your answers are private | 💭 Take your time",
+      question: "What do you want to do but keep putting off?",
+      subtext: "(Select the one that resonates MOST)",
+      options: [
+        "Post content on social media (LinkedIn, Instagram, TikTok)",
+        "Start a business or side project",
+        "Step into leadership or a bigger role at work",
+        "Have a difficult conversation or advocate for myself",
+        "Make a career change or major life decision",
+        "Launch a creative project (podcast, YouTube, book, etc.)",
+      ],
+    },
+    {
+      id: "2",
+      header: "Question 2 of 10 | ✓ Your answers are private | 💭 Take your time",
+      question: "How long have you been stuck on this?",
+      options: ["1-3 months", "3-6 months", "6-12 months", "1-2 years", "2+ years", "I've lost track"],
+    },
+    {
+      id: "3",
+      header: "Question 3 of 10 | ✓ Your answers are private | 💭 Take your time",
+      question: "Which statement sounds MOST like you?",
+      options: [
+        '"I\'m not ready yet. I need more preparation first."',
+        '"I don\'t have enough experience/credentials to be taken seriously."',
+        '"What if people judge me or think I\'m not good enough?"',
+        '"I don\'t have the time/money/resources right now."',
+        '"I\'m waiting for the right time or more clarity."',
+        '"I don\'t think I can actually do this."',
+      ],
+      encouragementAfter: {
+        text: "💭 Pause for a moment.\nYou're doing great. Remember: there are no wrong answers here.\nChoose what feels MOST true, even if it's hard to admit.",
+      },
+    },
+    {
+      id: "4",
+      header: "Question 4 of 10 | ✓ Your answers are private | 💭 Take your time",
+      question: "When you think about actually DOING the thing, what's the PRIMARY thing stopping you?",
+      subtext: "(Choose the ONE that resonates MOST)",
+      sections: [
+        {
+          header: "FEAR-BASED OPTIONS:",
+          options: [
+            'Fear of failure ("What if it doesn\'t work?")',
+            'Fear of judgment ("What will people think of me?")',
+            'Fear of success ("What if it DOES work and my life changes?")',
+            'Fear of inadequacy ("I\'m not good enough for this")',
+            'Fear of regret ("What if I choose wrong?")',
+          ],
+        },
+        {
+          header: "CONSTRAINT-BASED OPTIONS:",
+          options: [
+            "Money/financial constraint (Need to save money, can't afford to quit yet, need income first)",
+            "Legal/contractual restriction (Non-compete, contract obligation, visa/immigration, etc.)",
+            "Time/caregiving constraint (Young kids, eldercare, job demands, genuine bandwidth limit)",
+            "Skill/credential gap (Need certification, degree, training, experience I don't have yet)",
+            "Health/physical constraint (Personal health, family health situation, recovery, etc.)",
+            "Other genuine constraint (Something real I haven't named)",
+          ],
+        },
+      ],
+    },
+    // Conditional 4B - only for constraint-based
+    ...(isConstraintBased
+      ? [
+          {
+            id: "4B",
+            header: "Question 4B of 10 | ✓ Your answers are private | 💭 Take your time",
+            question: `You selected: ${answers["4"]}. Help me understand: Is this constraint...`,
+            options: [
+              'Solvable with a clear timeline (e.g., "Non-compete expires in 6 months" or "I need to save $10K")',
+              'Solvable but timeline unclear (e.g., "I need to save money but don\'t know how long")',
+              'Ongoing/long-term (e.g., "I have young kids for the next 5 years")',
+              "Honestly, I'm not sure if it's solvable or just an excuse",
+            ],
+          },
+        ]
+      : []),
+    {
+      id: "5",
+      header: "Question 5 of 10 | ✓ Your answers are private | 💭 Take your time",
+      question: "What do you do INSTEAD of taking action?",
+      options: [
+        "Research and consume more content (courses, books, videos, podcasts)",
+        "Plan and strategize excessively (perfect the approach)",
+        'Work on "prerequisites" first (website, logo, certifications, skills)',
+        "Wait for conditions to improve (more time, money, clarity, confidence)",
+        "Distract myself with other tasks (busy but not progressing)",
+        'Tell myself "next week" or "next month" repeatedly',
+      ],
+    },
+    {
+      id: "6",
+      header: "Question 6 of 10 | ✓ Your answers are private | 💭 Take your time",
+      question: "If I could GUARANTEE you wouldn't fail, would you start tomorrow?",
+      options: [
+        "Yes, immediately - I'd start right now",
+        "Probably yes, but I'd still feel nervous",
+        "Maybe, but I'd want to prepare a bit more first",
+        "I don't know, I'd need to think about it",
+        "No, there are still real obstacles I need to solve first",
+      ],
+      encouragementAfter: {
+        text: "✓ Halfway there.\nYou're being honest. That takes courage.\nKeep going. The clarity is on the other side of the discomfort.",
+      },
+    },
+    {
+      id: "7",
+      header: "Question 7 of 10 | ✓ Your answers are private | 💭 Take your time",
+      question: "If your stated obstacle disappeared tomorrow, would you ACTUALLY move forward?",
+      subtext: 'For example: If you suddenly had "enough experience" or "enough money" or "the perfect timing"',
+      options: [
+        "Yes, I'd start immediately with no hesitation",
+        "Probably, but I might find another reason to wait",
+        "Honestly, I'd probably still hesitate",
+        "No, there's something else holding me back",
+        "I don't know",
+      ],
+    },
+    {
+      id: "8",
+      header: "Question 8 of 10 | ✓ Your answers are private | 💭 Take your time",
+      question: "Have your REASONS for not starting changed over time?",
+      options: [
+        "Yes, I keep finding NEW reasons to delay (the excuse evolves)",
+        "No, it's been the SAME reason the whole time",
+        "Sort of - the core fear feels the same but the excuse changes",
+        "I'm not sure",
+      ],
+      encouragementAfter: {
+        text: "🎯 Almost there. Just 2 more questions.\nYou're doing the hard work of being honest.\nThe truth is just ahead.",
+      },
+    },
+    // Conditional 9A - only for fear-based
+    ...(isFearBased
+      ? [
+          {
+            id: "9A",
+            header: "Question 9 of 10 | ✓ Your answers are private | 💭 Take your time",
+            question:
+              "Take a deep breath. This is the most important question. If you're being COMPLETELY honest with yourself - no pretending, no \"should\" - what's the REAL reason you haven't started?",
+            subtext: "(Choose the answer that feels most true in your gut, even if you've never admitted it out loud)",
+            options: [
+              "I'm terrified of failing publicly and everyone seeing it",
+              "I'm scared of being judged, criticized, or rejected by people I know",
+              "Deep down, I don't actually believe I'm good enough to succeed at this",
+              "I'm afraid of what happens if it WORKS (visibility, expectations, my life changing)",
+              "Wait - actually, I think I DO have a real constraint I haven't admitted",
+              "Honestly? I'm not actually sure. That's why I'm taking this assessment.",
+            ],
+            encouragement:
+              "💡 Remember: Whatever you choose is valid. There's no judgment here. This is about YOU seeing the truth clearly.",
+          },
+        ]
+      : []),
+    // Conditional 9B - only for constraint-based
+    ...(isConstraintBased
+      ? [
+          {
+            id: "9B",
+            header: "Question 9 of 10 | ✓ Your answers are private | 💭 Take your time",
+            question:
+              "You said you have a real constraint. Let's go deeper. If your constraint was solved tomorrow, would you start immediately?",
+            subtext:
+              "(For example: If the non-compete expired, if you had the money saved, if you had childcare, if you completed the certification)",
+            options: [
+              "Yes, I'd start immediately with no hesitation",
+              "Probably yes, but I'd still feel nervous or find another reason",
+              "Maybe - I think there's something else holding me back too",
+              "No - there's another constraint I haven't named yet",
+              "Honestly, I'm not sure",
+            ],
+            encouragement:
+              "💡 Be honest. If you'd start immediately, your constraint is REAL. If you'd still hesitate, fear is also present.",
+          },
+        ]
+      : []),
+    {
+      id: "10",
+      header: "Question 10 of 10 | ✓ Your answers are private | 💭 Take your time",
+      question:
+        "Last question: Be honest about your readiness. If someone offered you the EXACT support you needed to overcome your obstacle, would you actually take it?",
+      subtext: "(Not what you think you should say - what would you ACTUALLY do?)",
+      options: [
+        "Yes, absolutely - I'd start immediately without hesitation",
+        "Yes, but I'd be very nervous and might second-guess myself",
+        "Maybe - I'd need to know more details and think about it first",
+        "Probably not - I don't think I'm truly ready yet",
+        "No - I'd likely find another reason to wait or delay",
+        "I'm honestly not sure - I want to, but I don't know if I'd follow through",
+      ],
+      encouragement:
+        "✓ You did it. You answered honestly. That's the hardest part. Now let's show you what your answers reveal.",
+    },
+  ]
+
+  const handleAnswer = (answer: string) => {
+    const currentQ = questions[currentQuestion]
+    setAnswers((prev) => ({ ...prev, [currentQ.id]: answer }))
+
+    if (currentQ.encouragementAfter) {
+      setEncouragementText(currentQ.encouragementAfter.text)
+      setShowEncouragement(true)
+    } else if (currentQ.encouragement) {
+      setEncouragementText(currentQ.encouragement)
+      setShowEncouragement(true)
+    } else {
+      moveToNext()
+    }
+  }
+
+  const moveToNext = () => {
+    if (currentQuestion < questions.length - 1) {
+      setCurrentQuestion(currentQuestion + 1)
+    } else {
+      // Show email capture
+      setShowIntro(false)
+    }
+  }
+
+  if (showIntro) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center p-6">
+        <Card className="max-w-3xl w-full p-8 md:p-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-8">10 Questions. Total Honesty.</h2>
+
+          <div className="space-y-6 text-lg">
+            <p className="font-semibold">Here's how this works:</p>
+            <ul className="space-y-3 list-none">
+              <li className="flex items-start gap-3">
+                <span className="text-primary font-bold">→</span>
+                <span>
+                  <strong>Read each question carefully</strong> - Don't rush. Sit with it.
+                </span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-primary font-bold">→</span>
+                <span>
+                  <strong>Choose the answer that feels MOST true</strong> - Not what you think you "should" say. What's
+                  actually true.
+                </span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-primary font-bold">→</span>
+                <span>
+                  <strong>Be honest even if it's uncomfortable</strong> - The discomfort is the signal you're getting
+                  close to the truth.
+                </span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-primary font-bold">→</span>
+                <span>
+                  <strong>There are no wrong answers</strong> - This is about YOU seeing clearly. Not being judged.
+                </span>
+              </li>
+            </ul>
+
+            <div className="bg-accent/5 border-l-4 border-accent p-6 mt-8">
+              <p className="font-semibold mb-3">Remember:</p>
+              <ul className="space-y-2">
+                <li>✓ Your answers are completely private</li>
+                <li>✓ No one is grading you</li>
+                <li>✓ The goal is clarity, not perfection</li>
+                <li>✓ The more honest you are, the better your results</li>
+              </ul>
+            </div>
+
+            <p className="text-center text-muted-foreground italic">
+              You can take as much time as you need. This is for YOU.
+            </p>
+          </div>
+
+          <Button onClick={() => setShowIntro(false)} size="lg" className="w-full mt-8 text-lg py-6">
+            START QUESTION 1
+          </Button>
+        </Card>
+      </div>
+    )
+  }
+
+  if (showEncouragement) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center p-6">
+        <Card className="max-w-2xl w-full p-8 bg-accent/5 border-2 border-accent">
+          <div className="text-center space-y-6">
+            {encouragementText.split("\n").map((line, i) => (
+              <p key={i} className="text-lg font-medium whitespace-pre-wrap">
+                {line}
+              </p>
+            ))}
+            <Button
+              onClick={() => {
+                setShowEncouragement(false)
+                moveToNext()
+              }}
+              size="lg"
+              className="mt-6"
+            >
+              CONTINUE
+            </Button>
+          </div>
+        </Card>
+      </div>
+    )
+  }
+
+  const currentQ = questions[currentQuestion]
+  const progress = Math.round(((currentQuestion + 1) / questions.length) * 100)
+
+  return (
+    <div className="min-h-screen bg-background flex flex-col">
+      {/* Progress Bar */}
+      <div className="bg-muted border-b">
+        <div className="container mx-auto px-6 py-4">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-medium">
+              Question {currentQuestion + 1} of {questions.length}
+            </span>
+            <span className="text-sm text-muted-foreground">{progress}% Complete</span>
+          </div>
+          <div className="w-full bg-background rounded-full h-2">
+            <div
+              className="bg-primary h-2 rounded-full transition-all duration-300"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Question */}
+      <div className="flex-1 container mx-auto px-6 py-8 max-w-3xl">
+        <div className="space-y-6">
+          <div className="text-sm text-muted-foreground text-center">{currentQ.header}</div>
+          <h2 className="text-2xl md:text-3xl font-bold text-center text-balance">{currentQ.question}</h2>
+          {currentQ.subtext && <p className="text-center text-muted-foreground italic">{currentQ.subtext}</p>}
+
+          <div className="space-y-3 pt-6">
+            {currentQ.sections
+              ? // Q4 with sections
+                currentQ.sections.map((section, sectionIdx) => (
+                  <div key={sectionIdx} className="space-y-3">
+                    <h3 className="font-bold text-sm text-muted-foreground mt-6">{section.header}</h3>
+                    {section.options.map((option, i) => (
+                      <button
+                        key={i}
+                        onClick={() => handleAnswer(option)}
+                        className="w-full p-4 text-left border-2 rounded-lg hover:border-primary hover:bg-accent/5 transition-all"
+                      >
+                        {option}
+                      </button>
+                    ))}
+                  </div>
+                ))
+              : // Regular options
+                currentQ.options?.map((option, i) => (
+                  <button
+                    key={i}
+                    onClick={() => handleAnswer(option)}
+                    className="w-full p-4 text-left border-2 rounded-lg hover:border-primary hover:bg-accent/5 transition-all"
+                  >
+                    {option}
+                  </button>
+                ))}
+          </div>
+
+          {currentQ.encouragement && (
+            <div className="mt-6 p-4 bg-accent/5 border-l-4 border-accent rounded text-sm">
+              {currentQ.encouragement}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Sticky Footer */}
+      <div className="bg-muted border-t py-4">
+        <div className="container mx-auto px-6 text-center text-sm text-muted-foreground">
+          🔒 Private | ⏱️ No time limit | ✓ Total honesty = Best results
+        </div>
+      </div>
+    </div>
+  )
+}
 
 export function FactsOrFearClient() {
   const [step, setStep] = useState<"landing" | "intro" | "assessment" | "email" | "results">("landing")
@@ -335,19 +744,32 @@ function LandingPage({ onStart }: { onStart: () => void }) {
               You've been telling yourself you're "not ready yet." That you need more time. More experience. More
               clarity.
             </p>
-            <p className="text-lg text-muted-foreground text-balance">But what if those aren't real obstacles?</p>
-            <p className="text-lg font-semibold text-accent">What if they're just fear... dressed up as logic?</p>
+            <p className="text-lg text-muted-foreground text-balance">But what if those aren\'t real obstacles?</p>
+            <p className="text-lg font-semibold text-accent">What if they\'re just fear... dressed up as logic?</p>
             <p className="text-lg text-foreground font-medium">This assessment will show you the truth.</p>
           </div>
 
-          {/* Visual Concept - Split Image */}
+          <div className="py-6">
+            <Button onClick={onStart} size="lg" className="text-xl px-12 py-8 h-auto font-bold shadow-lg">
+              START THE ASSESSMENT
+            </Button>
+            <p className="text-sm text-muted-foreground mt-3">2 minutes. Completely private. Brutally honest.</p>
+          </div>
+
           <div className="max-w-5xl mx-auto my-12">
-            <div className="grid md:grid-cols-2 gap-6 items-center">
-              <Card className="p-8 bg-muted/30 border-2">
-                <div className="space-y-4">
+            <div className="grid md:grid-cols-2 gap-8 items-stretch">
+              {/* Left side - Excuses/Surface Reasons */}
+              <Card className="p-8 bg-muted/30 border-2 relative overflow-hidden">
+                <img
+                  src="/person-thinking-with-question-marks-floating-aroun.jpg"
+                  alt="Person thinking with doubts"
+                  className="absolute top-0 left-0 w-full h-32 object-cover opacity-20"
+                />
+                <div className="relative z-10 space-y-4 mt-24">
                   <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mx-auto mb-4">
                     <Brain className="w-8 h-8 text-muted-foreground" />
                   </div>
+                  <h3 className="text-xl font-bold text-center mb-6">What You Tell Yourself</h3>
                   {["I need more experience first", "I'm not ready yet", "What if people judge me?"].map(
                     (thought, i) => (
                       <div key={i} className="flex items-start gap-3 p-3 bg-background rounded-lg">
@@ -359,22 +781,18 @@ function LandingPage({ onStart }: { onStart: () => void }) {
                 </div>
               </Card>
 
-              <div className="flex justify-center">
-                <div className="relative">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <ArrowRight className="w-12 h-12 text-accent" />
-                  </div>
-                  <div className="text-center py-4">
-                    <p className="text-sm font-semibold text-accent">This assessment reveals the truth</p>
-                  </div>
-                </div>
-              </div>
-
-              <Card className="p-8 bg-accent/5 border-2 border-accent">
-                <div className="space-y-4">
+              {/* Right side - The Truth */}
+              <Card className="p-8 bg-accent/5 border-2 border-accent relative overflow-hidden">
+                <img
+                  src="/lightbulb-moment-clarity-breakthrough-understandin.jpg"
+                  alt="Moment of clarity"
+                  className="absolute top-0 left-0 w-full h-32 object-cover opacity-20"
+                />
+                <div className="relative z-10 space-y-4 mt-24">
                   <div className="w-16 h-16 rounded-full bg-accent/20 flex items-center justify-center mx-auto mb-4">
                     <AlertCircle className="w-8 h-8 text-accent" />
                   </div>
+                  <h3 className="text-xl font-bold text-center mb-6 text-accent">The Real Truth</h3>
                   {["I'm scared of failing", "I'm terrified of being seen", "I'm afraid I'm not good enough"].map(
                     (truth, i) => (
                       <div
@@ -389,6 +807,9 @@ function LandingPage({ onStart }: { onStart: () => void }) {
                 </div>
               </Card>
             </div>
+            <p className="text-center text-sm font-semibold text-accent mt-6">
+              This assessment reveals what's REALLY holding you back
+            </p>
           </div>
 
           {/* Primary CTA */}
@@ -723,7 +1144,7 @@ function AssessmentScreen({
                 className="w-full p-5 text-left bg-muted/50 hover:bg-primary/10 hover:border-primary/50 border-2 border-transparent rounded-xl transition-all group"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-6 h-6 rounded-full border-2 border-muted-foreground group-hover:border-primary transition-colors" />
+                  <div className="w-2 h-2 rounded-full border-2 border-muted-foreground group-hover:border-primary transition-colors" />
                   <span className="text-base">{option}</span>
                 </div>
               </button>
@@ -1430,7 +1851,7 @@ function ResultsPage({
               },
               {
                 q: "What if I don't do the thing by Week 4?",
-                a: "Then you've identified a deeper pattern we need to address. But if you show up fully and do the work, you WILL move. I've yet to see someone fully commit and not break through.",
+                a: "Then you've identified a deeper pattern we need to address. But if you show up fully and do the work, you WILL break through. I've yet to see someone fully commit and not break through.",
               },
               {
                 q: "Is this confidential?",
