@@ -535,7 +535,7 @@ function LandingPage({ onStart }: { onStart: () => void }) {
                   <div className="w-16 h-16 rounded-full bg-accent/20 flex items-center justify-center mx-auto mb-4">
                     <AlertCircle className="w-8 h-8 text-accent" />
                   </div>
-                  <h3 className="text-xl font-bold text-center mb-6 text-accent">The Real Truth</h3>
+                  <h3 className="text-xl font-bold text-center mb-6 text-accent">The Possible Truth</h3>
                   {["I'm scared of failing", "I'm terrified of being seen", "I'm afraid I'm not good enough"].map(
                     (truth, i) => (
                       <div
