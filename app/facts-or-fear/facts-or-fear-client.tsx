@@ -459,7 +459,7 @@ function LandingPage({ onStart }: { onStart: () => void }) {
 
           <div className="max-w-3xl mx-auto space-y-6">
             <p className="text-xl md:text-2xl text-foreground text-balance">
-              Take the 2-minute assessment and find out what's REALLY stopping you.
+              Take the 2-minute assessment and find out what's REALLY stopping you from living the life you want - starting the business, posting content on social media, going after a better role, seeking out leadership opportunities, etc.
             </p>
             <p className="text-lg text-muted-foreground text-balance">
               You've been telling yourself you're "not ready yet." That you need more time. More experience. More
