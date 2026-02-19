@@ -82,16 +82,16 @@ export function Header() {
           <div className="fixed inset-0 bg-black/50 z-40 md:hidden" onClick={() => setOpen(false)} />
 
           {/* Slide-in menu */}
-          <div className="fixed right-0 top-0 bottom-0 w-[300px] sm:w-[400px] bg-background border-l z-50 md:hidden animate-in slide-in-from-right duration-300">
-            <div className="flex items-center justify-between p-6 border-b">
-              <span className="font-semibold text-lg">Menu</span>
+          <div className="fixed right-0 top-0 bottom-0 w-[300px] sm:w-[400px] bg-white border-l z-50 md:hidden animate-in slide-in-from-right duration-300 shadow-2xl">
+            <div className="flex items-center justify-between p-6 border-b bg-white">
+              <span className="font-semibold text-lg text-gray-900">Menu</span>
               <Button variant="ghost" size="icon" onClick={() => setOpen(false)}>
                 <X className="h-6 w-6" />
                 <span className="sr-only">Close menu</span>
               </Button>
             </div>
 
-            <nav className="flex flex-col gap-6 mt-8 pl-6">
+            <nav className="flex flex-col gap-6 mt-8 pl-6 bg-white h-full">
               <Link
                 href="/"
                 className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors"
