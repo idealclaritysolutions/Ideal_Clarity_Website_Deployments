@@ -82,7 +82,7 @@ export function Header() {
           <div className="fixed inset-0 bg-black/50 z-40 md:hidden" onClick={() => setOpen(false)} />
 
           {/* Slide-in menu */}
-          <div className="fixed right-0 top-0 bottom-0 w-[300px] sm:w-[400px] bg-background border-l z-50 md:hidden animate-in slide-in-from-right duration-300">
+          <div className="fixed right-0 top-0 bottom-0 w-[300px] sm:w-[400px] bg-white dark:bg-slate-900 border-l z-50 md:hidden animate-in slide-in-from-right duration-300 shadow-lg">
             <div className="flex items-center justify-between p-6 border-b">
               <span className="font-semibold text-lg">Menu</span>
               <Button variant="ghost" size="icon" onClick={() => setOpen(false)}>
@@ -91,45 +91,45 @@ export function Header() {
               </Button>
             </div>
 
-            <nav className="flex flex-col gap-6 mt-8 pl-6">
+            <nav className="flex flex-col gap-6 mt-8 pl-6 text-foreground">
               <Link
                 href="/"
-                className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors"
+                className="text-lg font-medium text-foreground hover:text-accent transition-colors"
                 onClick={() => setOpen(false)}
               >
                 Home
               </Link>
               <Link
                 href="/work-with-me"
-                className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors"
+                className="text-lg font-medium text-foreground hover:text-accent transition-colors"
                 onClick={() => setOpen(false)}
               >
                 Work With Me
               </Link>
               <Link
                 href="/#about"
-                className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors"
+                className="text-lg font-medium text-foreground hover:text-accent transition-colors"
                 onClick={() => setOpen(false)}
               >
                 About
               </Link>
               <Link
                 href="/#how-it-works"
-                className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors"
+                className="text-lg font-medium text-foreground hover:text-accent transition-colors"
                 onClick={() => setOpen(false)}
               >
                 How It Works
               </Link>
               <Link
                 href="/blog"
-                className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors"
+                className="text-lg font-medium text-foreground hover:text-accent transition-colors"
                 onClick={() => setOpen(false)}
               >
                 The Clarity Guide
               </Link>
               <Link
                 href="/contact"
-                className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors"
+                className="text-lg font-medium text-foreground hover:text-accent transition-colors"
                 onClick={() => setOpen(false)}
               >
                 Contact
