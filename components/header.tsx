@@ -79,10 +79,10 @@ export function Header() {
       {open && (
         <>
           {/* Backdrop */}
-          <div className="fixed inset-0 bg-black/50 z-40 md:hidden" onClick={() => setOpen(false)} />
+          <div className="fixed inset-0 bg-black/60 z-[9998] md:hidden" onClick={() => setOpen(false)} />
 
           {/* Slide-in menu */}
-          <div className="fixed right-0 top-0 bottom-0 w-[300px] sm:w-[400px] bg-white dark:bg-slate-900 border-l z-50 md:hidden animate-in slide-in-from-right duration-300 shadow-lg">
+          <div className="fixed right-0 top-0 bottom-0 w-[300px] sm:w-[400px] bg-white dark:bg-slate-900 border-l z-[9999] md:hidden animate-in slide-in-from-right duration-300 shadow-2xl">
             <div className="flex items-center justify-between p-6 border-b">
               <span className="font-semibold text-lg">Menu</span>
               <Button variant="ghost" size="icon" onClick={() => setOpen(false)}>
