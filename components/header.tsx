@@ -68,7 +68,7 @@ export function Header() {
           </nav>
 
           <div className="flex md:hidden items-center gap-4">
-            <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setOpen(!open)}>
+            <Button variant="ghost" size="icon" className="md:hidden text-foreground hover:text-accent hover:bg-accent/10" onClick={() => setOpen(!open)}>
               <Menu className="h-6 w-6" />
               <span className="sr-only">Toggle menu</span>
             </Button>
