@@ -68,7 +68,7 @@ export function Header() {
           </nav>
 
           <div className="flex md:hidden items-center gap-4">
-            <Button variant="ghost" size="icon" className="md:hidden text-foreground hover:text-accent hover:bg-accent/10" onClick={() => setOpen(!open)}>
+            <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setOpen(!open)}>
               <Menu className="h-6 w-6" />
               <span className="sr-only">Toggle menu</span>
             </Button>
@@ -79,15 +79,12 @@ export function Header() {
       {open && (
         <>
           {/* Backdrop */}
-          <div className="fixed inset-0 bg-black/60 z-[9998] md:hidden" onClick={() => setOpen(false)} />
+          <div className="fixed inset-0 bg-black/50 z-40 md:hidden" onClick={() => setOpen(false)} />
 
           {/* Slide-in menu */}
           <div className="fixed right-0 top-0 bottom-0 w-[300px] sm:w-[400px] bg-white border-l z-50 md:hidden animate-in slide-in-from-right duration-300 shadow-2xl">
             <div className="flex items-center justify-between p-6 border-b bg-white">
               <span className="font-semibold text-lg text-gray-900">Menu</span>
-          <div className="fixed right-0 top-0 bottom-0 w-[300px] sm:w-[400px] bg-white dark:bg-slate-900 border-l z-[9999] md:hidden animate-in slide-in-from-right duration-300 shadow-2xl">
-            <div className="flex items-center justify-between p-6 border-b">
-              <span className="font-semibold text-lg">Menu</span>
               <Button variant="ghost" size="icon" onClick={() => setOpen(false)}>
                 <X className="h-6 w-6" />
                 <span className="sr-only">Close menu</span>
@@ -95,45 +92,44 @@ export function Header() {
             </div>
 
             <nav className="flex flex-col gap-6 mt-8 pl-6 bg-white h-full">
-            <nav className="flex flex-col gap-6 mt-8 pl-6 text-foreground">
               <Link
                 href="/"
-                className="text-lg font-medium text-foreground hover:text-accent transition-colors"
+                className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors"
                 onClick={() => setOpen(false)}
               >
                 Home
               </Link>
               <Link
                 href="/work-with-me"
-                className="text-lg font-medium text-foreground hover:text-accent transition-colors"
+                className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors"
                 onClick={() => setOpen(false)}
               >
                 Work With Me
               </Link>
               <Link
                 href="/#about"
-                className="text-lg font-medium text-foreground hover:text-accent transition-colors"
+                className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors"
                 onClick={() => setOpen(false)}
               >
                 About
               </Link>
               <Link
                 href="/#how-it-works"
-                className="text-lg font-medium text-foreground hover:text-accent transition-colors"
+                className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors"
                 onClick={() => setOpen(false)}
               >
                 How It Works
               </Link>
               <Link
                 href="/blog"
-                className="text-lg font-medium text-foreground hover:text-accent transition-colors"
+                className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors"
                 onClick={() => setOpen(false)}
               >
                 The Clarity Guide
               </Link>
               <Link
                 href="/contact"
-                className="text-lg font-medium text-foreground hover:text-accent transition-colors"
+                className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors"
                 onClick={() => setOpen(false)}
               >
                 Contact
@@ -148,5 +144,5 @@ export function Header() {
         </>
       )}
     </header>
-  )
+  );
 }
