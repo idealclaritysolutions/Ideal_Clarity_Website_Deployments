@@ -81,10 +81,10 @@ export function AboutWhoIHelp() {
             <div className="relative">
               <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-xl">
                 <Image
-                  src="/images/breakthrough-action.jpg"
-                  alt="Taking action on your business"
+                  src="/images/me-presenting.jpg"
+                  alt="Presenting on getting unstuck and taking action"
                   fill
-                  className="object-cover"
+                  className="object-cover object-top"
                 />
               </div>
             </div>

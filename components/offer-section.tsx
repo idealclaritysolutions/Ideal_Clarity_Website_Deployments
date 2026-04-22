@@ -4,6 +4,7 @@ import { Check, Calendar, MessageSquare, FileText, Users, Target, Zap } from "lu
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import Link from "next/link"
+import Image from "next/image"
 
 export function OfferSection() {
   const weeks = [
@@ -102,6 +103,24 @@ export function OfferSection() {
               ))}
             </div>
           </Card>
+
+          {/* Social proof image */}
+          <div className="my-12 rounded-2xl overflow-hidden shadow-xl relative aspect-[16/7]">
+            <Image
+              src="/images/taking-action.jpg"
+              alt="Professional ready to take action on their business goals"
+              fill
+              className="object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-accent/60 to-transparent flex items-center">
+              <div className="px-8 sm:px-14 max-w-lg">
+                <p className="text-white text-2xl sm:text-3xl font-bold leading-snug text-balance">
+                  This is the person who gets unstuck. Ready. Taking action.
+                </p>
+                <p className="text-white/80 mt-3 text-lg">That could be you in 4 weeks.</p>
+              </div>
+            </div>
+          </div>
 
           {/* Investment */}
           <Card className="p-8 sm:p-12 bg-white border-2 border-primary/20 text-center">
