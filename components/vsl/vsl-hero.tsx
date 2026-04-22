@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button"
 import { ChevronDown } from "lucide-react"
-import Image from "next/image"
 
 export function VSLHero() {
   const scrollToVideo = () => {
@@ -17,17 +16,6 @@ export function VSLHero() {
       </div>
 
       <div className="relative z-10 max-w-4xl mx-auto text-center">
-        {/* Logo */}
-        <div className="mb-10">
-          <Image
-            src="/images/logo.png"
-            alt="Ideal Clarity"
-            width={200}
-            height={60}
-            className="h-12 w-auto mx-auto brightness-0 invert"
-          />
-        </div>
-
         {/* Pre-headline */}
         <p className="text-[#d4a574] uppercase tracking-[0.2em] text-sm font-medium mb-6">
           For Corporate Professionals Stuck In Planning Mode
