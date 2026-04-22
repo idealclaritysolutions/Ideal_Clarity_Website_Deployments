@@ -115,9 +115,9 @@ export function OfferSection() {
             <div className="absolute inset-0 bg-gradient-to-r from-accent/60 to-transparent flex items-center">
               <div className="px-8 sm:px-14 max-w-lg">
                 <p className="text-white text-2xl sm:text-3xl font-bold leading-snug text-balance">
-                  This is the person who gets unstuck. Ready. Taking action.
+                  Be the person who finally stops planning and starts doing.
                 </p>
-                <p className="text-white/80 mt-3 text-lg">That could be you in 4 weeks.</p>
+                <p className="text-white/80 mt-3 text-lg">Your first offer is 4 weeks away.</p>
               </div>
             </div>
           </div>
@@ -127,7 +127,7 @@ export function OfferSection() {
             <p className="text-lg text-foreground/70 mb-2">Investment</p>
             <p className="text-4xl sm:text-5xl font-bold text-primary mb-4">$3,500</p>
             <p className="text-foreground/70 mb-8">
-              Limited to 5 clients per month (I&apos;m building this while employed—I can&apos;t take more)
+              Limited to 5 clients per month.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
