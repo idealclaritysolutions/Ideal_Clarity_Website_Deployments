@@ -23,13 +23,6 @@ const testimonials = [
       "I have started 3 businesses in the last 3 years and most times, the hardest part about starting was aligning on the path that is most authentic to me and not create another business that most people already built. With Chi-Chi, I was able to find my area of genius and also unlock the mental blocks that were holding me back from fully monetizing my business in a way that truly reflects my value. I've 300x'd my revenue so far.",
   },
   {
-    initials: "HB",
-    name: "Hannah Bailey",
-    company: "The Studio Northwood",
-    quote:
-      "Chi-Chi at Ideal Clarity helped me identify some decision making tools and exercises to clarify values as I'm weighing some big decisions. Her guidance helped reframe and clarify next steps in a valuable way. If you have a business decision or operational problem to solve, Ideal Clarity can help you find your way!",
-  },
-  {
     initials: "JG",
     name: "James G.",
     company: "Koolkrowd",
@@ -43,6 +36,13 @@ const testimonials = [
     quote:
       "Working with Chi-Chi made me uncomfortable in the best way possible, by letting me know that I was rationalizing and making excuses about why I hadn't started my business. Reflecting on my true blockers and working on them is something I can't take for granted.",
     anonymous: true,
+  },
+  {
+    initials: "HB",
+    name: "Hannah Bailey",
+    company: "The Studio Northwood",
+    quote:
+      "Chi-Chi at Ideal Clarity helped me identify some decision making tools and exercises to clarify values as I'm weighing some big decisions. Her guidance helped reframe and clarify next steps in a valuable way. If you have a business decision or operational problem to solve, Ideal Clarity can help you find your way!",
   },
 ]
 
