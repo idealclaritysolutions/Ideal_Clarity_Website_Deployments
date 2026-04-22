@@ -16,7 +16,7 @@ export function ProgramInvestment() {
             <div className="bg-muted/30 rounded-lg p-4 mb-8">
               <p className="text-sm text-foreground/70">Payment in full at enrollment.</p>
               <p className="text-sm text-foreground/70 mt-2">
-                Limited to 5 clients per month (I&apos;m building this while employed—I can&apos;t take more than that)
+                Limited to 5 clients per month.
               </p>
             </div>
 
