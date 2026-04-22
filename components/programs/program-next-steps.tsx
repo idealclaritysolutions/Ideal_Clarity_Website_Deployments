@@ -60,8 +60,7 @@ export function ProgramNextSteps() {
             <Button
               asChild
               size="lg"
-              variant="outline"
-              className="text-lg px-12 py-6 h-auto rounded-full border-white/40 text-white hover:bg-white/10 hover:text-white w-full sm:w-auto"
+              className="text-lg px-12 py-6 h-auto rounded-full bg-white text-accent font-bold hover:bg-white/90 shadow-xl w-full sm:w-auto"
             >
               <Link href="https://buy.stripe.com/6oU6oI9Qu8j73Uz7zBdAk0q" target="_blank">
                 Enroll Now — $3,500
