@@ -36,28 +36,22 @@ export function Header() {
           </Link>
 
           <nav className="hidden md:flex items-center gap-8">
-            <Link href="/" className="text-foreground/80 hover:text-foreground transition-colors font-medium">
+            <Link href="/" className="text-foreground hover:text-primary transition-colors font-medium">
               Home
             </Link>
-            <Link
-              href="/work-with-me"
-              className="text-foreground/80 hover:text-foreground transition-colors font-medium"
-            >
-              Work With Me
-            </Link>
-            <Link href="/#about" className="text-foreground/80 hover:text-foreground transition-colors font-medium">
+            <Link href="/about" className="text-foreground hover:text-primary transition-colors font-medium">
               About
             </Link>
-            <Link
-              href="/#how-it-works"
-              className="text-foreground/80 hover:text-foreground transition-colors font-medium"
-            >
+            <Link href="/how-it-works" className="text-foreground hover:text-primary transition-colors font-medium">
               How It Works
             </Link>
-            <Link href="/blog" className="text-foreground/80 hover:text-foreground transition-colors font-medium">
+            <Link href="/programs" className="text-foreground hover:text-primary transition-colors font-medium">
+              Programs
+            </Link>
+            <Link href="/blog" className="text-foreground hover:text-primary transition-colors font-medium">
               The Clarity Guide
             </Link>
-            <Link href="/contact" className="text-foreground/80 hover:text-foreground transition-colors font-medium">
+            <Link href="/contact" className="text-foreground hover:text-primary transition-colors font-medium">
               Contact
             </Link>
             <Button asChild size="lg" className="rounded-full">
@@ -82,64 +76,67 @@ export function Header() {
           <div className="fixed inset-0 bg-black/50 z-40 md:hidden" onClick={() => setOpen(false)} />
 
           {/* Slide-in menu */}
-          <div className="fixed right-0 top-0 bottom-0 w-[300px] sm:w-[400px] bg-white border-l z-50 md:hidden animate-in slide-in-from-right duration-300 shadow-2xl">
-            <div className="flex items-center justify-between p-6 border-b bg-white">
-              <span className="font-semibold text-lg text-gray-900">Menu</span>
-              <Button variant="ghost" size="icon" onClick={() => setOpen(false)}>
+          <div className="fixed right-0 top-0 bottom-0 w-[300px] sm:w-[360px] bg-white border-l z-50 md:hidden animate-in slide-in-from-right duration-300 shadow-2xl flex flex-col">
+            <div className="flex items-center justify-between p-6 border-b">
+              <span className="font-bold text-xl text-gray-900">Menu</span>
+              <Button variant="ghost" size="icon" onClick={() => setOpen(false)} className="text-gray-900">
                 <X className="h-6 w-6" />
                 <span className="sr-only">Close menu</span>
               </Button>
             </div>
 
-            <nav className="flex flex-col gap-6 mt-8 pl-6 bg-white h-full">
+            <nav className="flex flex-col gap-1 mt-4 px-4 flex-1">
               <Link
                 href="/"
-                className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors"
+                className="text-base font-semibold text-gray-900 hover:text-primary transition-colors py-3 px-3 rounded-lg hover:bg-gray-50"
                 onClick={() => setOpen(false)}
               >
                 Home
               </Link>
               <Link
-                href="/work-with-me"
-                className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors"
-                onClick={() => setOpen(false)}
-              >
-                Work With Me
-              </Link>
-              <Link
-                href="/#about"
-                className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors"
+                href="/about"
+                className="text-base font-semibold text-gray-900 hover:text-primary transition-colors py-3 px-3 rounded-lg hover:bg-gray-50"
                 onClick={() => setOpen(false)}
               >
                 About
               </Link>
               <Link
-                href="/#how-it-works"
-                className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors"
+                href="/how-it-works"
+                className="text-base font-semibold text-gray-900 hover:text-primary transition-colors py-3 px-3 rounded-lg hover:bg-gray-50"
                 onClick={() => setOpen(false)}
               >
                 How It Works
               </Link>
               <Link
+                href="/programs"
+                className="text-base font-semibold text-gray-900 hover:text-primary transition-colors py-3 px-3 rounded-lg hover:bg-gray-50"
+                onClick={() => setOpen(false)}
+              >
+                Programs
+              </Link>
+              <Link
                 href="/blog"
-                className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors"
+                className="text-base font-semibold text-gray-900 hover:text-primary transition-colors py-3 px-3 rounded-lg hover:bg-gray-50"
                 onClick={() => setOpen(false)}
               >
                 The Clarity Guide
               </Link>
               <Link
                 href="/contact"
-                className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors"
+                className="text-base font-semibold text-gray-900 hover:text-primary transition-colors py-3 px-3 rounded-lg hover:bg-gray-50"
                 onClick={() => setOpen(false)}
               >
                 Contact
               </Link>
-              <Button asChild size="lg" className="rounded-full mt-4 mr-6">
+            </nav>
+
+            <div className="p-6 border-t">
+              <Button asChild size="lg" className="rounded-full w-full">
                 <Link href="https://calendly.com/idealclaritysolutions/30min" target="_blank">
                   Book Free Session
                 </Link>
               </Button>
-            </nav>
+            </div>
           </div>
         </>
       )}

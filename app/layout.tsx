@@ -21,9 +21,9 @@ const _merriweather = V0_Font_Merriweather({
 })
 
 export const metadata: Metadata = {
-  title: "Ideal Clarity - Stop Going in Circles. Get Unstuck in One Conversation.",
+  title: "Ideal Clarity Solutions - You Know What To Do. You Just Can't Seem To Make Yourself Do It.",
   description:
-    "Been stuck for weeks? Get clarity in 90 minutes. Most people spend weeks going in circles. In one conversation, we'll cut through the noise and get you moving.",
+    "You've been planning to start your business for 6+ months. There's a block. Let's remove it. From Idea to First Offer: 4 weeks, $3,500, from stuck in planning to 10 offers made.",
   generator: "v0.app",
   icons: {
     icon: [

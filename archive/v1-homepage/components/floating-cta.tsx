@@ -3,11 +3,12 @@
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Sparkles } from "lucide-react"
-import Link from "next/link"
+import { ServiceSelectionDialog } from "./service-selection-dialog"
 
 export function FloatingCTA() {
   const [isVisible, setIsVisible] = useState(false)
   const [isFooterVisible, setIsFooterVisible] = useState(false)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   useEffect(() => {
     const toggleVisibility = () => {
@@ -39,17 +40,19 @@ export function FloatingCTA() {
   }
 
   return (
-    <div className="fixed bottom-8 right-8 z-50 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <Button
-        asChild
-        size="lg"
-        className="rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 bg-gradient-to-r from-primary to-accent text-white border-0 px-6 py-6 text-base font-semibold"
-      >
-        <Link href="https://calendly.com/idealclaritysolutions/30min" target="_blank">
+    <>
+      <div className="fixed bottom-8 right-8 z-50 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <Button
+          onClick={() => setIsDialogOpen(true)}
+          size="lg"
+          className="rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 bg-gradient-to-r from-primary to-accent text-white border-0 px-6 py-6 text-base font-semibold"
+        >
           <Sparkles className="h-5 w-5 mr-2" />
-          <span>Book Free Strategy Call</span>
-        </Link>
-      </Button>
-    </div>
+          <span>Get Career Clarity Now</span>
+        </Button>
+      </div>
+
+      <ServiceSelectionDialog isOpen={isDialogOpen} onClose={() => setIsDialogOpen(false)} />
+    </>
   )
 }

@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Send } from "lucide-react"
+import Link from "next/link"
 
 export function ContactForm() {
   const [formData, setFormData] = useState({
@@ -25,7 +26,7 @@ export function ContactForm() {
 
     // Create mailto link with form data
     const mailtoLink = `mailto:idealclaritysolutions@gmail.com?subject=${encodeURIComponent(
-      formData.subject || "Contact Form Submission",
+      formData.subject || "Question from Website",
     )}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`)}`
 
     // Open mailto link
@@ -41,9 +42,9 @@ export function ContactForm() {
   }
 
   return (
-    <div className="bg-background border border-border rounded-xl p-6 md:p-8 shadow-sm">
-      <h2 className="text-2xl font-bold text-accent mb-2">Send a Message</h2>
-      <p className="text-muted-foreground mb-6">Fill out the form below and I'll get back to you soon.</p>
+    <div className="bg-white border-2 border-border rounded-2xl p-8 shadow-lg">
+      <h2 className="text-2xl font-bold text-accent mb-2">Or Send a Message</h2>
+      <p className="text-muted-foreground mb-6">Have a quick question? Send me a message and I&apos;ll get back to you.</p>
 
       <form onSubmit={handleSubmit} className="space-y-5">
         <div className="space-y-2">
@@ -53,7 +54,7 @@ export function ContactForm() {
           <Input
             id="name"
             type="text"
-            placeholder="Chi-Chi Jones"
+            placeholder="Your name"
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             required
@@ -96,11 +97,11 @@ export function ContactForm() {
           </Label>
           <Textarea
             id="message"
-            placeholder="Tell me what you're struggling with or what questions you have..."
+            placeholder="What would you like to know?"
             value={formData.message}
             onChange={(e) => setFormData({ ...formData, message: e.target.value })}
             required
-            rows={6}
+            rows={5}
             className="border-border focus:border-primary resize-none"
           />
         </div>
@@ -130,10 +131,10 @@ export function ContactForm() {
 
       <div className="mt-6 pt-6 border-t border-border">
         <p className="text-sm text-muted-foreground text-center">
-          Prefer to book directly?{" "}
-          <Button asChild variant="link" className="text-primary hover:text-primary/80 p-0 h-auto">
-            <a href="https://calendly.com/idealclaritysolutions/free-session">Schedule your free session</a>
-          </Button>
+          Ready to take action?{" "}
+          <Link href="https://calendly.com/idealclaritysolutions/30min" target="_blank" className="text-primary hover:text-primary/80 font-medium">
+            Book your free strategy call
+          </Link>
         </p>
       </div>
     </div>

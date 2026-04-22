@@ -1,28 +1,32 @@
 import type { Metadata } from "next"
 import { Header } from "@/components/header"
+import { Footer } from "@/components/footer"
 import { ContactHero } from "@/components/contact/contact-hero"
-import { ContactForm } from "@/components/contact/contact-form"
 import { ContactInfo } from "@/components/contact/contact-info"
+import { ContactForm } from "@/components/contact/contact-form"
 
 export const metadata: Metadata = {
-  title: "Contact - Ideal Clarity",
+  title: "Contact - Ideal Clarity Solutions",
   description:
-    "Ready to get unstuck? Reach out to schedule your free clarity session or ask any questions about career clarity coaching.",
+    "Book a free 30-minute strategy call. We'll identify what's blocking you and map out your next 4 weeks.",
 }
 
 export default function ContactPage() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-background">
       <Header />
       <main>
         <ContactHero />
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 max-w-6xl mx-auto">
-            <ContactInfo />
-            <ContactForm />
+        <section className="py-16 sm:py-24">
+          <div className="container mx-auto px-6 sm:px-8 lg:px-12">
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 max-w-6xl mx-auto">
+              <ContactInfo />
+              <ContactForm />
+            </div>
           </div>
-        </div>
+        </section>
       </main>
+      <Footer />
     </div>
   )
 }
