@@ -7,6 +7,8 @@ import { VSLFAQ } from "@/components/vsl/vsl-faq"
 import { VSLFinalCTA } from "@/components/vsl/vsl-final-cta"
 import { VSLFloatingCTA } from "@/components/vsl/vsl-floating-cta"
 import { VSLFooter } from "@/components/vsl/vsl-footer"
+import { SecondaryLeadCapture } from "@/components/vsl/secondary-lead-capture"
+import { ExitIntentOffer } from "@/components/vsl/exit-intent-offer"
 
 export const metadata: Metadata = {
   title: "Free Training: Remove The Block Keeping You Stuck | Ideal Clarity",
@@ -19,12 +21,14 @@ export default function VSLPage() {
     <main className="min-h-screen bg-[#1a2332]">
       <VSLHero />
       <VSLVideo />
+      <SecondaryLeadCapture />
       <VSLBenefits />
       <VSLSocialProof />
       <VSLFAQ />
       <VSLFinalCTA />
       <VSLFooter />
       <VSLFloatingCTA />
+      <ExitIntentOffer />
     </main>
   )
 }
