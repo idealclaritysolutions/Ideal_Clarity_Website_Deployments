@@ -17,10 +17,10 @@ export function AboutWhoIHelp() {
   ]
 
   const schedule = [
-    { time: "6:47 AM", activity: "Corporate leadership meeting" },
-    { time: "12:15 PM", activity: "Client strategy call" },
-    { time: "6:30 PM", activity: "Back to corporate work" },
-    { time: "9:00 PM", activity: "Building Ideal Clarity" },
+    { time: "5:30 AM", activity: "Writing content before work" },
+    { time: "8:00 AM", activity: "Corporate day job starts" },
+    { time: "12:30 PM", activity: "Client call on lunch break" },
+    { time: "8:00 PM", activity: "Building Ideal Clarity" },
   ]
 
   return (
