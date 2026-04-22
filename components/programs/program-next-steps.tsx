@@ -46,15 +46,29 @@ export function ProgramNextSteps() {
             </p>
           </div>
 
-          <Button
-            asChild
-            size="lg"
-            className="text-lg px-12 py-6 h-auto rounded-full bg-primary hover:bg-primary/90 text-white shadow-xl hover:shadow-2xl transition-all"
-          >
-            <Link href="https://calendly.com/idealclaritysolutions/30min" target="_blank">
-              Book Your Free Strategy Call
-            </Link>
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Button
+              asChild
+              size="lg"
+              className="text-lg px-12 py-6 h-auto rounded-full bg-primary hover:bg-primary/90 text-white shadow-xl hover:shadow-2xl transition-all w-full sm:w-auto"
+            >
+              <Link href="https://calendly.com/idealclaritysolutions/30min" target="_blank">
+                Book Your Free Strategy Call
+              </Link>
+            </Button>
+
+            <Button
+              asChild
+              size="lg"
+              className="text-lg px-12 py-6 h-auto rounded-full bg-white text-accent font-bold hover:bg-white/90 shadow-xl w-full sm:w-auto"
+            >
+              <Link href="https://buy.stripe.com/6oU6oI9Qu8j73Uz7zBdAk0q" target="_blank">
+                Enroll Now — $3,500
+              </Link>
+            </Button>
+          </div>
+
+          <p className="text-sm text-white/50 mt-4">Ready to go? Skip the call and enroll directly. Secure checkout via Stripe.</p>
         </div>
       </div>
     </section>

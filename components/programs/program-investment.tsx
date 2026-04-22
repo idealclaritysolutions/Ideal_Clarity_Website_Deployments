@@ -20,15 +20,38 @@ export function ProgramInvestment() {
               </p>
             </div>
 
-            <Button
-              asChild
-              size="lg"
-              className="text-lg px-10 py-6 h-auto rounded-full bg-primary hover:bg-primary/90 text-white shadow-xl w-full sm:w-auto"
-            >
-              <Link href="https://calendly.com/idealclaritysolutions/30min" target="_blank">
-                Book Free Strategy Call
-              </Link>
-            </Button>
+            <div className="flex flex-col gap-3 items-center">
+              <Button
+                asChild
+                size="lg"
+                className="text-lg px-10 py-6 h-auto rounded-full bg-primary hover:bg-primary/90 text-white shadow-xl w-full sm:w-auto font-bold"
+              >
+                <Link href="https://buy.stripe.com/6oU6oI9Qu8j73Uz7zBdAk0q" target="_blank">
+                  Enroll Now — $3,500
+                </Link>
+              </Button>
+
+              <div className="flex items-center gap-3 w-full sm:w-80 my-1">
+                <div className="flex-1 h-px bg-muted" />
+                <span className="text-xs text-muted-foreground uppercase tracking-wide">or</span>
+                <div className="flex-1 h-px bg-muted" />
+              </div>
+
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="text-base px-10 py-6 h-auto rounded-full w-full sm:w-auto"
+              >
+                <Link href="https://calendly.com/idealclaritysolutions/30min" target="_blank">
+                  Book a Free Strategy Call First
+                </Link>
+              </Button>
+            </div>
+
+            <p className="text-xs text-muted-foreground mt-5">
+              Secure checkout via Stripe. Questions? <Link href="/contact" className="underline underline-offset-2 hover:text-primary">Reach out first.</Link>
+            </p>
           </Card>
         </div>
       </div>

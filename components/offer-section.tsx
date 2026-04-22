@@ -129,11 +129,21 @@ export function OfferSection() {
             <p className="text-foreground/70 mb-8">
               Limited to 5 clients per month.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col gap-3 items-center max-w-sm mx-auto">
               <Button
                 asChild
                 size="lg"
-                className="text-lg px-10 py-6 h-auto rounded-full bg-primary hover:bg-primary/90 text-white shadow-xl"
+                className="w-full text-base font-bold px-8 py-5 h-auto rounded-full bg-primary hover:bg-primary/90 text-white shadow-xl"
+              >
+                <Link href="https://buy.stripe.com/6oU6oI9Qu8j73Uz7zBdAk0q" target="_blank">
+                  Enroll Now — $3,500
+                </Link>
+              </Button>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="w-full text-base px-8 py-5 h-auto rounded-full border-2 border-primary text-primary hover:bg-primary/5"
               >
                 <Link href="https://calendly.com/idealclaritysolutions/30min" target="_blank">
                   Book Free Strategy Call
@@ -143,7 +153,7 @@ export function OfferSection() {
                 asChild
                 size="lg"
                 variant="outline"
-                className="text-lg px-10 py-6 h-auto rounded-full border-2 border-accent text-accent hover:bg-accent/5"
+                className="w-full text-base px-8 py-5 h-auto rounded-full border-2 border-accent text-accent hover:bg-accent/5"
               >
                 <Link href="/programs">
                   See Full Program Details
