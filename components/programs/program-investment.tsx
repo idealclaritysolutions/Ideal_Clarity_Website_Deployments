@@ -24,7 +24,7 @@ export function ProgramInvestment() {
               <Button
                 asChild
                 size="lg"
-                className="text-lg px-10 py-6 h-auto rounded-full bg-primary hover:bg-primary/90 text-white shadow-xl w-full sm:w-auto"
+                className="text-lg px-10 py-6 h-auto rounded-full bg-primary hover:bg-primary/90 text-white shadow-xl w-full sm:w-auto font-bold"
               >
                 <Link href="https://buy.stripe.com/6oU6oI9Qu8j73Uz7zBdAk0q" target="_blank">
                   Enroll Now — $3,500

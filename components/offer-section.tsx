@@ -135,6 +135,16 @@ export function OfferSection() {
                 size="lg"
                 className="text-lg px-10 py-6 h-auto rounded-full bg-primary hover:bg-primary/90 text-white shadow-xl"
               >
+                <Link href="https://buy.stripe.com/6oU6oI9Qu8j73Uz7zBdAk0q" target="_blank">
+                  Enroll Now — $3,500
+                </Link>
+              </Button>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="text-lg px-10 py-6 h-auto rounded-full border-2 border-primary text-primary hover:bg-primary/5"
+              >
                 <Link href="https://calendly.com/idealclaritysolutions/30min" target="_blank">
                   Book Free Strategy Call
                 </Link>
