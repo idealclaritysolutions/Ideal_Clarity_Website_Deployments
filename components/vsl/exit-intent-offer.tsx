@@ -36,8 +36,8 @@ export function ExitIntentOffer() {
           size="sm"
           className="bg-[#1a2332] hover:bg-[#0f141c] text-[#d4a574] font-bold"
         >
-          <a href="https://buy.stripe.com/6oU6oI9Qu8j73Uz7zBdAk0q" target="_blank" rel="noopener noreferrer">
-            Get Guide $27
+          <a href="/resources/business-while-employed">
+            See What&apos;s Inside — $27
           </a>
         </Button>
         <button

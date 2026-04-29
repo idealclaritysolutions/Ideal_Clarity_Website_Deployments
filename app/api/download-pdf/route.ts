@@ -1,35 +1,54 @@
 import { NextRequest, NextResponse } from "next/server"
+import { readFile } from "fs/promises"
+import path from "path"
 
-// This would integrate with your PDF generation/storage service
-// For now, we'll use a simple approach with link tracking
 export async function GET(req: NextRequest) {
   try {
     const pdfType = req.nextUrl.searchParams.get("type")
     const email = req.nextUrl.searchParams.get("email")
 
-    if (!pdfType || !email) {
-      return NextResponse.json({ error: "Missing parameters" }, { status: 400 })
+    if (!pdfType) {
+      return NextResponse.json({ error: "Missing PDF type" }, { status: 400 })
     }
 
-    // Map PDF types to your hosted PDF URLs or generate them on demand
-    const pdfUrls: Record<string, string> = {
-      "3-blocks": "https://your-storage.com/pdfs/3-blocks-keeping-you-stuck.pdf",
-      "10-questions": "https://your-storage.com/pdfs/10-questions-identify-block.pdf",
-      "employed-business": "https://buy.stripe.com/6oU6oI9Qu8j73Uz7zBdAk0q", // This is the $27 guide
+    // Map PDF types to local files
+    const pdfFiles: Record<string, { filename: string; requiresPayment: boolean }> = {
+      "3-blocks": { filename: "3-blocks-keeping-you-stuck.pdf", requiresPayment: false },
+      "10-questions": { filename: "10-questions-identify-block.pdf", requiresPayment: false },
+      "employed-business": { filename: "running-business-while-employed.pdf", requiresPayment: true },
     }
 
-    const pdfUrl = pdfUrls[pdfType]
-    if (!pdfUrl) {
+    const pdfInfo = pdfFiles[pdfType]
+    if (!pdfInfo) {
       return NextResponse.json({ error: "Invalid PDF type" }, { status: 400 })
     }
 
-    // Log the download for analytics
-    console.log(`[v0] PDF download: ${pdfType} for ${email}`)
+    // For paid PDF, redirect to Stripe
+    if (pdfInfo.requiresPayment) {
+      return NextResponse.redirect("https://buy.stripe.com/6oU6oI9Qu8j73Uz7zBdAk0q")
+    }
 
-    // Redirect to the PDF or payment link
-    return NextResponse.redirect(pdfUrl)
+    // For free PDFs, serve the file directly
+    const filePath = path.join(process.cwd(), "public", "pdfs", pdfInfo.filename)
+    
+    try {
+      const fileBuffer = await readFile(filePath)
+      
+      return new NextResponse(fileBuffer, {
+        headers: {
+          "Content-Type": "application/pdf",
+          "Content-Disposition": `attachment; filename="${pdfInfo.filename}"`,
+        },
+      })
+    } catch {
+      // If file doesn't exist, redirect to the interactive version
+      if (pdfType === "10-questions") {
+        return NextResponse.redirect("/resources/10-questions")
+      }
+      return NextResponse.json({ error: "PDF not found" }, { status: 404 })
+    }
   } catch (error) {
-    console.error("[v0] PDF download error:", error)
+    console.error("PDF download error:", error)
     return NextResponse.json({ error: "Failed to download PDF" }, { status: 500 })
   }
 }
