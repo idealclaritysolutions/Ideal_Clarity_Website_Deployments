@@ -10,7 +10,7 @@ import { ProgramForYou } from "@/components/programs/program-for-you"
 import { ProgramNextSteps } from "@/components/programs/program-next-steps"
 
 export const metadata: Metadata = {
-  title: "From Idea to First Offer - Programs | Ideal Clarity Solutions",
+  title: "From Idea to First Offer - Programs | Ideal Clarity Solutions LLC",
   description:
     "4 weeks. $3,500. From stuck in planning to 10 offers made. The program that removes your blocks and gets you executing.",
 }

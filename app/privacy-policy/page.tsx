@@ -3,7 +3,7 @@ import type { Metadata } from "next"
 export const metadata: Metadata = {
   title: "Privacy Policy | Ideal Clarity",
   description:
-    "Privacy Policy for Ideal Clarity Solutions - Learn how we collect, use, and protect your personal information.",
+    "Privacy Policy for Ideal Clarity Solutions LLC - Learn how we collect, use, and protect your personal information.",
 }
 
 export default function PrivacyPolicyPage() {
@@ -11,12 +11,12 @@ export default function PrivacyPolicyPage() {
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 max-w-4xl">
         <h1 className="text-4xl sm:text-5xl font-bold mb-4">Privacy Policy</h1>
-        <p className="text-xl text-muted-foreground mb-2">Ideal Clarity Solutions</p>
+        <p className="text-xl text-muted-foreground mb-2">Ideal Clarity Solutions LLC</p>
         <p className="text-muted-foreground mb-12">Last Updated: November 25, 2025</p>
 
         <div className="prose prose-lg max-w-none space-y-8">
           <p className="text-lg leading-relaxed">
-            Welcome to Ideal Clarity Solutions ("Ideal Clarity," "we," "us," or "our"). We respect your privacy and are
+            Welcome to Ideal Clarity Solutions LLC ("Ideal Clarity," "we," "us," or "our"). We respect your privacy and are
             committed to protecting your personal information. This Privacy Policy explains how we collect, use,
             disclose, and safeguard your information when you visit our website idealclarity.com and use our services.
           </p>
@@ -171,7 +171,7 @@ export default function PrivacyPolicyPage() {
               If you have any questions about this Privacy Policy or our privacy practices, please contact us at:
             </p>
             <div className="bg-muted/50 p-6 rounded-lg">
-              <p className="font-semibold text-lg mb-2">Ideal Clarity Solutions</p>
+              <p className="font-semibold text-lg mb-2">Ideal Clarity Solutions LLC</p>
               <p className="leading-relaxed">Email: idealclaritysolutions@gmail.com</p>
               <p className="leading-relaxed">Website: www.idealclarity.com</p>
             </div>

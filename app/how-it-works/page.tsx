@@ -9,7 +9,7 @@ import { BreakthroughAfter } from "@/components/breakthrough/breakthrough-after"
 import { BreakthroughCTA } from "@/components/breakthrough/breakthrough-cta"
 
 export const metadata: Metadata = {
-  title: "The Breakthrough Protocol - How It Works | Ideal Clarity Solutions",
+  title: "The Breakthrough Protocol - How It Works | Ideal Clarity Solutions LLC",
   description:
     "How I identify the block you can't see and help you remove it systematically. You can't think your way past a block. Learn how the Breakthrough Protocol works.",
 }
