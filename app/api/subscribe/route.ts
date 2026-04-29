@@ -18,11 +18,10 @@ export async function POST(req: NextRequest) {
       body: JSON.stringify({
         email,
         fields: {
-          first_name: name || "",
+          name: name || "",
           source: source || "vsl",
           lead_magnet: leadMagnet || "",
         },
-        groups: ["145610662506089706"], // VSL subscribers group - update this with your actual group ID
         status: "active",
       }),
     })

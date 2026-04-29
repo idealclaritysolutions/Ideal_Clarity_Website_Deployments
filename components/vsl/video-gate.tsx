@@ -6,10 +6,11 @@ import { X } from "lucide-react"
 
 interface VideoGateProps {
   onEmailCaptured: (email: string, name: string) => void
+  onClose: () => void
   pdfName: string
 }
 
-export function VideoGate({ onEmailCaptured, pdfName }: VideoGateProps) {
+export function VideoGate({ onEmailCaptured, onClose, pdfName }: VideoGateProps) {
   const [email, setEmail] = useState("")
   const [name, setName] = useState("")
   const [loading, setLoading] = useState(false)
@@ -53,7 +54,7 @@ export function VideoGate({ onEmailCaptured, pdfName }: VideoGateProps) {
         <div className="bg-gradient-to-r from-[#1a2332] to-[#2d3e52] px-6 py-4 flex justify-between items-center">
           <h2 className="text-lg font-bold text-white">Unlock the Free Training</h2>
           <button
-            onClick={() => window.history.back()}
+            onClick={onClose}
             className="text-white/60 hover:text-white transition-colors"
             aria-label="Close"
           >
