@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { ArrowLeft, Plus, Edit, Trash2, Mail, Calendar, Sparkles } from "lucide-react"
 import Link from "next/link"
 import { createBlogPost, updateBlogPost, deleteBlogPost, getAllPostsForAdmin, type BlogPost } from "@/app/actions/blog"
-import { getAllSubscribers } from "@/app/actions/newsletter"
+import { getAllSubscribers, type Subscriber } from "@/app/actions/newsletter"
 import {
   generateBlogTitle,
   generateBlogExcerpt,
@@ -17,12 +17,6 @@ import {
   generateMetaDescription,
   expandBlogContent,
 } from "@/app/actions/ai-blog-helper" // Fixed import path from ai to ai-blog-helper
-
-interface Subscriber {
-  id: string
-  email: string
-  subscribed_at: string
-}
 
 import { useRouter } from "next/navigation"
 import { RichTextEditor } from "@/components/blog/rich-text-editor"
