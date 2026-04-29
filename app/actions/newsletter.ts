@@ -2,6 +2,12 @@
 
 import { sql } from "@/lib/db"
 
+interface Subscriber {
+  id: string
+  email: string
+  subscribed_at: string
+}
+
 export async function subscribeToNewsletter(email: string) {
   try {
     await sql`
@@ -34,10 +40,10 @@ export async function subscribeToNewsletter(email: string) {
   }
 }
 
-export async function getAllSubscribers() {
+export async function getAllSubscribers(): Promise<Subscriber[]> {
   try {
-    const subscribers = await sql`
-      SELECT * FROM newsletter_subscribers 
+    const subscribers = await sql<Subscriber[]>`
+      SELECT id, email, subscribed_at FROM newsletter_subscribers 
       ORDER BY subscribed_at DESC
     `
     return subscribers
