@@ -33,8 +33,11 @@ export function CheckoutDialog({ productId, open, onOpenChange }: CheckoutDialog
     }
   }, [open, onOpenChange])
 
-  const fetchClientSecret = useCallback(async () => {
+  const fetchClientSecret = useCallback(async (): Promise<string> => {
     const clientSecret = await startCheckoutSession(productId)
+    if (!clientSecret) {
+      throw new Error("Failed to create checkout session")
+    }
     return clientSecret
   }, [productId])
 
