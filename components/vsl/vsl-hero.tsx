@@ -62,12 +62,6 @@ export function VSLHero() {
           className={`max-w-2xl mx-auto space-y-6 mb-12 transition-all duration-700 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
         >
           <p className="text-base sm:text-lg text-gray-400 leading-relaxed">
-            You&apos;ve researched. Made lists. Watched videos. Changed your mind 47 times about your niche.
-          </p>
-          <p className="text-base sm:text-lg text-gray-300 leading-relaxed">
-            But you haven&apos;t made a single offer to a single person.
-          </p>
-          <p className="text-base sm:text-lg text-gray-400 leading-relaxed">
             Meanwhile, someone with less experience, worse credentials, and a mediocre offer just got their third client this month.
           </p>
         </div>

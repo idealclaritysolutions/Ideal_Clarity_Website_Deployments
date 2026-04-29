@@ -7,6 +7,7 @@ import { VSLFAQ } from "@/components/vsl/vsl-faq"
 import { VSLFinalCTA } from "@/components/vsl/vsl-final-cta"
 import { VSLFooter } from "@/components/vsl/vsl-footer"
 import { ChooseYourPath } from "@/components/vsl/choose-your-path"
+import { RealityCheck } from "@/components/vsl/reality-check"
 import { ExitIntentOffer } from "@/components/vsl/exit-intent-offer"
 
 export const metadata: Metadata = {
@@ -27,7 +28,10 @@ export default function VSLPage() {
       {/* 3. What they'll learn (builds desire) */}
       <VSLBenefits />
       
-      {/* 4. Choose your path - 3 clear options for every budget */}
+      {/* 4. Reality check - bold statements to trigger decision */}
+      <RealityCheck />
+      
+      {/* 5. Choose your path - 3 clear options for every budget */}
       <ChooseYourPath />
       
       {/* 5. Social proof (validates decision) */}
