@@ -78,12 +78,16 @@ export function VSLHero() {
           </p>
         </div>
 
-        {/* The reframe - golden accent, centered */}
-        <p 
-          className={`text-xl sm:text-2xl text-[#d4a574] font-serif font-medium text-center max-w-3xl mx-auto mb-16 leading-relaxed transition-all duration-700 delay-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+        {/* The reframe - callout box style for emphasis */}
+        <div 
+          className={`max-w-2xl mx-auto mb-16 transition-all duration-700 delay-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
         >
-          This isn&apos;t procrastination. It&apos;s a block. And it&apos;s costing you time, money, and opportunities you&apos;ll never get back.
-        </p>
+          <div className="bg-[#0f141c]/80 border-l-4 border-[#d4a574] rounded-r-lg px-6 py-5 backdrop-blur-sm">
+            <p className="text-lg sm:text-xl text-[#d4a574] font-serif font-medium leading-relaxed text-center sm:text-left">
+              This isn&apos;t procrastination. It&apos;s a block. And it&apos;s costing you time, money, and opportunities you&apos;ll never get back.
+            </p>
+          </div>
+        </div>
 
         {/* Video CTA block - centered with clear hierarchy */}
         <div 
