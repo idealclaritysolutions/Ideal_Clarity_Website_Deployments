@@ -8,7 +8,7 @@ export function VSLFooter() {
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
           {/* Copyright */}
           <p className="text-gray-500 text-sm">
-            © 2026 Ideal Clarity Solutions. All rights reserved.
+            © 2026 Ideal Clarity Solutions LLC. All rights reserved.
           </p>
 
           {/* Links */}

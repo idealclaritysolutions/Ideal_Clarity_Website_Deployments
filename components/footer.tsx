@@ -39,7 +39,7 @@ export function Footer() {
             Privacy Policy
           </Link>
         </div>
-        <p className="mb-2 text-center">© {new Date().getFullYear()} Ideal Clarity. All rights reserved.</p>
+        <p className="mb-2 text-center">© {new Date().getFullYear()} Ideal Clarity Solutions LLC. All rights reserved.</p>
       </div>
     </footer>
   )

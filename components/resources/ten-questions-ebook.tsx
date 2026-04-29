@@ -354,7 +354,7 @@ export function TenQuestionsEbook() {
             <p className="text-gray-400 mb-2">You&apos;ve been stuck long enough.</p>
             <p className="text-white font-medium">Let&apos;s fix this.</p>
             <p className="text-[#d4a574] mt-4">— Chi-Chi Jones</p>
-            <p className="text-gray-500 text-sm">Founder, Ideal Clarity Solutions</p>
+            <p className="text-gray-500 text-sm">Founder, Ideal Clarity Solutions LLC</p>
           </div>
         </div>
       </main>
@@ -391,7 +391,7 @@ export function TenQuestionsEbook() {
             10 Questions to Identify Your Blockers
           </h1>
           <p className="text-gray-400 mb-2">The fastest way to see what&apos;s really stopping you</p>
-          <p className="text-[#d4a574] text-sm">By Chi-Chi Jones | Ideal Clarity Solutions</p>
+          <p className="text-[#d4a574] text-sm">By Chi-Chi Jones | Ideal Clarity Solutions LLC</p>
         </div>
       )}
 
@@ -413,30 +413,34 @@ export function TenQuestionsEbook() {
 
           {/* Options */}
           <RadioGroup 
-            value={answers[currentQuestion] ?? ""} 
-            onValueChange={(value) => handleAnswer(value as BlockType)}
+            value={answers[currentQuestion] === undefined ? "" : (answers[currentQuestion] ?? "none")} 
+            onValueChange={(value) => handleAnswer(value === "none" ? null : value as BlockType)}
             className="space-y-3"
           >
-            {question.options.map((option, idx) => (
-              <div key={idx}>
-                <RadioGroupItem
-                  value={option.block ?? "none"}
-                  id={`option-${idx}`}
-                  className="peer sr-only"
-                />
-                <Label
-                  htmlFor={`option-${idx}`}
-                  className="flex items-center gap-4 p-4 rounded-xl border-2 border-white/10 bg-white/5 cursor-pointer transition-all hover:border-[#d4a574]/50 hover:bg-white/10 peer-data-[state=checked]:border-[#d4a574] peer-data-[state=checked]:bg-[#d4a574]/10"
-                >
-                  <div className="w-5 h-5 rounded-full border-2 border-white/30 flex items-center justify-center peer-data-[state=checked]:border-[#d4a574] peer-data-[state=checked]:bg-[#d4a574]">
-                    {answers[currentQuestion] === (option.block ?? "none") && (
-                      <CheckCircle2 className="w-4 h-4 text-white" />
-                    )}
-                  </div>
-                  <span className="text-white text-base">{option.label}</span>
-                </Label>
-              </div>
-            ))}
+            {question.options.map((option, idx) => {
+              const optionValue = option.block ?? "none"
+              const isSelected = answers[currentQuestion] === option.block
+              return (
+                <div key={`q${currentQuestion}-opt${idx}`}>
+                  <RadioGroupItem
+                    value={optionValue}
+                    id={`q${currentQuestion}-option-${idx}`}
+                    className="peer sr-only"
+                  />
+                  <Label
+                    htmlFor={`q${currentQuestion}-option-${idx}`}
+                    className={`flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all hover:border-[#d4a574]/50 hover:bg-white/10 ${isSelected ? 'border-[#d4a574] bg-[#d4a574]/10' : 'border-white/10 bg-white/5'}`}
+                  >
+                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${isSelected ? 'border-[#d4a574] bg-[#d4a574]' : 'border-white/30'}`}>
+                      {isSelected && (
+                        <CheckCircle2 className="w-4 h-4 text-white" />
+                      )}
+                    </div>
+                    <span className="text-white text-base">{option.label}</span>
+                  </Label>
+                </div>
+              )
+            })}
           </RadioGroup>
 
           {/* Navigation */}

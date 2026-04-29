@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { ChevronDown } from "lucide-react"
 import { useEffect, useState } from "react"
@@ -16,11 +17,27 @@ export function VSLHero() {
   }
 
   return (
-    <section className="relative min-h-[90vh] flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-20 bg-gradient-to-b from-[#1a2332] via-[#1a2332] to-[#141b27]">
-      {/* Subtle background pattern */}
+    <section className="relative min-h-[90vh] flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-20 bg-gradient-to-b from-[#1a2332] via-[#1a2332] to-[#141b27] overflow-hidden">
+      {/* Background image */}
+      <div className="absolute inset-0">
+        <Image 
+          src="/images/vsl-abstract.jpg"
+          alt=""
+          fill
+          className="object-cover opacity-20"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#1a2332]/90 via-[#1a2332]/80 to-[#141b27]" />
+      </div>
+      
+      {/* Subtle background pattern overlay */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_#d4a574_1px,_transparent_1px)] bg-[length:32px_32px]" />
       </div>
+      
+      {/* Decorative elements */}
+      <div className="absolute top-20 left-10 w-72 h-72 bg-[#d4a574]/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-20 right-10 w-96 h-96 bg-[#d4a574]/5 rounded-full blur-3xl" />
 
       <div className="relative z-10 max-w-4xl mx-auto">
         {/* Pre-headline - centered */}

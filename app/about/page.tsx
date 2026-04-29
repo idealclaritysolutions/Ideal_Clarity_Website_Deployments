@@ -10,7 +10,7 @@ import { AboutCredentials } from "@/components/about/about-credentials"
 import { AboutCTA } from "@/components/about/about-cta"
 
 export const metadata: Metadata = {
-  title: "About - Ideal Clarity Solutions",
+  title: "About - Ideal Clarity Solutions LLC",
   description:
     "I've been where you are. Stuck knowing what to do but unable to make myself do it. Learn about my journey and how I can help you break through your blocks.",
 }

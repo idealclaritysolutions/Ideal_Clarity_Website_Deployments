@@ -34,7 +34,7 @@ export function AboutSection() {
                 </div>
                 <div className="text-center lg:text-left">
                   <h3 className="text-2xl font-bold text-foreground mb-1">Chi-Chi Jones</h3>
-                  <p className="text-lg text-primary font-medium">Founder, Ideal Clarity Solutions</p>
+                  <p className="text-lg text-primary font-medium">Founder, Ideal Clarity Solutions LLC</p>
                 </div>
               </div>
 
@@ -49,7 +49,7 @@ export function AboutSection() {
                     Most business coaches teach what they did 5 years ago. I teach what I&apos;m doing today.
                   </p>
                   <p className="text-foreground/80 leading-relaxed mb-4">
-                    I&apos;m building Ideal Clarity Solutions while working full-time in corporate. I know:
+                    I&apos;m building Ideal Clarity Solutions LLC while working full-time in corporate. I know:
                   </p>
                   <ul className="space-y-2">
                     {iKnow.map((item, index) => (

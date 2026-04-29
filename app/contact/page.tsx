@@ -6,7 +6,7 @@ import { ContactInfo } from "@/components/contact/contact-info"
 import { ContactForm } from "@/components/contact/contact-form"
 
 export const metadata: Metadata = {
-  title: "Contact - Ideal Clarity Solutions",
+  title: "Contact - Ideal Clarity Solutions LLC",
   description:
     "Book a free 30-minute strategy call. We'll identify what's blocking you and map out your next 4 weeks.",
 }

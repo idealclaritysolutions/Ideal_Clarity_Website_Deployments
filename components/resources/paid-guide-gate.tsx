@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { 
@@ -55,8 +56,21 @@ export function PaidGuideGate() {
       <section className="py-16 sm:py-24">
         <div className="container mx-auto px-4 max-w-5xl">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Left - Content */}
+            {/* Left - Content + Book Cover */}
             <div>
+              {/* Book Cover Image */}
+              <div className="mb-8 flex justify-center lg:justify-start">
+                <div className="relative">
+                  <div className="absolute -inset-4 bg-gradient-to-br from-[#d4a574]/30 to-transparent rounded-2xl blur-xl"></div>
+                  <Image
+                    src="/images/guide-cover.jpg"
+                    alt="Running Your Business While Employed - Digital Guide"
+                    width={280}
+                    height={360}
+                    className="relative rounded-lg shadow-2xl shadow-black/50"
+                  />
+                </div>
+              </div>
               <div className="inline-flex items-center gap-2 bg-[#d4a574]/20 text-[#d4a574] px-4 py-2 rounded-full text-sm font-medium mb-6">
                 <BookOpen className="w-4 h-4" />
                 Digital Guide — Instant Access
@@ -82,7 +96,7 @@ export function PaidGuideGate() {
                 </div>
                 <div>
                   <p className="text-white font-medium">Chi-Chi Jones</p>
-                  <p className="text-gray-400 text-sm">Founder, Ideal Clarity Solutions</p>
+                  <p className="text-gray-400 text-sm">Founder, Ideal Clarity Solutions LLC</p>
                 </div>
               </div>
 
@@ -237,7 +251,7 @@ export function PaidGuideGate() {
       <footer className="py-8 border-t border-white/10">
         <div className="container mx-auto px-4 text-center">
           <p className="text-gray-500 text-sm">
-            &copy; {new Date().getFullYear()} Ideal Clarity Solutions. All rights reserved.
+            &copy; {new Date().getFullYear()} Ideal Clarity Solutions LLC. All rights reserved.
           </p>
         </div>
       </footer>
