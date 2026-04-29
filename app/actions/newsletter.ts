@@ -2,7 +2,7 @@
 
 import { sql } from "@/lib/db"
 
-interface Subscriber {
+export interface Subscriber {
   id: string
   email: string
   subscribed_at: string
@@ -42,11 +42,11 @@ export async function subscribeToNewsletter(email: string) {
 
 export async function getAllSubscribers(): Promise<Subscriber[]> {
   try {
-    const subscribers = await sql<Subscriber[]>`
+    const subscribers = await sql`
       SELECT id, email, subscribed_at FROM newsletter_subscribers 
       ORDER BY subscribed_at DESC
     `
-    return subscribers
+    return subscribers as Subscriber[]
   } catch (error) {
     console.error("[v0] Failed to fetch subscribers:", error)
     return []
