@@ -62,7 +62,7 @@ export function VSLHero() {
           className={`max-w-2xl mx-auto space-y-6 mb-12 transition-all duration-700 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
         >
           <p className="text-base sm:text-lg text-gray-400 leading-relaxed">
-            Meanwhile, someone with less experience, worse credentials, and a mediocre offer just got their third client this month.
+            You&apos;ve Been Planning To Start That Business For 6+ Months.
           </p>
         </div>
 
