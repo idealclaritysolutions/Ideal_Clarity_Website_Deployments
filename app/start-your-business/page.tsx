@@ -14,6 +14,10 @@ export const metadata: Metadata = {
   title: "Free Training: Remove The Block Keeping You Stuck | Ideal Clarity",
   description:
     "You've been planning to start your business for 6+ months. Watch this free 15-minute training to discover which of the 3 blocks is keeping you stuck—and how to remove it.",
+  robots: {
+    index: false,
+    follow: false,
+  },
 }
 
 export default function VSLPage() {
