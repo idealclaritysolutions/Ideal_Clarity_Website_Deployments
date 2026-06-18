@@ -4,20 +4,21 @@ import Stripe from "stripe"
 // This webhook is optional - your existing Stripe payment links work independently
 // If you want to automate PDF delivery after purchase, configure this webhook in Stripe Dashboard
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
-  apiVersion: "2025-11-17.clover",
-})
-
 export async function POST(req: NextRequest) {
   try {
     const body = await req.text()
     const signature = req.headers.get("stripe-signature")
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET
+    const stripeSecretKey = process.env.STRIPE_SECRET_KEY
 
-    // If no webhook secret configured, just acknowledge
-    if (!webhookSecret || !signature) {
+    // If Stripe isn't configured, just acknowledge so Stripe stops retrying
+    if (!stripeSecretKey || !webhookSecret || !signature) {
       return NextResponse.json({ received: true })
     }
+
+    const stripe = new Stripe(stripeSecretKey, {
+      apiVersion: "2025-11-17.clover",
+    })
 
     let event: Stripe.Event
 

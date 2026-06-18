@@ -1,6 +1,6 @@
 "use server"
 
-import { stripe } from "@/lib/stripe"
+import { getStripe } from "@/lib/stripe"
 import { PRODUCTS } from "@/lib/products"
 
 export async function startCheckoutSession(productId: string) {
@@ -8,6 +8,8 @@ export async function startCheckoutSession(productId: string) {
   if (!product) {
     throw new Error(`Product with id "${productId}" not found`)
   }
+
+  const stripe = getStripe()
 
   // Create Checkout Sessions with embedded UI
   const session = await stripe.checkout.sessions.create({
