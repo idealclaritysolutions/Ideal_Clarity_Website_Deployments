@@ -69,7 +69,8 @@ export default function ClarityIntensivePage() {
           </h1>
           <p className="cdd-sub cdd-center" data-reveal>
             If you&rsquo;ve been &ldquo;about to start&rdquo; for months &mdash; or years &mdash;
-            researched, planned, talked to family and friends about it, and still haven&rsquo;t moved &mdash; this is for you.
+            researched, planned, talked to family and friends about it, and still haven&rsquo;t moved
+            &mdash; this is for you.
           </p>
           <p className="cdd-watch cdd-center" data-reveal>
             In the short video below, I&rsquo;ll walk you through the four hidden barriers that stop
@@ -198,6 +199,9 @@ export default function ClarityIntensivePage() {
             thinking. They&rsquo;re underneath it. You need someone outside the situation to see them
             clearly and show you &mdash; which is exactly what the Clarity Intensive does.
           </p>
+          <div className="cdd-cta-row cdd-center" data-reveal>
+            <a href="#book" className="cdd-btn cdd-btn-ghost" onClick={scrollToBook}>Find the one that&rsquo;s been running your decisions &rarr;</a>
+          </div>
         </div>
       </section>
 
@@ -268,6 +272,10 @@ export default function ClarityIntensivePage() {
               <p>I send you a one-page summary of everything we found, so you can come back to it when the old thinking tries to creep in.</p>
             </div>
           </div>
+          <div className="cdd-cta-row cdd-center" data-reveal>
+            <a href="#book" className="cdd-btn cdd-btn-ghost" onClick={scrollToBook}>Book your Clarity Intensive &rarr;</a>
+            <p className="cdd-microcopy">75 minutes. You&rsquo;ll leave knowing your next move.</p>
+          </div>
         </div>
       </section>
 
@@ -304,6 +312,9 @@ export default function ClarityIntensivePage() {
           <p className="cdd-leave-foot" data-reveal>
             And a one-page summary in your inbox the next day, so none of it slips away.
           </p>
+          <div className="cdd-cta-row cdd-center" data-reveal>
+            <a href="#book" className="cdd-btn cdd-btn-ghost" onClick={scrollToBook}>I want that clarity &rarr;</a>
+          </div>
         </div>
       </section>
 
@@ -361,6 +372,9 @@ export default function ClarityIntensivePage() {
                 Want ongoing support after? Once you&rsquo;ve done your Intensive, there&rsquo;s a way to keep going together &mdash; I&rsquo;ll tell you about it if it&rsquo;s a fit.
               </p>
             </div>
+          </div>
+          <div className="cdd-cta-row cdd-center" data-reveal>
+            <a href="#book" className="cdd-btn cdd-btn-ghost" onClick={scrollToBook}>This is me &mdash; let&rsquo;s do it &rarr;</a>
           </div>
         </div>
       </section>
@@ -517,6 +531,8 @@ const CSS = `
 .cdd-btn-cream{background:var(--cream); color:var(--navy);}
 .cdd-btn-cream:hover{transform:translateY(-2px);}
 .cdd-btn-sm{padding:.7rem 1.2rem; font-size:.9rem;}
+.cdd-btn-ghost{background:transparent; color:var(--gold-deep); border:1.5px solid var(--gold); box-shadow:none;}
+.cdd-btn-ghost:hover{background:var(--gold); color:#fff; transform:translateY(-2px);}
 .cdd-cta-row{margin-top:2rem;}
 .cdd-microcopy{font-family:'Poppins',sans-serif; font-size:.85rem; color:var(--gold-deep); margin:1rem 0 0; letter-spacing:.01em;}
 .cdd-inline-link{color:var(--gold-deep); text-decoration:underline; font-weight:600;}
