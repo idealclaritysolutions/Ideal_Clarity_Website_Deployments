@@ -75,7 +75,7 @@ export default function ClarityIntensivePage() {
           <p className="cdd-watch cdd-center" data-reveal>
             In the short video below, I&rsquo;ll walk you through the four hidden barriers that stop
             capable people like you &mdash; and help you spot the exact one that&rsquo;s been running
-            your decisions. Then, if it lands, book your Clarity Intensive Session.
+            your decisions.
           </p>
           <div className="cdd-video" data-reveal>
             <div className="cdd-video-placeholder">
