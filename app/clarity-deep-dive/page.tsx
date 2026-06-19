@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 /**
- * Clarity Intensive Session — VSL Landing Page (conversion redesign)
+ * The Clarity Intensive — VSL Landing Page (conversion redesign)
  * Ideal Clarity Solutions
  * Route: app/clarity-deep-dive/page.tsx  (URL stays /clarity-deep-dive)
  * Self-contained: no Tailwind / design-system dependency.
@@ -69,13 +69,13 @@ export default function ClarityIntensivePage() {
           </h1>
           <p className="cdd-sub cdd-center" data-reveal>
             If you&rsquo;ve been &ldquo;about to start&rdquo; for months &mdash; or years &mdash;
-            researched, planned, talked to family and friends about it, and still haven&rsquo;t moved &mdash; the problem was
+            researched, planned, half-built it, and still haven&rsquo;t moved &mdash; the problem was
             never strategy, and it was never really time, either.
           </p>
           <p className="cdd-watch cdd-center" data-reveal>
             In the short video below, I&rsquo;ll walk you through the four hidden barriers that stop
             capable people like you &mdash; and help you spot the exact one that&rsquo;s been running
-            your decisions.
+            your decisions. Then, if it lands, book your Clarity Intensive.
           </p>
           <div className="cdd-video" data-reveal>
             <div className="cdd-video-placeholder">
@@ -369,7 +369,7 @@ export default function ClarityIntensivePage() {
       {/* OFFER + GUARANTEE */}
       <section className="cdd-sec cdd-sec-navy">
         <div className="cdd-wrap cdd-narrow cdd-center">
-          <h2 className="cdd-h2-navy" data-reveal>The Clarity Intensive Session</h2>
+          <h2 className="cdd-h2-navy" data-reveal>The Clarity Intensive</h2>
           <p className="cdd-body-navy" data-reveal>
             One 75-minute conversation. You bring what you&rsquo;ve been stuck on. I help you see
             what&rsquo;s actually in the way. You leave knowing your next move.
