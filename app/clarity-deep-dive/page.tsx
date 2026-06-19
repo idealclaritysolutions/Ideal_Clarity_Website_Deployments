@@ -69,13 +69,12 @@ export default function ClarityIntensivePage() {
           </h1>
           <p className="cdd-sub cdd-center" data-reveal>
             If you&rsquo;ve been &ldquo;about to start&rdquo; for months &mdash; or years &mdash;
-            researched, planned, half-built it, and still haven&rsquo;t moved &mdash; the problem was
-            never strategy, and it was never really time, either.
+            researched, planned, talked to family and friends about it, and still haven&rsquo;t moved &mdash; this is for you.
           </p>
           <p className="cdd-watch cdd-center" data-reveal>
             In the short video below, I&rsquo;ll walk you through the four hidden barriers that stop
             capable people like you &mdash; and help you spot the exact one that&rsquo;s been running
-            your decisions. Then, if it lands, book your Clarity Intensive.
+            your decisions.
           </p>
           <div className="cdd-video" data-reveal>
             <div className="cdd-video-placeholder">
