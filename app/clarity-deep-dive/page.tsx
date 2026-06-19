@@ -88,14 +88,14 @@ export default function ClarityIntensivePage() {
               75 minutes &middot; book &amp; pay in one step &middot; full refund if it doesn&rsquo;t give you real clarity
             </p>
           </div>
-          <div className="cdd-proofstrip" data-reveal>
-            <div className="cdd-proofstrip-stat">
+          <div className="cdd-herocard" data-reveal>
+            <div className="cdd-herocard-stat">
               <strong>300x</strong>
-              <span>revenue growth after we cleared her blocks</span>
+              <span>revenue growth</span>
             </div>
-            <div className="cdd-proofstrip-quote">
-              &ldquo;I found my area of genius and unlocked the mental blocks holding me back.&rdquo;
-              <em>&mdash; Lola, Rapid Reinvent</em>
+            <div className="cdd-herocard-quote">
+              <p>&ldquo;With Chi-Chi, I found my area of genius and unlocked the mental blocks that were holding me back from fully monetizing my business in a way that reflects my value. I&rsquo;ve 300x&rsquo;d my revenue so far.&rdquo;</p>
+              <em>&mdash; Lola, Rapid Reinvent Hair Treatment</em>
             </div>
           </div>
         </div>
@@ -511,12 +511,13 @@ const CSS = `
 .cdd-play{font-size:2.4rem; color:var(--gold);}
 .cdd-video-placeholder span{font-family:'Poppins',sans-serif; font-size:1.05rem; letter-spacing:.03em;}
 .cdd-video-placeholder small{font-family:'Poppins',sans-serif; font-size:.78rem; opacity:.6;}
-.cdd-proofstrip{display:flex; gap:1.5rem; align-items:center; justify-content:center; flex-wrap:wrap; margin-top:2.6rem; padding-top:2rem; border-top:1px solid rgba(184,147,95,.25);}
-.cdd-proofstrip-stat{display:flex; flex-direction:column; align-items:center; min-width:130px;}
-.cdd-proofstrip-stat strong{font-size:2.6rem; color:var(--gold); line-height:1; font-weight:700;}
-.cdd-proofstrip-stat span{font-family:'Poppins',sans-serif; font-size:.74rem; color:#6b6b6b; text-align:center; max-width:160px; margin-top:.2rem;}
-.cdd-proofstrip-quote{max-width:360px; font-style:italic; font-size:1rem; color:var(--navy); line-height:1.5;}
-.cdd-proofstrip-quote em{display:block; font-style:normal; font-family:'Poppins',sans-serif; font-size:.78rem; color:var(--gold-deep); margin-top:.4rem;}
+.cdd-herocard{display:flex; gap:2rem; align-items:center; justify-content:center; flex-wrap:wrap; margin-top:2.8rem; padding:2.2rem 2.4rem; background:var(--cream-light); border:1px solid rgba(184,147,95,.35); border-radius:16px; box-shadow:0 12px 40px rgba(26,35,50,.08); max-width:860px; margin-left:auto; margin-right:auto;}
+.cdd-herocard-stat{display:flex; flex-direction:column; align-items:center; flex-shrink:0; padding-right:2rem; border-right:1px solid rgba(184,147,95,.3);}
+.cdd-herocard-stat strong{font-size:clamp(3.6rem,7vw,5rem); color:var(--gold); line-height:.9; font-weight:700; letter-spacing:-.02em;}
+.cdd-herocard-stat span{font-family:'Poppins',sans-serif; font-size:.8rem; text-transform:uppercase; letter-spacing:.08em; color:var(--gold-deep); margin-top:.45rem; font-weight:600;}
+.cdd-herocard-quote{flex:1 1 360px; text-align:left;}
+.cdd-herocard-quote p{font-size:clamp(1.12rem,1.8vw,1.32rem); font-style:italic; color:var(--navy); line-height:1.55; margin:0 0 .8rem;}
+.cdd-herocard-quote em{font-style:normal; font-family:'Poppins',sans-serif; font-size:.88rem; font-weight:600; color:var(--gold-deep);}
 .cdd-sec{padding:clamp(3.5rem,7vw,6rem) 0;}
 .cdd-sec-tight{padding:clamp(2rem,4vw,3.5rem) 0;}
 .cdd-sec-cream{background:var(--cream);}
@@ -607,7 +608,9 @@ const CSS = `
   .cdd-about{grid-template-columns:1fr; gap:2rem;}
   .cdd-about-photo{max-width:320px; margin:0 auto;}
   .cdd-fit{grid-template-columns:1fr;}
-  .cdd-proofstrip{flex-direction:column; gap:1.2rem;}
+  .cdd-herocard{flex-direction:column; gap:1.3rem; padding:1.6rem; text-align:center;}
+  .cdd-herocard-stat{padding-right:0; border-right:none; padding-bottom:1.3rem; border-bottom:1px solid rgba(184,147,95,.3);}
+  .cdd-herocard-quote{text-align:center; flex-basis:auto;}
 }
 @media (min-width:781px){ .cdd-sticky{display:none;} }
 `;
