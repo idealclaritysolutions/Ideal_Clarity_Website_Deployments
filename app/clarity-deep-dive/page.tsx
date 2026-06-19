@@ -69,7 +69,7 @@ export default function ClarityIntensivePage() {
           </h1>
           <p className="cdd-sub cdd-center" data-reveal>
             If you&rsquo;ve been &ldquo;about to start&rdquo; for months &mdash; or years &mdash;
-            researched, planned, half-built it, and still haven&rsquo;t moved &mdash; the problem was
+            researched, planned, talked to family and friends about it, and still haven&rsquo;t moved &mdash; the problem was
             never strategy, and it was never really time, either.
           </p>
           <p className="cdd-watch cdd-center" data-reveal>
