@@ -64,14 +64,18 @@ export default function ClarityIntensivePage() {
             One conversation &middot; for the professional with a business idea that won&rsquo;t go away
           </p>
           <h1 className="cdd-h1 cdd-center" data-reveal>
-            You already know what you want to build.<br />
-            <em>Let&rsquo;s find out why you keep stopping.</em>
+            The real reason you haven&rsquo;t started your business isn&rsquo;t lack of information or time.
+            <em> It&rsquo;s something no one has told you before.</em>
           </h1>
           <p className="cdd-sub cdd-center" data-reveal>
-            If you&rsquo;ve been &ldquo;about to start&rdquo; for months &mdash; researched, planned,
-            half-built it, and still haven&rsquo;t moved &mdash; the problem was never strategy, and it was
-            never really time, either. In one 75-minute session, I&rsquo;ll show you the real thing
-            standing in your way, and the one move that gets you unstuck this week.
+            If you&rsquo;ve been &ldquo;about to start&rdquo; for months &mdash; or years &mdash;
+            researched, planned, half-built it, and still haven&rsquo;t moved &mdash; the problem was
+            never strategy, and it was never really time, either.
+          </p>
+          <p className="cdd-watch cdd-center" data-reveal>
+            In the short video below, I&rsquo;ll walk you through the four hidden barriers that stop
+            capable people like you &mdash; and help you spot the exact one that&rsquo;s been running
+            your decisions. Then, if it lands, book your Clarity Intensive Session.
           </p>
           <div className="cdd-video" data-reveal>
             <div className="cdd-video-placeholder">
@@ -319,15 +323,18 @@ export default function ClarityIntensivePage() {
               make myself move.
             </p>
             <p className="cdd-body">
-              I know what it&rsquo;s like to be the person everyone else comes to when they need to think
-              something through &mdash; and then go home and circle your own thing for months.
+              For years I was the person everyone came to when they needed to think something through
+              &mdash; the one who could see other people&rsquo;s situations clearly in minutes. And then
+              I&rsquo;d go home and spend months circling my own, unable to take my own advice. That gap
+              used to confuse me. Now I understand it completely: nobody can see their own blind spot from
+              the inside. That&rsquo;s not a flaw &mdash; it&rsquo;s just how being human works.
             </p>
             <p className="cdd-body">
-              At some point I realized the thing I do without trying &mdash; helping someone see their
-              situation from an angle they couldn&rsquo;t reach on their own, the thing where I ask the
-              one question nobody else thought to ask and the whole thing cracks open &mdash; that&rsquo;s
-              not small. That&rsquo;s the work. So now I do it on purpose, for people who are done going
-              in circles.
+              So I made it my work. Not cheerleading, not advice you&rsquo;ve already heard &mdash; but
+              the specific skill of seeing the one thing you can&rsquo;t see in yourself, naming it, and
+              handing you a way forward. I&rsquo;ve done it for people stuck for years, in a single
+              conversation. And nothing lights me up more than the moment it clicks and someone finally
+              moves. If you&rsquo;re done going in circles, that&rsquo;s exactly what I&rsquo;m here for.
             </p>
           </div>
         </div>
@@ -448,12 +455,21 @@ export default function ClarityIntensivePage() {
 
       {/* FOOTER */}
       <footer className="cdd-footer">
+        <div className="cdd-wrap">
+          <div className="cdd-disclaimer">
+            <strong>Important: Earnings and Income Disclaimer</strong>
+            <p>All testimonials on this page are from real clients. The results shown are not typical. Their experiences do not guarantee similar results. Individual results may vary based on your skills, experience, motivation, and other unforeseen factors. The Company has not performed studies of the results of its typical clients. Your results may vary.</p>
+            <p>Ideal Clarity Solutions is a coaching, advisory, and education company. We do not sell a business opportunity, &ldquo;get rich quick&rdquo; program, or money-making system. We believe that, with education, individuals can be better prepared to make decisions, but we do not guarantee you will make money using our services.</p>
+            <p>Statements and depictions are the opinions, findings, or experiences of individuals who generally have purchased education and advising. Results vary, are not typical, and rely on individual effort, time, and skill, as well as unknown conditions and other factors. Many clients do not apply what they learn, or attempt to apply it but nonetheless have difficulty.</p>
+            <p>This site is not part of, nor endorsed by, YouTube, Google, Bing, Meta, or Facebook in any way. FACEBOOK is a trademark of Meta, Inc. YOUTUBE is a trademark of GOOGLE, Inc. BING is a trademark of MICROSOFT, Inc.</p>
+          </div>
+        </div>
         <div className="cdd-wrap cdd-center">
           <p>&copy; 2026 Ideal Clarity Solutions. All rights reserved.</p>
           <p className="cdd-foot-links">
             <a href="mailto:idealclaritysolutions@gmail.com">Email</a>
             <a href="https://instagram.com/idealclarity" target="_blank" rel="noopener noreferrer">@idealclarity</a>
-            <a href="https://www.idealclarity.com/privacy">Privacy Policy</a>
+            <a href="https://www.idealclarity.com/privacy-policy">Privacy Policy</a>
           </p>
         </div>
       </footer>
@@ -490,7 +506,8 @@ const CSS = `
 .cdd-h1 em{font-style:italic; color:var(--gold-deep);}
 .cdd-h2{font-size:clamp(1.7rem,3.5vw,2.5rem); line-height:1.15; font-weight:600; color:var(--navy); margin:0 0 1.4rem;}
 .cdd-h2 em{font-style:italic; color:var(--gold-deep);}
-.cdd-sub{font-size:clamp(1.05rem,1.7vw,1.25rem); line-height:1.6; color:var(--char); max-width:660px; margin:0 auto 2.2rem;}
+.cdd-sub{font-size:clamp(1.05rem,1.7vw,1.25rem); line-height:1.6; color:var(--char); max-width:660px; margin:0 auto 1.4rem;}
+.cdd-watch{font-size:clamp(1.05rem,1.7vw,1.22rem); line-height:1.6; color:var(--navy); font-weight:600; max-width:680px; margin:0 auto 2.2rem;}
 .cdd-body{font-size:1.12rem; line-height:1.75; margin:0 0 1.3rem; color:var(--char);}
 .cdd-pull{font-size:clamp(1.3rem,2.4vw,1.7rem); line-height:1.4; font-style:italic; color:var(--navy); border-left:3px solid var(--gold); padding:.2rem 0 .2rem 1.4rem; margin:2.4rem 0; font-weight:500;}
 .cdd-pull.cdd-center{border-left:none; padding:0; max-width:640px; margin:2.4rem auto;}
@@ -595,6 +612,9 @@ const CSS = `
 .cdd-faq-item p{font-size:1.05rem; line-height:1.7; margin:1rem 0 0; color:var(--char);}
 .cdd-cal{margin-top:2.2rem; background:var(--cream-light); border:1px solid rgba(184,147,95,.25); border-radius:14px; padding:12px; box-shadow:0 10px 36px rgba(26,35,50,.08);}
 .cdd-footer{background:var(--navy); color:#aeb6c4; padding:3rem 0; font-family:'Poppins',sans-serif; font-size:.88rem;}
+.cdd-disclaimer{max-width:820px; margin:0 auto 2.4rem; padding-bottom:2rem; border-bottom:1px solid rgba(255,255,255,.12);}
+.cdd-disclaimer strong{display:block; color:#cdd3dd; font-size:.8rem; letter-spacing:.04em; text-transform:uppercase; margin-bottom:.8rem;}
+.cdd-disclaimer p{font-size:.76rem; line-height:1.6; color:#8b94a4; margin:0 0 .8rem;}
 .cdd-footer p{margin:.4rem 0;}
 .cdd-foot-links{display:flex; gap:1.6rem; justify-content:center; flex-wrap:wrap;}
 .cdd-foot-links a{color:var(--gold); text-decoration:none;}
