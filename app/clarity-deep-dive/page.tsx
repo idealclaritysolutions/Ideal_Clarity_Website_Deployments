@@ -69,9 +69,9 @@ export default function ClarityIntensivePage() {
           </h1>
           <p className="cdd-sub cdd-center" data-reveal>
             If you&rsquo;ve been &ldquo;about to start&rdquo; for months &mdash; researched, planned,
-            half-built it, and still haven&rsquo;t moved &mdash; the problem was never strategy. In one
-            75-minute session, I&rsquo;ll show you the real thing standing in your way, and the one move
-            that gets you unstuck this week.
+            half-built it, and still haven&rsquo;t moved &mdash; the problem was never strategy, and it was
+            never really time, either. In one 75-minute session, I&rsquo;ll show you the real thing
+            standing in your way, and the one move that gets you unstuck this week.
           </p>
           <div className="cdd-video" data-reveal>
             <div className="cdd-video-placeholder">
@@ -201,8 +201,12 @@ export default function ClarityIntensivePage() {
       {/* PROOF */}
       <section className="cdd-sec cdd-sec-warm">
         <div className="cdd-wrap">
-          <p className="cdd-eyebrow cdd-center" data-reveal>What happens when the block comes off</p>
-          <div className="cdd-testi-feature" data-reveal>
+          <p className="cdd-kicker cdd-center" data-reveal>What happens when the block comes off</p>
+          <div className="cdd-stat-hero" data-reveal>
+            <span className="cdd-stat-hero-num">300x</span>
+            <span className="cdd-stat-hero-label">revenue growth after one client cleared the blocks holding her back</span>
+          </div>
+          <div className="cdd-testi-feature cdd-testi-feature-strong" data-reveal>
             <p>
               &ldquo;I&rsquo;ve started 3 businesses in the last 3 years, and the hardest part was always
               aligning on the path most authentic to me &mdash; not just building another thing someone
@@ -335,17 +339,17 @@ export default function ClarityIntensivePage() {
           <div className="cdd-fit">
             <div className="cdd-fit-col cdd-fit-yes" data-reveal>
               <h3>This is for you if</h3>
-              <ul>
-                <li>There&rsquo;s a specific thing you&rsquo;ve been wanting to build, and you&rsquo;ve been at it long enough to know more research isn&rsquo;t the answer.</li>
-                <li>You&rsquo;re sharp and self-aware, you&rsquo;ve done some inner work, and you don&rsquo;t need a cheerleader &mdash; you need someone who can actually see what you can&rsquo;t.</li>
-                <li>You&rsquo;re ready to be honest about what&rsquo;s really stopping you, even if it&rsquo;s uncomfortable.</li>
+              <ul className="cdd-check-list">
+                <li><span className="cdd-mark cdd-mark-yes">&#10003;</span><span>There&rsquo;s a specific thing you&rsquo;ve been wanting to build, and you&rsquo;ve been at it long enough to know more research isn&rsquo;t the answer.</span></li>
+                <li><span className="cdd-mark cdd-mark-yes">&#10003;</span><span>You&rsquo;re sharp and self-aware, you&rsquo;ve done some inner work, and you don&rsquo;t need a cheerleader &mdash; you need someone who can actually see what you can&rsquo;t.</span></li>
+                <li><span className="cdd-mark cdd-mark-yes">&#10003;</span><span>You&rsquo;re ready to be honest about what&rsquo;s really stopping you, even if it&rsquo;s uncomfortable.</span></li>
               </ul>
             </div>
             <div className="cdd-fit-col cdd-fit-no" data-reveal>
               <h3>It&rsquo;s probably not for you if</h3>
-              <ul>
-                <li>You want someone to do the work for you &mdash; build your funnels, write your content, run your launch. That&rsquo;s not what this is.</li>
-                <li>You&rsquo;re not willing to look at the real thing underneath the stuck. This is one honest conversation, not a pep talk.</li>
+              <ul className="cdd-check-list">
+                <li><span className="cdd-mark cdd-mark-no">&#10007;</span><span>You want someone to do the work for you &mdash; build your funnels, write your content, run your launch. That&rsquo;s not what this is.</span></li>
+                <li><span className="cdd-mark cdd-mark-no">&#10007;</span><span>You&rsquo;re not willing to look at the real thing underneath the stuck. This is one honest conversation, not a pep talk.</span></li>
               </ul>
               <p className="cdd-fit-note">
                 Want ongoing support after? Once you&rsquo;ve done your Intensive, there&rsquo;s a way to keep going together &mdash; I&rsquo;ll tell you about it if it&rsquo;s a fit.
@@ -480,6 +484,7 @@ const CSS = `
 [data-reveal]{opacity:0; transform:translateY(16px); transition:opacity .7s ease, transform .7s ease;}
 [data-reveal].is-visible{opacity:1; transform:none;}
 @media (prefers-reduced-motion: reduce){[data-reveal]{opacity:1; transform:none; transition:none;}}
+.cdd-kicker{font-family:'Poppins','Helvetica Neue',Arial,sans-serif; text-transform:uppercase; letter-spacing:.08em; font-size:clamp(1.15rem,2.2vw,1.45rem); font-weight:700; color:var(--gold-deep); margin:0 0 1.8rem; line-height:1.3;}
 .cdd-eyebrow{font-family:'Poppins','Helvetica Neue',Arial,sans-serif; text-transform:uppercase; letter-spacing:.16em; font-size:.72rem; font-weight:600; color:var(--gold-deep); margin:0 0 1.2rem;}
 .cdd-h1{font-size:clamp(2.2rem,5.2vw,3.6rem); line-height:1.1; font-weight:600; color:var(--navy); margin:0 0 1.4rem; letter-spacing:-.01em;}
 .cdd-h1 em{font-style:italic; color:var(--gold-deep);}
@@ -536,6 +541,10 @@ const CSS = `
 .cdd-card-num{font-family:'Poppins',sans-serif; font-weight:700; color:var(--gold); font-size:1rem; letter-spacing:.08em;}
 .cdd-card-title{font-size:1.3rem; color:var(--navy); margin:.5rem 0 .7rem; font-weight:600;}
 .cdd-card-body{font-size:1.02rem; line-height:1.6; margin:0; color:var(--char);}
+.cdd-stat-hero{text-align:center; margin:0 auto 1.8rem; max-width:680px;}
+.cdd-stat-hero-num{display:block; font-size:clamp(4.5rem,14vw,8rem); font-weight:700; color:var(--gold); line-height:.95; letter-spacing:-.02em;}
+.cdd-stat-hero-label{display:block; font-style:italic; color:var(--navy); font-size:clamp(1.05rem,1.8vw,1.25rem); margin-top:.5rem; line-height:1.4;}
+.cdd-testi-feature-strong{border:2px solid var(--gold); box-shadow:0 14px 44px rgba(184,147,95,.18);}
 .cdd-testi-feature{background:var(--cream-light); border:1px solid rgba(184,147,95,.3); border-radius:14px; padding:2.4rem; max-width:760px; margin:1.5rem auto 1.6rem; box-shadow:0 8px 30px rgba(26,35,50,.06);}
 .cdd-testi-feature p{font-size:1.18rem; line-height:1.65; font-style:italic; color:var(--navy); margin:0 0 1.1rem;}
 .cdd-testi-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:1.4rem; max-width:760px; margin:0 auto;}
@@ -561,6 +570,11 @@ const CSS = `
 .cdd-fit-col{padding:2rem 1.8rem; border-radius:12px;}
 .cdd-fit-yes{background:var(--cream-light); border:1px solid rgba(184,147,95,.3);}
 .cdd-fit-no{background:rgba(26,35,50,.03); border:1px solid rgba(26,35,50,.1);}
+.cdd-check-list{list-style:none; padding:0; margin:0;}
+.cdd-check-list li{display:flex; gap:.7rem; align-items:flex-start; font-size:1.02rem; line-height:1.6; margin-bottom:1rem; color:var(--char);}
+.cdd-mark{flex-shrink:0; width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.85rem; font-weight:700; margin-top:.15rem;}
+.cdd-mark-yes{background:rgba(46,125,77,.14); color:#2E7D4D;}
+.cdd-mark-no{background:rgba(192,90,58,.14); color:var(--terra);}
 .cdd-fit-col h3{font-size:1.2rem; color:var(--navy); margin:0 0 1rem; font-weight:600;}
 .cdd-fit-col ul{margin:0; padding-left:1.1rem;}
 .cdd-fit-col li{font-size:1.02rem; line-height:1.6; margin-bottom:.9rem; color:var(--char);}
