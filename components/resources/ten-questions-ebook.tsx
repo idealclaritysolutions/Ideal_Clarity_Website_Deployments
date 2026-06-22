@@ -171,12 +171,14 @@ const BLOCK_INFO = {
 
 export function TenQuestionsEbook() {
   const [currentQuestion, setCurrentQuestion] = useState(0)
-  const [answers, setAnswers] = useState<(BlockType | undefined)[]>(Array(10).fill(undefined))
+  // Store the selected OPTION INDEX per question (not the block), so options that
+  // share a block (or share null) are tracked as distinct selections.
+  const [answers, setAnswers] = useState<(number | undefined)[]>(Array(10).fill(undefined))
   const [showResults, setShowResults] = useState(false)
 
-  const handleAnswer = (block: BlockType) => {
+  const handleAnswer = (optionIdx: number) => {
     const newAnswers = [...answers]
-    newAnswers[currentQuestion] = block
+    newAnswers[currentQuestion] = optionIdx
     setAnswers(newAnswers)
   }
 
@@ -196,9 +198,11 @@ export function TenQuestionsEbook() {
 
   const calculateResults = () => {
     const counts = { validation: 0, visibility: 0, commitment: 0 }
-    answers.forEach(answer => {
-      if (answer && answer in counts) {
-        counts[answer as keyof typeof counts]++
+    answers.forEach((optionIdx, qIdx) => {
+      if (optionIdx === undefined) return
+      const block = QUESTIONS[qIdx].options[optionIdx]?.block
+      if (block && block in counts) {
+        counts[block as keyof typeof counts]++
       }
     })
     return counts
@@ -413,17 +417,16 @@ export function TenQuestionsEbook() {
 
           {/* Options */}
           <RadioGroup 
-            value={answers[currentQuestion] === undefined ? "" : (answers[currentQuestion] ?? "none")} 
-            onValueChange={(value) => handleAnswer(value === "none" ? null : value as BlockType)}
+            value={answers[currentQuestion] === undefined ? "" : String(answers[currentQuestion])} 
+            onValueChange={(value) => handleAnswer(Number(value))}
             className="space-y-3"
           >
             {question.options.map((option, idx) => {
-              const optionValue = option.block ?? "none"
-              const isSelected = answers[currentQuestion] === option.block
+              const isSelected = answers[currentQuestion] === idx
               return (
                 <div key={`q${currentQuestion}-opt${idx}`}>
                   <RadioGroupItem
-                    value={optionValue}
+                    value={String(idx)}
                     id={`q${currentQuestion}-option-${idx}`}
                     className="peer sr-only"
                   />
