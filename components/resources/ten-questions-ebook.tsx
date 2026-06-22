@@ -176,6 +176,14 @@ export function TenQuestionsEbook() {
   const [answers, setAnswers] = useState<(number | undefined)[]>(Array(10).fill(undefined))
   const [showResults, setShowResults] = useState(false)
 
+  // Email capture (required before results) + submission state
+  const [showEmailCapture, setShowEmailCapture] = useState(false)
+  const [name, setName] = useState("")
+  const [email, setEmail] = useState("")
+  const [submitting, setSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
+  const [startTime] = useState(() => Date.now())
+
   const handleAnswer = (optionIdx: number) => {
     const newAnswers = [...answers]
     newAnswers[currentQuestion] = optionIdx
@@ -186,7 +194,8 @@ export function TenQuestionsEbook() {
     if (currentQuestion < QUESTIONS.length - 1) {
       setCurrentQuestion(prev => prev + 1)
     } else {
-      setShowResults(true)
+      // Finished all questions — require email before showing results
+      setShowEmailCapture(true)
     }
   }
 
@@ -217,7 +226,148 @@ export function TenQuestionsEbook() {
     return "commitment"
   }
 
+  const handleEmailSubmit = async () => {
+    setSubmitError(null)
+
+    // Basic validation
+    const trimmedName = name.trim()
+    const trimmedEmail = email.trim()
+    const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)
+    if (!trimmedName) { setSubmitError("Please enter your first name."); return }
+    if (!emailValid) { setSubmitError("Please enter a valid email address."); return }
+
+    setSubmitting(true)
+
+    const primaryBlock = getPrimaryBlock() || "validation"
+    const timeToComplete = Math.round((Date.now() - startTime) / 1000)
+    const deviceType =
+      typeof navigator !== "undefined" && /iPhone|iPad|Android/i.test(navigator.userAgent)
+        ? "Mobile"
+        : "Desktop"
+    const referrer = typeof document !== "undefined" ? document.referrer || "direct" : "direct"
+
+    // 1) Save completion to the database (same pipeline as Facts-or-Fear, tagged as "blocks")
+    try {
+      await fetch("/api/track-assessment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          resultType: primaryBlock,
+          userName: trimmedName,
+          userEmail: trimmedEmail,
+          answers,
+          timeToComplete,
+          deviceType,
+          referrer,
+          assessmentType: "blocks",
+        }),
+      })
+    } catch (err) {
+      console.error("track-assessment failed:", err)
+    }
+
+    // 2) Add subscriber to the matching MailerLite group
+    try {
+      await fetch("/api/assessment-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: trimmedEmail,
+          firstName: trimmedName,
+          block: primaryBlock,
+          answers,
+        }),
+      })
+    } catch (err) {
+      console.error("assessment-email failed:", err)
+    }
+
+    // Always show results once they've given their details, even if a network call hiccuped
+    setSubmitting(false)
+    setShowEmailCapture(false)
+    setShowResults(true)
+  }
+
   const progress = ((currentQuestion + 1) / QUESTIONS.length) * 100
+
+  if (showEmailCapture) {
+    return (
+      <main className="min-h-screen bg-gradient-to-b from-[#1a2332] via-[#1a2332] to-[#141b27]">
+        <div className="border-b border-white/10 bg-[#1a2332]/80 backdrop-blur-sm sticky top-0 z-10">
+          <div className="container mx-auto px-4 py-4">
+            <Link href="/" className="text-[#d4a574] font-serif text-xl">
+              Ideal Clarity
+            </Link>
+          </div>
+        </div>
+
+        <div className="container mx-auto px-4 py-12 sm:py-20 max-w-xl">
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center gap-2 bg-[#d4a574]/20 text-[#d4a574] px-4 py-2 rounded-full text-sm font-medium mb-6">
+              <Sparkles className="w-4 h-4" />
+              You&apos;re done — one last step
+            </div>
+            <h1 className="font-serif text-3xl sm:text-4xl font-bold text-white mb-4">
+              Where should I send your result?
+            </h1>
+            <p className="text-gray-400 text-lg">
+              Enter your name and email to see which block is keeping you stuck &mdash; and get a short
+              breakdown of what to do about it.
+            </p>
+          </div>
+
+          <Card className="bg-white/5 border-white/10 p-6 sm:p-8">
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="capture-name" className="text-white text-sm mb-2 block">
+                  First name
+                </Label>
+                <input
+                  id="capture-name"
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Your first name"
+                  className="w-full rounded-xl border-2 border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-gray-500 focus:border-[#d4a574] focus:outline-none transition-colors"
+                />
+              </div>
+              <div>
+                <Label htmlFor="capture-email" className="text-white text-sm mb-2 block">
+                  Email
+                </Label>
+                <input
+                  id="capture-email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  className="w-full rounded-xl border-2 border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-gray-500 focus:border-[#d4a574] focus:outline-none transition-colors"
+                />
+              </div>
+
+              {submitError && (
+                <p className="text-red-400 text-sm">{submitError}</p>
+              )}
+
+              <Button
+                onClick={handleEmailSubmit}
+                disabled={submitting}
+                className="w-full bg-[#d4a574] hover:bg-[#c49564] text-[#1a2332] font-semibold py-6 text-base disabled:opacity-50"
+              >
+                {submitting ? "Loading your result..." : "Show me my result"}
+                {!submitting && <ArrowRight className="w-5 h-5 ml-2" />}
+              </Button>
+
+              <p className="text-gray-500 text-xs text-center">
+                Your result is private. No spam &mdash; just your breakdown and the occasional helpful note.
+                Unsubscribe anytime.
+              </p>
+            </div>
+          </Card>
+        </div>
+      </main>
+    )
+  }
 
   if (showResults) {
     const counts = calculateResults()
