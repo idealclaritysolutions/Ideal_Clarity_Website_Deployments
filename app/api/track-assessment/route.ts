@@ -27,9 +27,10 @@ function parseReferrerSource(referrer: string): string {
 
 export async function POST(request: Request) {
   try {
-    const { resultType, userName, userEmail, answers, timeToComplete, deviceType, referrer } = await request.json()
+    const { resultType, userName, userEmail, answers, timeToComplete, deviceType, referrer, assessmentType } = await request.json()
 
     const referrerSource = parseReferrerSource(referrer)
+    const assessmentTypeValue = assessmentType || "facts-or-fear"
 
     const result = await sql`
       INSERT INTO assessment_completions (
@@ -39,7 +40,8 @@ export async function POST(request: Request) {
         answers,
         completion_time_seconds,
         device_type,
-        referrer
+        referrer,
+        assessment_type
       ) VALUES (
         ${resultType},
         ${userName || null},
@@ -47,7 +49,8 @@ export async function POST(request: Request) {
         ${JSON.stringify(answers)},
         ${timeToComplete || null},
         ${deviceType || null},
-        ${referrerSource}
+        ${referrerSource},
+        ${assessmentTypeValue}
       )
       RETURNING id, completed_at
     `
