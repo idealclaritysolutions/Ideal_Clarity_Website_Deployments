@@ -816,5 +816,8 @@ const CSS = `
   .syb-about{grid-template-columns:1fr; gap:2rem;}
   .syb-about-photo{max-width:320px; margin:0 auto;}
 }
-@media (min-width:781px){ .syb-sticky{display:none;} }
+@media (min-width:781px){
+  .syb-sticky{left:50%; right:auto; transform:translate(-50%,160%); bottom:1.5rem; max-width:520px; width:auto; border-radius:14px; padding:.85rem 1.1rem .85rem 1.6rem;}
+  .syb-sticky.is-on{transform:translate(-50%,0);}
+}
 `;
