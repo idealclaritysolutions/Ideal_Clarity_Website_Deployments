@@ -100,7 +100,7 @@ export default function StartYourBusinessPage() {
 
   const [showBar, setShowBar] = useState(false);
   useEffect(() => {
-    const target = document.getElementById("block-three");
+    const target = document.getElementById("mirror-end");
     if (!target) return;
     const io = new IntersectionObserver(
       (entries) => entries.forEach((e) => setShowBar(e.isIntersecting || e.boundingClientRect.top < 0)),
@@ -143,7 +143,7 @@ export default function StartYourBusinessPage() {
           </p>
           <div className="syb-cta-row syb-center" data-reveal>
             <a href="#mirror" className="syb-btn syb-btn-ghost syb-btn-lg" onClick={(e) => scrollTo("mirror", e)}>
-              Show me what&rsquo;s in my way &rarr;
+              Walk me through it &rarr;
             </a>
           </div>
         </div>
@@ -152,7 +152,7 @@ export default function StartYourBusinessPage() {
       {/* MIRROR — FEEL SEEN + ENLIGHTEN */}
       <section id="mirror" className="syb-sec syb-sec-cream syb-sec-mirror">
         <div className="syb-wrap syb-narrow">
-          <h2 className="syb-h2" data-reveal>First, let me describe the last few years.</h2>
+          <h2 className="syb-h2" data-reveal>First, let me describe the last few years &mdash; see how much of this sounds like you.</h2>
           <p className="syb-body" data-reveal>
             You&rsquo;ve thought about this business for longer than you&rsquo;d admit out loud.
             It comes up on the drive home. On Sunday evenings, when the week ahead feels heavier than
@@ -185,7 +185,7 @@ export default function StartYourBusinessPage() {
       {/* REVEAL — the three blocks in depth */}
       <section id="blocks" className="syb-sec syb-sec-cream syb-sec-blocks">
         <div className="syb-wrap">
-          <div className="syb-divider" data-reveal aria-hidden="true">
+          <div className="syb-divider" id="mirror-end" data-reveal aria-hidden="true">
             <span></span><span className="syb-divider-dot"></span><span></span>
           </div>
           <p className="syb-eyebrow syb-center" data-reveal>What&rsquo;s actually in your way</p>
@@ -678,10 +678,11 @@ const CSS = `
 .syb-sec-tight{padding:clamp(2.2rem,4vw,3.5rem) 0;}
 .syb-sec-blocks{padding-top:clamp(2rem,4vw,3rem);}
 .syb-sec-mirror{padding-bottom:clamp(2rem,4vw,3rem);}
-.syb-divider{display:flex; align-items:center; justify-content:center; gap:.8rem; max-width:260px; margin:0 auto 2rem;}
-.syb-divider span{height:1px; flex:1; background:linear-gradient(90deg, transparent, rgba(184,147,95,.5));}
-.syb-divider span:last-child{background:linear-gradient(90deg, rgba(184,147,95,.5), transparent);}
-.syb-divider-dot{flex:0 0 auto; width:7px; height:7px; border-radius:50%; background:var(--gold); transform:rotate(45deg); border-radius:1px;}
+.syb-divider{display:flex; align-items:center; justify-content:center; gap:.7rem; width:160px; margin:0 auto 1.2rem;}
+.syb-divider span:first-child,.syb-divider span:last-child{height:1px; width:56px; flex:0 0 auto;}
+.syb-divider span:first-child{background:linear-gradient(90deg, transparent, var(--gold));}
+.syb-divider span:last-child{background:linear-gradient(90deg, var(--gold), transparent);}
+.syb-divider-dot{flex:0 0 auto; width:7px; height:7px; background:var(--gold); transform:rotate(45deg); border-radius:1px;}
 .syb-sec-cream{background:var(--cream);}
 .syb-sec-warm{background:var(--warm);}
 .syb-sec-navy{background:var(--navy);}
