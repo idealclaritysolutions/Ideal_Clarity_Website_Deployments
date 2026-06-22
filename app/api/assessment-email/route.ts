@@ -8,11 +8,12 @@ export async function POST(request: NextRequest) {
     console.log("[v0] =================================")
     console.log("[v0] API route called: /api/assessment-email")
 
-    const { email, firstName, q3Answer, deadline, isFearBased, answers } = await request.json()
+    const { email, firstName, q3Answer, deadline, isFearBased, block, answers } = await request.json()
 
     console.log("[v0] Email:", email)
     console.log("[v0] First Name:", firstName)
     console.log("[v0] isFearBased:", isFearBased)
+    console.log("[v0] block:", block)
 
     const apiKey = process.env.MAILERLITE_API_KEY
 
@@ -23,9 +24,28 @@ export async function POST(request: NextRequest) {
 
     console.log("[v0] MailerLite API key found")
 
-    // Determine group based on assessment result
-    const groupId = isFearBased ? "175087415702062888" : "175087438358643867"
-    const groupName = isFearBased ? "Fear-Based Assessment" : "Constraint-Based Assessment"
+    // Determine group + assessment type.
+    // If `block` is provided, this is the From-Idea-to-First-Offer (blocks) assessment.
+    // Otherwise fall back to the original Facts-or-Fear (fear/constraint) logic.
+    const BLOCK_GROUPS: Record<string, { id: string; name: string }> = {
+      validation: { id: "190951354390284159", name: "Validation Block" },
+      visibility: { id: "190951338378528727", name: "Visibility Block" },
+      commitment: { id: "190951325913056438", name: "Commitment Block" },
+    }
+
+    let groupId: string
+    let groupName: string
+    let assessmentTypeLabel: string
+
+    if (block && BLOCK_GROUPS[block]) {
+      groupId = BLOCK_GROUPS[block].id
+      groupName = BLOCK_GROUPS[block].name
+      assessmentTypeLabel = `blocks-${block}`
+    } else {
+      groupId = isFearBased ? "175087415702062888" : "175087438358643867"
+      groupName = isFearBased ? "Fear-Based Assessment" : "Constraint-Based Assessment"
+      assessmentTypeLabel = isFearBased ? "fear-based" : "constraint-based"
+    }
 
     console.log("[v0] Adding subscriber to group:", groupName, `(${groupId})`)
 
@@ -36,7 +56,7 @@ export async function POST(request: NextRequest) {
         first_name: firstName,
         q3_answer: q3Answer,
         deadline_date: deadline,
-        assessment_type: isFearBased ? "fear-based" : "constraint-based",
+        assessment_type: assessmentTypeLabel,
         assessment_date: new Date().toISOString(),
       },
       groups: [groupId],
