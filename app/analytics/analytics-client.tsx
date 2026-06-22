@@ -34,6 +34,9 @@ interface AnalyticsData {
     constraint_based: number
     mixed: number
     unclear: number
+    validation?: number
+    visibility?: number
+    commitment?: number
   }>
   averageTime: {
     avg_seconds: number
@@ -58,6 +61,7 @@ interface AnalyticsData {
     completion_time_seconds: number
     device_type: string
     referrer: string
+    assessment_type?: string
   }>
 }
 
@@ -66,19 +70,23 @@ const COLORS = {
   "constraint-based": "hsl(var(--chart-2))",
   mixed: "hsl(var(--chart-3))",
   unclear: "hsl(var(--chart-4))",
+  validation: "hsl(var(--chart-1))",
+  visibility: "hsl(var(--chart-2))",
+  commitment: "hsl(var(--chart-3))",
 }
 
 export function AssessmentAnalytics() {
   const [data, setData] = useState<AnalyticsData | null>(null)
   const [loading, setLoading] = useState(true)
   const [timeRange, setTimeRange] = useState(30)
+  const [assessmentType, setAssessmentType] = useState<"blocks" | "facts-or-fear" | "all">("blocks")
   const [error, setError] = useState<string | null>(null)
 
   const fetchAnalytics = async () => {
     setLoading(true)
     setError(null)
     try {
-      const response = await fetch(`/api/analytics?days=${timeRange}`)
+      const response = await fetch(`/api/analytics?days=${timeRange}&type=${assessmentType}`)
       const result = await response.json()
 
       if (result.success) {
@@ -96,7 +104,7 @@ export function AssessmentAnalytics() {
 
   useEffect(() => {
     fetchAnalytics()
-  }, [timeRange])
+  }, [timeRange, assessmentType])
 
   const formatTime = (seconds: number) => {
     if (!seconds) return "N/A"
@@ -141,21 +149,40 @@ export function AssessmentAnalytics() {
 
   return (
     <div className="container mx-auto py-8 space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center">
         <div>
           <h1 className="text-3xl font-bold">Assessment Analytics</h1>
-          <p className="text-muted-foreground">Track Facts or Fear assessment performance</p>
+          <p className="text-muted-foreground">
+            {assessmentType === "blocks"
+              ? "From Idea to First Offer — block assessment"
+              : assessmentType === "facts-or-fear"
+                ? "Facts or Fear assessment"
+                : "All assessments combined"}
+          </p>
         </div>
-        <div className="flex gap-2">
-          <Button variant={timeRange === 7 ? "default" : "outline"} onClick={() => setTimeRange(7)}>
-            7 Days
-          </Button>
-          <Button variant={timeRange === 30 ? "default" : "outline"} onClick={() => setTimeRange(30)}>
-            30 Days
-          </Button>
-          <Button variant={timeRange === 90 ? "default" : "outline"} onClick={() => setTimeRange(90)}>
-            90 Days
-          </Button>
+        <div className="flex flex-col gap-2 sm:items-end">
+          <div className="flex gap-2">
+            <Button variant={assessmentType === "blocks" ? "default" : "outline"} size="sm" onClick={() => setAssessmentType("blocks")}>
+              Blocks
+            </Button>
+            <Button variant={assessmentType === "facts-or-fear" ? "default" : "outline"} size="sm" onClick={() => setAssessmentType("facts-or-fear")}>
+              Facts or Fear
+            </Button>
+            <Button variant={assessmentType === "all" ? "default" : "outline"} size="sm" onClick={() => setAssessmentType("all")}>
+              All
+            </Button>
+          </div>
+          <div className="flex gap-2">
+            <Button variant={timeRange === 7 ? "default" : "outline"} onClick={() => setTimeRange(7)}>
+              7 Days
+            </Button>
+            <Button variant={timeRange === 30 ? "default" : "outline"} onClick={() => setTimeRange(30)}>
+              30 Days
+            </Button>
+            <Button variant={timeRange === 90 ? "default" : "outline"} onClick={() => setTimeRange(90)}>
+              90 Days
+            </Button>
+          </div>
         </div>
       </div>
 
