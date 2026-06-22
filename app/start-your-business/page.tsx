@@ -618,7 +618,7 @@ export default function StartYourBusinessPage() {
 
       {/* STICKY BAR */}
       <div className={`syb-sticky ${showBar ? "is-on" : ""}`}>
-        <span>From Idea to First Offer</span>
+        <span>Finally start the business that&rsquo;s yours</span>
         <a href="#paths" className="syb-btn syb-btn-gold syb-btn-sm" onClick={(e) => scrollTo("paths", e)}>See your options</a>
       </div>
     </div>
