@@ -124,30 +124,78 @@ export default function StartYourBusinessPage() {
             You&rsquo;ve spent decades building someone else&rsquo;s company.
             <em> The one you keep meaning to build is still waiting.</em>
           </h1>
-          <p className="syb-sub syb-center" data-reveal>
-            You&rsquo;re good at what you do. You&rsquo;ve led teams, made the hard calls, earned the
-            title. And quietly, for years now, you&rsquo;ve been telling yourself that one of these days
-            you&rsquo;ll finally start the thing that&rsquo;s actually yours.
-          </p>
-          <div className="syb-hero-urgent" data-reveal>
-            <p>
-              But &ldquo;one of these days&rdquo; has a way of becoming ten years. And the quiet fear you
-              don&rsquo;t say out loud isn&rsquo;t that you&rsquo;ll fail &mdash; it&rsquo;s that
-              you&rsquo;ll reach the end of your career, and then your life, with the best thing you had
-              in you <em>still unbuilt</em>.
-            </p>
-          </div>
-          <p className="syb-watch syb-center" data-reveal>
-            Below, I&rsquo;ll show you the three blocks that keep capable, accomplished people exactly
-            where you are &mdash; and which one has been quietly running your decisions.
-          </p>
-          <div className="syb-cta-row syb-center" data-reveal>
-            <a href="#mirror" className="syb-btn syb-btn-ghost syb-btn-lg" onClick={(e) => scrollTo("mirror", e)}>
-              Walk me through it &rarr;
-            </a>
-          </div>
         </div>
       </header>
+
+      {/* ANNOUNCE — choose your path (moved to top for testing) */}
+      <section id="paths" className="syb-sec syb-sec-warm syb-sec-tight">
+        <div className="syb-wrap">
+          <div className="syb-divider" data-reveal aria-hidden="true">
+            <span></span><span className="syb-divider-dot"></span><span></span>
+          </div>
+          <h2 className="syb-h2-big syb-center" data-reveal>Three ways to get unstuck</h2>
+          <p className="syb-body syb-center syb-narrow-text" data-reveal>
+            Not sure where you are yet? Start with the free 2-minute assessment to find the one block
+            keeping you stuck &mdash; or jump straight to working together.
+          </p>
+          <div className="syb-paths">
+
+            <div className="syb-path" data-reveal>
+              <span className="syb-path-tag">Free</span>
+              <span className="syb-path-kicker">Self-discovery</span>
+              <h3 className="syb-path-title">Take the 2-minute assessment</h3>
+              <p className="syb-path-desc">
+                Find out which of the three blocks is keeping you stuck. Instant results, zero fluff.
+              </p>
+              <ul className="syb-path-list">
+                <li>Identify your specific block</li>
+                <li>Get personalized insight</li>
+                <li>Instant results</li>
+              </ul>
+              <a href={ASSESSMENT_URL} className="syb-btn syb-btn-gold syb-btn-full">Start free assessment</a>
+            </div>
+
+            <div className="syb-path" data-reveal>
+              <span className="syb-path-tag">$27</span>
+              <span className="syb-path-kicker">DIY roadmap</span>
+              <h3 className="syb-path-title">Get the complete playbook</h3>
+              <p className="syb-path-desc">
+                My exact system for building your business while keeping your paycheck. No coaching
+                required &mdash; the real-time playbook, delivered the moment you buy.
+              </p>
+              <ul className="syb-path-list">
+                <li>36-page tactical guide</li>
+                <li>My daily schedule, outreach scripts &amp; tech stack</li>
+                <li>Instant access after checkout</li>
+              </ul>
+              <a href={EBOOK_STRIPE} className="syb-btn syb-btn-gold syb-btn-full">Get instant access &mdash; $27</a>
+            </div>
+
+            <div className="syb-path syb-path-feature" data-reveal>
+              <span className="syb-path-flag">Best results &middot; most complete</span>
+              <span className="syb-path-tag">The Breakthrough</span>
+              <span className="syb-path-kicker">Done-with-you &middot; 1-on-1</span>
+              <h3 className="syb-path-title">Remove the block. Make your first offers.</h3>
+              <p className="syb-path-desc">
+                Four weeks, one-on-one, to find and remove <em>your</em> specific block and get you
+                making your first ten offers to real people &mdash; while still employed.
+              </p>
+              <ul className="syb-path-list">
+                <li>The clarity of the assessment &mdash; done <em>with</em> you, not by a quiz</li>
+                <li>Every tactic in the playbook &mdash; applied to your situation</li>
+                <li>Your personalized Breakthrough Protocol &amp; weekly accountability</li>
+                <li>Direct access to me the whole way through</li>
+              </ul>
+              <a href={PROGRAM_STRIPE} className="syb-btn syb-btn-gold syb-btn-full">Enroll now &mdash; start this week &rarr;</a>
+              <a href={CAL_URL} className="syb-btn syb-btn-ghost syb-btn-full syb-btn-stack">Book a free strategy call first</a>
+            </div>
+
+          </div>
+          <p className="syb-paths-foot" data-reveal>
+            Want to understand <em>why</em> you&rsquo;re stuck first? Keep reading &mdash; it takes two minutes.
+          </p>
+        </div>
+      </section>
 
       {/* MIRROR — FEEL SEEN + ENLIGHTEN */}
       <section id="mirror" className="syb-sec syb-sec-cream syb-sec-mirror">
@@ -366,74 +414,6 @@ export default function StartYourBusinessPage() {
         </div>
       </section>
 
-      {/* ANNOUNCE — choose your path */}
-      <section id="paths" className="syb-sec syb-sec-warm">
-        <div className="syb-wrap">
-          <p className="syb-eyebrow syb-center" data-reveal>Choose your path forward</p>
-          <h2 className="syb-h2 syb-center" data-reveal>Three ways to get unstuck</h2>
-          <p className="syb-body syb-center syb-narrow-text" data-reveal>
-            Whether you want to figure it out yourself or work through it with me directly,
-            there&rsquo;s a path that fits where you are right now.
-          </p>
-          <div className="syb-paths">
-
-            <div className="syb-path" data-reveal>
-              <span className="syb-path-tag">Free</span>
-              <span className="syb-path-kicker">Self-discovery</span>
-              <h3 className="syb-path-title">Take the 2-minute assessment</h3>
-              <p className="syb-path-desc">
-                Find out which of the three blocks is keeping you stuck. Instant results, zero fluff.
-              </p>
-              <ul className="syb-path-list">
-                <li>Identify your specific block</li>
-                <li>Get personalized insight</li>
-                <li>Instant results</li>
-              </ul>
-              <a href={ASSESSMENT_URL} className="syb-btn syb-btn-gold syb-btn-full">Start free assessment</a>
-            </div>
-
-            <div className="syb-path" data-reveal>
-              <span className="syb-path-tag">$27</span>
-              <span className="syb-path-kicker">DIY roadmap</span>
-              <h3 className="syb-path-title">Get the complete playbook</h3>
-              <p className="syb-path-desc">
-                My exact system for building your business while keeping your paycheck. No coaching
-                required &mdash; the real-time playbook, delivered the moment you buy.
-              </p>
-              <ul className="syb-path-list">
-                <li>36-page tactical guide</li>
-                <li>My daily schedule, outreach scripts &amp; tech stack</li>
-                <li>Instant access after checkout</li>
-              </ul>
-              <a href={EBOOK_STRIPE} className="syb-btn syb-btn-gold syb-btn-full">Get instant access &mdash; $27</a>
-            </div>
-
-            <div className="syb-path syb-path-feature" data-reveal>
-              <span className="syb-path-flag">Best results &middot; most complete</span>
-              <span className="syb-path-tag">The Breakthrough</span>
-              <span className="syb-path-kicker">Done-with-you &middot; 1-on-1</span>
-              <h3 className="syb-path-title">Remove the block. Make your first offers.</h3>
-              <p className="syb-path-desc">
-                Four weeks, one-on-one, to find and remove <em>your</em> specific block and get you
-                making your first ten offers to real people &mdash; while still employed.
-              </p>
-              <ul className="syb-path-list">
-                <li>The clarity of the assessment &mdash; done <em>with</em> you, not by a quiz</li>
-                <li>Every tactic in the playbook &mdash; applied to your situation</li>
-                <li>Your personalized Breakthrough Protocol &amp; weekly accountability</li>
-                <li>Direct access to me the whole way through</li>
-              </ul>
-              <a href={PROGRAM_STRIPE} className="syb-btn syb-btn-gold syb-btn-full">Enroll now &mdash; start this week &rarr;</a>
-              <a href={CAL_URL} className="syb-btn syb-btn-ghost syb-btn-full syb-btn-stack">Book a free strategy call first</a>
-            </div>
-
-          </div>
-          <p className="syb-paths-foot" data-reveal>
-            Not sure which is right for you? Start with the free assessment &mdash; it takes two minutes.
-          </p>
-        </div>
-      </section>
-
       {/* LET THEM SEE WHAT GOOD LOOKS LIKE */}
       <section className="syb-sec syb-sec-cream">
         <div className="syb-wrap syb-narrow">
@@ -648,6 +628,7 @@ const CSS = `
 .syb-h1{font-size:clamp(2.1rem,5vw,3.5rem); line-height:1.1; font-weight:600; color:var(--navy); margin:0 0 1.4rem; letter-spacing:-.01em;}
 .syb-h1 em{font-style:italic; color:var(--gold-deep);}
 .syb-h2{font-size:clamp(1.7rem,3.5vw,2.5rem); line-height:1.15; font-weight:600; color:var(--navy); margin:0 0 1.4rem;}
+.syb-h2-big{font-size:clamp(2rem,4.5vw,3rem); line-height:1.1; font-weight:700; color:var(--navy); margin:0 0 1.2rem; letter-spacing:-.01em; text-align:center;}
 .syb-h2 em{font-style:italic; color:var(--gold-deep);}
 .syb-sub{font-size:clamp(1.05rem,1.7vw,1.25rem); line-height:1.6; color:var(--char); max-width:680px; margin:0 auto 1.4rem;}
 .syb-hero-urgent{max-width:620px; margin:.5rem auto 2.2rem; padding:1.5rem 1.9rem; background:rgba(192,90,58,.06); border:1px solid rgba(192,90,58,.22); border-left:3px solid var(--terra); border-radius:12px;}
