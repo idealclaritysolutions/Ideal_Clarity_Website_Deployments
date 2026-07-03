@@ -68,11 +68,6 @@ export default function ClarityIntensivePage() {
             The real reason you haven&rsquo;t started your business isn&rsquo;t lack of information or time.
             <em> It&rsquo;s something no one has told you before.</em>
           </h1>
-          <p className="cdd-sub cdd-center" data-reveal>
-            If you&rsquo;ve been &ldquo;about to start&rdquo; for months &mdash; or years &mdash;
-            researched, planned, talked to family and friends about it, and still haven&rsquo;t moved
-            &mdash; this is for you.
-          </p>
           <p className="cdd-watch cdd-center" data-reveal>
             Watch the short video below. I&rsquo;ll show you the one thing that&rsquo;s actually been
             keeping you stuck &mdash; and the four disguises it hides behind.
