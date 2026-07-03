@@ -83,10 +83,10 @@ export default function ClarityIntensivePage() {
 
           <div className="cdd-cta-row cdd-center" data-reveal>
             <a href="#book" className="cdd-btn cdd-btn-gold cdd-btn-lg" onClick={scrollToBook}>
-              Book Your Clarity Intensive &mdash; $750
+              Book Your Clarity Intensive
             </a>
             <p className="cdd-microcopy">
-              75 minutes &middot; book &amp; pay in one step &middot; full refund if it doesn&rsquo;t give you real clarity
+              75 minutes &middot; one focused conversation &middot; full refund if it doesn&rsquo;t give you real clarity
             </p>
           </div>
 
@@ -258,7 +258,7 @@ export default function ClarityIntensivePage() {
       {/* FAQ — catches the skimmers who won't watch the whole video */}
       <section className="cdd-sec cdd-sec-cream">
         <div className="cdd-wrap cdd-narrow">
-          <h2 className="cdd-h2 cdd-center" data-reveal>Questions</h2>
+          <h2 className="cdd-h2 cdd-center" data-reveal>You might be wondering&hellip;</h2>
           <div className="cdd-faq" data-reveal>
             {[
               { q: "Why no free discovery call first?", a: "Because the free call is usually where people get talked into something. This is different \u2014 you've watched the video, you know exactly what this is. If it's for you, we skip straight to the work. And you're fully protected: if the session doesn't give you real clarity, I refund you." },
@@ -314,7 +314,7 @@ export default function ClarityIntensivePage() {
 
       {/* STICKY BAR */}
       <div className={`cdd-sticky ${showBar ? "is-on" : ""}`}>
-        <span>Clarity Intensive &middot; $750</span>
+        <span>The Clarity Intensive</span>
         <a href="#book" className="cdd-btn cdd-btn-gold cdd-btn-sm" onClick={scrollToBook}>Book now</a>
       </div>
     </div>
