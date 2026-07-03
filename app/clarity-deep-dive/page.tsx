@@ -69,8 +69,8 @@ export default function ClarityIntensivePage() {
             <em> It&rsquo;s something no one has told you before.</em>
           </h1>
           <p className="cdd-watch cdd-center" data-reveal>
-            Watch the short video below. I&rsquo;ll show you the one thing that&rsquo;s actually been
-            keeping you stuck &mdash; and the four disguises it hides behind.
+            In the next few minutes, I&rsquo;ll show you the real thing that&rsquo;s been keeping you
+            stuck &mdash; the four disguises it hides behind, and exactly how to break free of it.
           </p>
 
           <div className="cdd-video" data-reveal>
