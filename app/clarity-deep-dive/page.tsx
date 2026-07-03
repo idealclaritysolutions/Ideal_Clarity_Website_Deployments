@@ -105,6 +105,11 @@ export default function ClarityIntensivePage() {
               <em>&mdash; Lola, Rapid Reinvent Hair Treatment</em>
             </div>
           </div>
+
+          <div className="cdd-herotesti" data-reveal>
+            <p>&ldquo;Before reaching out to Ideal Clarity, I felt overwhelmed by everything involved in starting and growing a business. There was so much information, so many decisions to make, and it was hard to know where to focus my time and energy. Ideal Clarity helped turn that uncertainty into a clear, actionable path forward. Chi-Chi took the time to understand my goals, asked thoughtful questions, and provided practical guidance tailored to my situation. If you are looking for clarity, accountability, and experienced guidance, I highly recommend Ideal Clarity.&rdquo;</p>
+            <em>&mdash; Peace</em>
+          </div>
         </div>
       </header>
 
@@ -206,7 +211,7 @@ export default function ClarityIntensivePage() {
       <section className="cdd-sec cdd-sec-cream">
         <div className="cdd-wrap cdd-about">
           <div className="cdd-about-photo" data-reveal>
-            <div className="cdd-photo-placeholder"><span>Chi-Chi&rsquo;s photo</span></div>
+            <img src="/chichi.png" alt="Chi-Chi Jones" className="cdd-photo" />
           </div>
           <div className="cdd-about-text" data-reveal>
             <h2 className="cdd-h2">I&rsquo;m Chi-Chi Jones.</h2>
@@ -369,6 +374,9 @@ const CSS = `
 .cdd-herocard-quote{flex:1 1 360px; text-align:left;}
 .cdd-herocard-quote p{font-size:clamp(1.12rem,1.8vw,1.32rem); font-style:italic; color:var(--navy); line-height:1.55; margin:0 0 .8rem;}
 .cdd-herocard-quote em{font-style:normal; font-family:'Poppins',sans-serif; font-size:.88rem; font-weight:600; color:var(--gold-deep);}
+.cdd-herotesti{max-width:860px; margin:1.4rem auto 0; padding:2rem 2.4rem; background:var(--cream-light); border:1px solid rgba(184,147,95,.3); border-radius:16px; box-shadow:0 8px 30px rgba(26,35,50,.06);}
+.cdd-herotesti p{font-size:clamp(1rem,1.5vw,1.1rem); font-style:italic; color:var(--navy); line-height:1.6; margin:0 0 .8rem; text-align:left;}
+.cdd-herotesti em{font-style:normal; font-family:'Poppins',sans-serif; font-size:.85rem; font-weight:600; color:var(--gold-deep);}
 .cdd-sec{padding:clamp(3.5rem,7vw,6rem) 0;}
 .cdd-sec-tight{padding:clamp(2rem,4vw,3.5rem) 0;}
 .cdd-sec-cream{background:var(--cream);}
@@ -392,6 +400,7 @@ const CSS = `
 .cdd-about{display:grid; grid-template-columns:0.8fr 1.2fr; gap:3rem; align-items:center;}
 .cdd-about-photo{width:100%;}
 .cdd-photo-placeholder{aspect-ratio:4/5; border-radius:14px; background:linear-gradient(135deg,#e8ddca,#d8c4a8); display:flex; align-items:center; justify-content:center; box-shadow:0 14px 40px rgba(26,35,50,.12);}
+.cdd-photo{width:100%; border-radius:14px; display:block; box-shadow:0 14px 40px rgba(26,35,50,.15);}
 .cdd-photo-placeholder span{font-family:'Poppins',sans-serif; color:#8a7a5c; font-size:.9rem;}
 .cdd-price{font-size:clamp(3rem,9vw,5rem); font-weight:700; color:var(--gold); line-height:1; margin:1.2rem 0 .6rem;}
 .cdd-spec{list-style:none; padding:0; margin:0 auto 1.8rem; display:flex; flex-wrap:wrap; gap:.7rem 1.6rem; justify-content:center;}
