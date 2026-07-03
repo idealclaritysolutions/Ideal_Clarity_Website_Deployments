@@ -128,7 +128,7 @@ export default function ClarityIntensivePage() {
       </section>
 
       {/* PROOF */}
-      <section className="cdd-sec cdd-sec-white">
+      <section className="cdd-sec cdd-sec-cream">
         <div className="cdd-wrap">
           <p className="cdd-kicker cdd-center" data-reveal>What happens when the block comes off</p>
           <div className="cdd-testi-grid">
@@ -178,7 +178,7 @@ export default function ClarityIntensivePage() {
       </section>
 
       {/* WHAT YOU LEAVE WITH — tight three-item strip */}
-      <section className="cdd-sec cdd-sec-white cdd-sec-tight">
+      <section className="cdd-sec cdd-sec-cream cdd-sec-tight">
         <div className="cdd-wrap cdd-narrow">
           <h2 className="cdd-h2 cdd-center" data-reveal>What you leave with</h2>
           <div className="cdd-leave-list">
@@ -208,7 +208,7 @@ export default function ClarityIntensivePage() {
       </section>
 
       {/* ABOUT — short */}
-      <section className="cdd-sec cdd-sec-warm">
+      <section className="cdd-sec cdd-sec-cream">
         <div className="cdd-wrap cdd-about">
           <div className="cdd-about-photo" data-reveal>
             <img src="/chichi.png" alt="Chi-Chi Jones" className="cdd-photo" />
@@ -283,7 +283,7 @@ export default function ClarityIntensivePage() {
       </section>
 
       {/* BOOK */}
-      <section id="book" className="cdd-sec cdd-sec-white cdd-book">
+      <section id="book" className="cdd-sec cdd-sec-cream cdd-book">
         <div className="cdd-wrap cdd-narrow cdd-center">
           <p className="cdd-eyebrow" data-reveal>Your Clarity Intensive</p>
           <h2 className="cdd-h2" data-reveal>Pick a time. Answer a few questions. I&rsquo;ll see you there.</h2>
@@ -369,14 +369,14 @@ const CSS = `
 .cdd-play{font-size:2.4rem; color:var(--gold);}
 .cdd-video-placeholder span{font-family:'Poppins',sans-serif; font-size:1.05rem; letter-spacing:.03em;}
 .cdd-video-placeholder small{font-family:'Poppins',sans-serif; font-size:.78rem; opacity:.6;}
-.cdd-herocard{display:flex; gap:2rem; align-items:center; justify-content:center; flex-wrap:wrap; margin-top:2.8rem; padding:2.2rem 2.4rem; background:var(--cream-light); border:1px solid rgba(184,147,95,.35); border-radius:16px; box-shadow:0 12px 40px rgba(26,35,50,.08); max-width:860px; margin-left:auto; margin-right:auto;}
+.cdd-herocard{display:flex; gap:2rem; align-items:center; justify-content:center; flex-wrap:wrap; margin-top:2.8rem; padding:2.2rem 2.4rem; background:#FFFFFF; border:1px solid rgba(184,147,95,.25); border-radius:16px; box-shadow:0 16px 48px rgba(26,35,50,.10); max-width:860px; margin-left:auto; margin-right:auto;}
 .cdd-herocard-stat{display:flex; flex-direction:column; align-items:center; flex-shrink:0; padding-right:2rem; border-right:1px solid rgba(184,147,95,.3);}
 .cdd-herocard-stat strong{font-size:clamp(3.6rem,7vw,5rem); color:var(--gold); line-height:.9; font-weight:700; letter-spacing:-.02em;}
 .cdd-herocard-stat span{font-family:'Poppins',sans-serif; font-size:.8rem; text-transform:uppercase; letter-spacing:.08em; color:var(--gold-deep); margin-top:.45rem; font-weight:600;}
 .cdd-herocard-quote{flex:1 1 360px; text-align:left;}
 .cdd-herocard-quote p{font-size:clamp(1.12rem,1.8vw,1.32rem); font-style:italic; color:var(--navy); line-height:1.55; margin:0 0 .8rem;}
 .cdd-herocard-quote em{font-style:normal; font-family:'Poppins',sans-serif; font-size:.88rem; font-weight:600; color:var(--gold-deep);}
-.cdd-herotesti{max-width:860px; margin:1.4rem auto 0; padding:2rem 2.4rem; background:var(--cream-light); border:1px solid rgba(184,147,95,.3); border-radius:16px; box-shadow:0 8px 30px rgba(26,35,50,.06);}
+.cdd-herotesti{max-width:860px; margin:1.4rem auto 0; padding:2rem 2.4rem; background:#FFFFFF; border:1px solid rgba(184,147,95,.25); border-radius:16px; box-shadow:0 16px 48px rgba(26,35,50,.10);}
 .cdd-herotesti p{font-size:clamp(1rem,1.5vw,1.1rem); font-style:italic; color:var(--navy); line-height:1.6; margin:0 0 .8rem; text-align:left;}
 .cdd-herotesti em{font-style:normal; font-family:'Poppins',sans-serif; font-size:.85rem; font-weight:600; color:var(--gold-deep);}
 .cdd-sec{padding:clamp(3.5rem,7vw,6rem) 0;}
@@ -390,15 +390,15 @@ const CSS = `
 .cdd-h2-navy{font-size:clamp(1.7rem,3.6vw,2.6rem); line-height:1.2; font-weight:600; color:var(--cream-light); margin:0 0 1.4rem;}
 .cdd-body-navy{font-size:1.12rem; line-height:1.75; color:#d4d9e2; margin:0 0 1.3rem;}
 .cdd-testi-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:1.4rem; max-width:760px; margin:0 auto;}
-.cdd-testi{background:var(--cream-light); border:1px solid rgba(184,147,95,.3); border-radius:12px; padding:1.8rem; box-shadow:0 6px 24px rgba(26,35,50,.06);}
+.cdd-testi{background:#FFFFFF; border:1px solid rgba(184,147,95,.22); border-radius:12px; padding:1.8rem; box-shadow:0 12px 36px rgba(26,35,50,.08);}
 .cdd-testi p{font-size:1rem; line-height:1.6; font-style:italic; color:var(--char); margin:0 0 .9rem;}
 .cdd-testi-name{font-family:'Poppins',sans-serif; font-size:.85rem; font-weight:600; color:var(--gold-deep); letter-spacing:.02em;}
 .cdd-steps{display:flex; flex-direction:column; gap:1.6rem; margin:1.5rem 0;}
-.cdd-step{border-left:2px solid var(--gold); padding-left:1.4rem;}
+.cdd-step{background:#FFFFFF; border:1px solid rgba(184,147,95,.22); border-left:3px solid var(--gold); border-radius:10px; padding:1.4rem 1.6rem; box-shadow:0 10px 30px rgba(26,35,50,.06);}
 .cdd-step-num{display:block; font-family:'Poppins',sans-serif; font-weight:600; text-transform:uppercase; letter-spacing:.1em; font-size:.78rem; color:var(--gold-deep); margin-bottom:.5rem;}
 .cdd-step p{font-size:1.08rem; line-height:1.7; margin:0; color:var(--char);}
 .cdd-leave-list{display:flex; flex-direction:column; gap:1.2rem; margin:2rem 0 0;}
-.cdd-leave-item{display:flex; gap:1.3rem; align-items:flex-start; background:var(--cream-light); border:1px solid rgba(184,147,95,.3); border-radius:12px; padding:1.6rem 1.8rem; box-shadow:0 6px 24px rgba(26,35,50,.06);}
+.cdd-leave-item{display:flex; gap:1.3rem; align-items:flex-start; background:#FFFFFF; border:1px solid rgba(184,147,95,.22); border-radius:12px; padding:1.6rem 1.8rem; box-shadow:0 12px 36px rgba(26,35,50,.08);}
 .cdd-leave-num{flex-shrink:0; width:40px; height:40px; border-radius:50%; background:var(--gold); color:#fff; display:flex; align-items:center; justify-content:center; font-family:'Poppins',sans-serif; font-weight:700; font-size:1.2rem;}
 .cdd-leave-item h3{font-size:1.2rem; color:var(--navy); margin:.15rem 0 .4rem; font-weight:600;}
 .cdd-leave-item p{font-size:1.02rem; line-height:1.6; margin:0; color:var(--char);}
@@ -413,14 +413,14 @@ const CSS = `
 .cdd-spec li::before{content:'\\2666'; color:var(--gold); position:absolute; left:0;}
 .cdd-guarantee{background:rgba(184,147,95,.12); border:1px solid rgba(184,147,95,.4); border-radius:12px; padding:1.6rem 1.8rem; max-width:620px; margin:.5rem auto 2rem; text-align:left; color:#d4d9e2; font-size:1.02rem; line-height:1.65;}
 .cdd-guarantee strong{display:block; font-family:'Poppins',sans-serif; color:var(--gold); font-size:.95rem; letter-spacing:.04em; text-transform:uppercase; margin-bottom:.5rem;}
-.cdd-faq{margin-top:2rem;}
+.cdd-faq{margin-top:2rem; background:#FFFFFF; border:1px solid rgba(184,147,95,.22); border-radius:14px; padding:1rem 2rem; box-shadow:0 12px 36px rgba(26,35,50,.08);}
 .cdd-faq-item{border-bottom:1px solid rgba(26,35,50,.12); padding:1.2rem 0;}
 .cdd-faq-item summary{font-family:'Poppins',sans-serif; font-weight:600; font-size:1.08rem; color:var(--navy); cursor:pointer; list-style:none; position:relative; padding-right:2rem;}
 .cdd-faq-item summary::-webkit-details-marker{display:none;}
 .cdd-faq-item summary::after{content:'+'; position:absolute; right:0; top:-2px; font-size:1.5rem; color:var(--gold); font-weight:400;}
 .cdd-faq-item[open] summary::after{content:'\\2013';}
 .cdd-faq-item p{font-size:1.05rem; line-height:1.7; margin:1rem 0 0; color:var(--char);}
-.cdd-cal{margin-top:2.2rem; background:var(--cream); border:1px solid rgba(184,147,95,.3); border-radius:14px; padding:12px; box-shadow:0 10px 36px rgba(26,35,50,.1);}
+.cdd-cal{margin-top:2.2rem; background:#FFFFFF; border:1px solid rgba(184,147,95,.25); border-radius:14px; padding:12px; box-shadow:0 16px 48px rgba(26,35,50,.10);}
 .cdd-footer{background:var(--navy); color:#aeb6c4; padding:3rem 0; font-family:'Poppins',sans-serif; font-size:.88rem;}
 .cdd-disclaimer{max-width:820px; margin:0 auto 2.4rem; padding-bottom:2rem; border-bottom:1px solid rgba(255,255,255,.12);}
 .cdd-disclaimer strong{display:block; color:#cdd3dd; font-size:.8rem; letter-spacing:.04em; text-transform:uppercase; margin-bottom:.8rem;}
