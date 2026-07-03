@@ -114,21 +114,21 @@ export default function ClarityIntensivePage() {
       </header>
 
       {/* SHORT BRIDGE — one tight beat, then push to video/booking */}
-      <section className="cdd-sec cdd-sec-cream cdd-sec-tight">
+      <section className="cdd-sec cdd-sec-navy cdd-sec-tight">
         <div className="cdd-wrap cdd-narrow cdd-center">
-          <p className="cdd-body" data-reveal>
+          <p className="cdd-bridge-navy" data-reveal>
             You already know what you want to build. The question was never <em>what</em> &mdash;
             it&rsquo;s why you keep stopping right before you start. That&rsquo;s the thing we find,
             and it&rsquo;s the whole reason more research and more planning have never moved you.
           </p>
           <div className="cdd-cta-row" data-reveal>
-            <a href="#book" className="cdd-btn cdd-btn-ghost" onClick={scrollToBook}>Book your Clarity Intensive &rarr;</a>
+            <a href="#book" className="cdd-btn cdd-btn-goldline" onClick={scrollToBook}>Book your Clarity Intensive &rarr;</a>
           </div>
         </div>
       </section>
 
       {/* PROOF */}
-      <section className="cdd-sec cdd-sec-warm">
+      <section className="cdd-sec cdd-sec-white">
         <div className="cdd-wrap">
           <p className="cdd-kicker cdd-center" data-reveal>What happens when the block comes off</p>
           <div className="cdd-testi-grid">
@@ -178,7 +178,7 @@ export default function ClarityIntensivePage() {
       </section>
 
       {/* WHAT YOU LEAVE WITH — tight three-item strip */}
-      <section className="cdd-sec cdd-sec-warm cdd-sec-tight">
+      <section className="cdd-sec cdd-sec-white cdd-sec-tight">
         <div className="cdd-wrap cdd-narrow">
           <h2 className="cdd-h2 cdd-center" data-reveal>What you leave with</h2>
           <div className="cdd-leave-list">
@@ -208,7 +208,7 @@ export default function ClarityIntensivePage() {
       </section>
 
       {/* ABOUT — short */}
-      <section className="cdd-sec cdd-sec-cream">
+      <section className="cdd-sec cdd-sec-warm">
         <div className="cdd-wrap cdd-about">
           <div className="cdd-about-photo" data-reveal>
             <img src="/chichi.png" alt="Chi-Chi Jones" className="cdd-photo" />
@@ -283,7 +283,7 @@ export default function ClarityIntensivePage() {
       </section>
 
       {/* BOOK */}
-      <section id="book" className="cdd-sec cdd-sec-cream cdd-book">
+      <section id="book" className="cdd-sec cdd-sec-white cdd-book">
         <div className="cdd-wrap cdd-narrow cdd-center">
           <p className="cdd-eyebrow" data-reveal>Your Clarity Intensive</p>
           <h2 className="cdd-h2" data-reveal>Pick a time. Answer a few questions. I&rsquo;ll see you there.</h2>
@@ -357,6 +357,8 @@ const CSS = `
 .cdd-btn-gold{background:var(--gold); color:#fff; box-shadow:0 6px 20px rgba(184,147,95,.35);}
 .cdd-btn-gold:hover{transform:translateY(-2px); box-shadow:0 10px 28px rgba(184,147,95,.45);}
 .cdd-btn-sm{padding:.7rem 1.2rem; font-size:.9rem;}
+.cdd-btn-goldline{background:transparent; color:var(--gold); border:1.5px solid var(--gold); box-shadow:none;}
+.cdd-btn-goldline:hover{background:var(--gold); color:#fff; transform:translateY(-2px);}
 .cdd-btn-ghost{background:transparent; color:var(--gold-deep); border:1.5px solid var(--gold); box-shadow:none;}
 .cdd-btn-ghost:hover{background:var(--gold); color:#fff; transform:translateY(-2px);}
 .cdd-cta-row{margin-top:2rem;}
@@ -382,10 +384,13 @@ const CSS = `
 .cdd-sec-cream{background:var(--cream);}
 .cdd-sec-warm{background:var(--warm);}
 .cdd-sec-navy{background:var(--navy);}
+.cdd-sec-white{background:#FFFFFF;}
+.cdd-bridge-navy{font-size:clamp(1.2rem,2.2vw,1.5rem); line-height:1.6; color:var(--cream-light); margin:0 0 1.3rem; font-style:italic;}
+.cdd-bridge-navy em{color:var(--gold); font-style:italic;}
 .cdd-h2-navy{font-size:clamp(1.7rem,3.6vw,2.6rem); line-height:1.2; font-weight:600; color:var(--cream-light); margin:0 0 1.4rem;}
 .cdd-body-navy{font-size:1.12rem; line-height:1.75; color:#d4d9e2; margin:0 0 1.3rem;}
 .cdd-testi-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:1.4rem; max-width:760px; margin:0 auto;}
-.cdd-testi{background:var(--cream-light); border:1px solid rgba(184,147,95,.2); border-radius:12px; padding:1.8rem;}
+.cdd-testi{background:var(--cream-light); border:1px solid rgba(184,147,95,.3); border-radius:12px; padding:1.8rem; box-shadow:0 6px 24px rgba(26,35,50,.06);}
 .cdd-testi p{font-size:1rem; line-height:1.6; font-style:italic; color:var(--char); margin:0 0 .9rem;}
 .cdd-testi-name{font-family:'Poppins',sans-serif; font-size:.85rem; font-weight:600; color:var(--gold-deep); letter-spacing:.02em;}
 .cdd-steps{display:flex; flex-direction:column; gap:1.6rem; margin:1.5rem 0;}
@@ -393,7 +398,7 @@ const CSS = `
 .cdd-step-num{display:block; font-family:'Poppins',sans-serif; font-weight:600; text-transform:uppercase; letter-spacing:.1em; font-size:.78rem; color:var(--gold-deep); margin-bottom:.5rem;}
 .cdd-step p{font-size:1.08rem; line-height:1.7; margin:0; color:var(--char);}
 .cdd-leave-list{display:flex; flex-direction:column; gap:1.2rem; margin:2rem 0 0;}
-.cdd-leave-item{display:flex; gap:1.3rem; align-items:flex-start; background:var(--cream-light); border:1px solid rgba(184,147,95,.25); border-radius:12px; padding:1.6rem 1.8rem;}
+.cdd-leave-item{display:flex; gap:1.3rem; align-items:flex-start; background:var(--cream-light); border:1px solid rgba(184,147,95,.3); border-radius:12px; padding:1.6rem 1.8rem; box-shadow:0 6px 24px rgba(26,35,50,.06);}
 .cdd-leave-num{flex-shrink:0; width:40px; height:40px; border-radius:50%; background:var(--gold); color:#fff; display:flex; align-items:center; justify-content:center; font-family:'Poppins',sans-serif; font-weight:700; font-size:1.2rem;}
 .cdd-leave-item h3{font-size:1.2rem; color:var(--navy); margin:.15rem 0 .4rem; font-weight:600;}
 .cdd-leave-item p{font-size:1.02rem; line-height:1.6; margin:0; color:var(--char);}
@@ -415,7 +420,7 @@ const CSS = `
 .cdd-faq-item summary::after{content:'+'; position:absolute; right:0; top:-2px; font-size:1.5rem; color:var(--gold); font-weight:400;}
 .cdd-faq-item[open] summary::after{content:'\\2013';}
 .cdd-faq-item p{font-size:1.05rem; line-height:1.7; margin:1rem 0 0; color:var(--char);}
-.cdd-cal{margin-top:2.2rem; background:var(--cream-light); border:1px solid rgba(184,147,95,.25); border-radius:14px; padding:12px; box-shadow:0 10px 36px rgba(26,35,50,.08);}
+.cdd-cal{margin-top:2.2rem; background:var(--cream); border:1px solid rgba(184,147,95,.3); border-radius:14px; padding:12px; box-shadow:0 10px 36px rgba(26,35,50,.1);}
 .cdd-footer{background:var(--navy); color:#aeb6c4; padding:3rem 0; font-family:'Poppins',sans-serif; font-size:.88rem;}
 .cdd-disclaimer{max-width:820px; margin:0 auto 2.4rem; padding-bottom:2rem; border-bottom:1px solid rgba(255,255,255,.12);}
 .cdd-disclaimer strong{display:block; color:#cdd3dd; font-size:.8rem; letter-spacing:.04em; text-transform:uppercase; margin-bottom:.8rem;}
