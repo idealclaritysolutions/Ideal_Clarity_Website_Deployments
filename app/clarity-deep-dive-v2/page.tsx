@@ -48,7 +48,10 @@ function useCalendly() {
 
 function scrollToBook(e?: React.MouseEvent) {
   e?.preventDefault();
-  document.getElementById("book")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  const target = document.getElementById("calendar") || document.getElementById("book");
+  if (!target) return;
+  const y = target.getBoundingClientRect().top + window.scrollY - 24;
+  window.scrollTo({ top: y, behavior: "smooth" });
 }
 
 function scrollToVideo(e?: React.MouseEvent) {
@@ -779,7 +782,7 @@ export default function ClarityDeepDiveV2Page() {
               been telling yourself.
             </p>
           </div>
-          <div className="ic-cal" data-reveal>
+          <div className="ic-cal" id="calendar" data-reveal>
             <div
               className="calendly-inline-widget"
               data-url={CAL_URL}
