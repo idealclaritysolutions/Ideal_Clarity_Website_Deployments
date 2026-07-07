@@ -81,11 +81,12 @@ export default function ClarityDeepDiveV2Page() {
             For accomplished professionals who know there&rsquo;s another chapter waiting
           </p>
           <h1 className="ic-h1 ic-h1-trim" data-reveal>
-            The reason you haven&rsquo;t moved forward isn&rsquo;t confidence, courage, or knowing what to do.
-            <em> It&rsquo;s something far more human.</em>
+            You&rsquo;ve built the successful corporate career.<br />
+            <em>So why haven&rsquo;t you built the life you truly want?</em>
           </h1>
-          <p className="ic-hero-sub" data-reveal>
-            Watch the short video before you decide what comes next.
+          <p className="ic-hero-sub ic-hero-sub-bold" data-reveal>
+            If that question has been quietly following you for years, this 8-minute video may
+            explain why &mdash; and what to do next.
           </p>
 
           <div className="ic-video-portrait" id="vsl" data-reveal>
@@ -858,7 +859,7 @@ const CSS = `
 
 /* ---------- Typography ---------- */
 .ic-eyebrow{font-family:Inter,'Helvetica Neue',Arial,sans-serif; text-transform:uppercase;
-  letter-spacing:.16em; font-size:.76rem; font-weight:600; color:var(--gold-deep); margin:0 0 2rem;}
+  letter-spacing:.14em; font-size:.92rem; font-weight:700; color:var(--gold-deep); margin:0 0 2rem;}
 .ic-h1{font-family:'Fraunces',Georgia,'Times New Roman',serif; font-size:clamp(2.6rem,6vw,5.3rem);
   line-height:1.06; font-weight:500; color:var(--navy); margin:0 auto 2.5rem; max-width:1000px;
   letter-spacing:-.01em;}
@@ -1220,8 +1221,10 @@ const CSS = `
 /* ---------- Trimmed hero ---------- */
 .ic-h1-trim{max-width:900px; font-size:clamp(2.2rem,4.6vw,3.9rem);}
 .ic-h1-trim em{color:var(--gold-deep); font-style:italic;}
-.ic-hero-sub{font-family:Inter,sans-serif; font-size:clamp(1.02rem,1.4vw,1.18rem); color:var(--muted);
-  margin:0 auto 2.6rem; max-width:520px;}
+.ic-hero-sub{font-family:Inter,sans-serif; font-size:clamp(1.08rem,1.5vw,1.28rem); color:var(--navy);
+  margin:0 auto 2.6rem; max-width:560px;}
+.ic-hero-sub strong{font-weight:700; color:var(--navy);}
+.ic-hero-sub-bold{font-weight:700; color:var(--navy);}
 
 /* ---------- Portrait video frame ---------- */
 .ic-video-portrait{display:flex; justify-content:center; margin:0 auto 2.4rem;}
