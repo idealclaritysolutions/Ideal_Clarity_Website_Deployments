@@ -94,10 +94,10 @@ export default function ClarityDeepDiveV2Page() {
                 inner .ic-vp-placeholder div. Keep className="ic-vp-frame" on the wrapper. */}
             <div className="ic-vp-frame">
               <iframe
-                src="https://player.vimeo.com/video/1207270097?badge=0&autopause=0&player_id=0&app_id=58479"
+                src="https://player.vimeo.com/video/1207592990?badge=0&autopause=0&player_id=0&app_id=58479"
                 allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
                 referrerPolicy="strict-origin-when-cross-origin"
-                title="The Real Reason You Haven&rsquo;t Moved Forward"
+                title="The Real Reason You Haven&rsquo;t Started Your Next Chapter"
               />
             </div>
           </div>
@@ -1225,7 +1225,7 @@ const CSS = `
 
 /* ---------- Portrait video frame ---------- */
 .ic-video-portrait{display:flex; justify-content:center; margin:0 auto 2.4rem;}
-.ic-vp-frame{position:relative; width:100%; max-width:720px; aspect-ratio:4/3;
+.ic-vp-frame{position:relative; width:100%; max-width:860px; aspect-ratio:16/9;
   border-radius:18px; overflow:hidden; background:var(--navy);
   box-shadow:var(--shadow-video); border:1px solid rgba(184,147,95,.35);}
 /* the pasted iframe should fill the frame */
