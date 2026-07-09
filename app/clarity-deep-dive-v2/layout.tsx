@@ -24,19 +24,6 @@ export default function ClarityDeepDiveV2Layout({
           })(window, document, "clarity", "script", "xjm6v5ubms");
         `}
       </Script>
-      <div
-  style={{
-    position: "fixed",
-    top: 0,
-    left: 0,
-    background: "red",
-    color: "white",
-    padding: "4px",
-    zIndex: 999999,
-  }}
->
-  Layout Loaded
-</div>
       {children}
     </>
   );
