@@ -63,10 +63,20 @@ export default function ClarityDeepDiveV2Page() {
   useReveal();
   useCalendly();
   const [showBar, setShowBar] = useState(false);
+  const [pastVideo, setPastVideo] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setShowBar(window.scrollY > 650);
+    const onScroll = () => {
+      setShowBar(window.scrollY > 650);
+      const vid = document.getElementById("vsl");
+      if (vid) {
+        // "past the video" once the video's bottom has scrolled above the viewport midpoint
+        const bottom = vid.getBoundingClientRect().bottom;
+        setPastVideo(bottom < window.innerHeight * 0.5);
+      }
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
@@ -81,13 +91,16 @@ export default function ClarityDeepDiveV2Page() {
             For accomplished professionals who know there&rsquo;s another chapter waiting
           </p>
           <h1 className="ic-h1 ic-h1-trim" data-reveal>
-            You&rsquo;ve built the successful corporate career.<br />
-            <em>So why haven&rsquo;t you built the life you truly want?</em>
+            You&rsquo;ve built the successful career.<br />
+            <em>So what&rsquo;s really stopping you from building what&rsquo;s next?</em>
           </h1>
           <p className="ic-hero-sub ic-hero-sub-bold" data-reveal>
-            If that question has been quietly following you for years, this 8-minute video may
-            explain why &mdash; and what to do next.
+            If you&rsquo;ve been carrying the same idea for years&mdash;a business, consulting, writing,
+            a career pivot, or simply a different way of living&mdash;this 10-minute video will help you
+            understand what&rsquo;s really been keeping you stuck.
           </p>
+
+          <p className="ic-watchlabel" data-reveal>Before you decide anything&hellip; watch this first</p>
 
           <div className="ic-video-portrait" id="vsl" data-reveal>
             {/* Replace this placeholder with your portrait Vimeo iframe.
@@ -95,7 +108,7 @@ export default function ClarityDeepDiveV2Page() {
                 inner .ic-vp-placeholder div. Keep className="ic-vp-frame" on the wrapper. */}
             <div className="ic-vp-frame">
               <iframe
-                src="https://player.vimeo.com/video/1207592990?badge=0&autopause=0&player_id=0&app_id=58479"
+                src="https://player.vimeo.com/video/1207592990?badge=0&autopause=0&byline=0&title=0&portrait=0&dnt=1&player_id=0&app_id=58479"
                 allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
                 referrerPolicy="strict-origin-when-cross-origin"
                 title="The Real Reason You Haven&rsquo;t Started Your Next Chapter"
@@ -103,17 +116,21 @@ export default function ClarityDeepDiveV2Page() {
             </div>
           </div>
 
-          <div className="ic-hero-ctas" data-reveal>
-            <a href="#vsl" className="ic-btn ic-btn-gold" onClick={scrollToVideo}>
-              Watch the Video
-            </a>
-            <a href="#book" className="ic-btn ic-btn-line" onClick={scrollToBook}>
-              Schedule your conversation
+          <div className="ic-hero-ctas ic-hero-ctas-single" data-reveal>
+            <a href="#vsl" className="ic-btn ic-btn-gold ic-btn-lg ic-btn-watch" onClick={scrollToVideo}>
+              &#9654;&nbsp; Watch the 10-Minute Video
             </a>
           </div>
           <p className="ic-micro" data-reveal>
-            About 8 minutes. No pressure. No obligation. No email opt-in required.
+            No email required. No opt-in. Just watch.
           </p>
+
+          <div className="ic-belowvideo" data-reveal>
+            <p>
+              Most people think they need another strategy. <strong>They don&rsquo;t.</strong> This video
+              explains what has actually been keeping capable professionals stuck for years.
+            </p>
+          </div>
         </div>
       </header>
 
@@ -357,41 +374,6 @@ export default function ClarityDeepDiveV2Page() {
         </div>
       </section>
 
-      {/* ============ SECTION 7 — HOW CHI-CHI WORKS ============ */}
-      <section className="ic-sec ic-sec-ivory">
-        <div className="ic-narrow">
-          <h2 className="ic-h2" data-reveal>Most people come into the conversation thinking they need advice.</h2>
-          <p className="ic-subline" data-reveal>They don&rsquo;t.</p>
-          <div className="ic-prose" data-reveal>
-            <p>They need someone who knows how to hear what they&rsquo;re not saying.</p>
-            <p>Because what people say is rarely the real problem.</p>
-            <div className="ic-excuses">
-              <span>&ldquo;I don&rsquo;t have time.&rdquo;</span>
-              <span>&ldquo;I need more confidence.&rdquo;</span>
-              <span>&ldquo;I&rsquo;m not ready.&rdquo;</span>
-              <span>&ldquo;I&rsquo;ll wait until things settle down.&rdquo;</span>
-            </div>
-            <p>
-              Those aren&rsquo;t usually the real story.<br />
-              They&rsquo;re <strong>the story protecting the real story.</strong>
-            </p>
-            <p>
-              My work isn&rsquo;t to convince you.<br />
-              It isn&rsquo;t to motivate you.<br />
-              It isn&rsquo;t even to give you answers.
-            </p>
-            <p>It&rsquo;s to help you hear <strong>the thing you&rsquo;ve been saying underneath</strong> all the other things.</p>
-            <p>
-              Because once you hear that...<br />
-              everything starts making sense.
-            </p>
-          </div>
-          <p className="ic-pull" data-reveal>
-            &ldquo;The conversation changes the moment <em>the real story enters the room.</em>&rdquo;
-          </p>
-        </div>
-      </section>
-
       {/* ============ SECTION 8 — ABOUT CHI-CHI ============ */}
       <section className="ic-sec">
         <div className="ic-wrap">
@@ -486,33 +468,30 @@ export default function ClarityDeepDiveV2Page() {
       <section className="ic-sec ic-sec-navy">
         <div className="ic-wrap">
           <div className="ic-narrow ic-center">
-            <h2 className="ic-h2-navy" data-reveal>
-              You won&rsquo;t leave with more information.<br />
-              <em>You&rsquo;ll leave with a different relationship to yourself.</em>
+            <h2 className="ic-h2-navy ic-noline" data-reveal>
+              By the end of our conversation, <em>you&rsquo;ll leave with&hellip;</em>
             </h2>
           </div>
-          <div className="ic-leave ic-leave-dark">
+          <div className="ic-leave ic-leave-dark ic-leave-three">
             <div className="ic-leave-card" data-reveal>
-              <h3>Language</h3>
-              <p>You&rsquo;ll finally have words for the pattern that&rsquo;s been quietly shaping your decisions. Once something has a name, it becomes much harder for it to quietly control your life.</p>
+              <span className="ic-leave-idx">1</span>
+              <h3>Clarity about what&rsquo;s really been keeping you stuck</h3>
+              <p>Not another theory or framework. You&rsquo;ll understand the real barrier that&rsquo;s been quietly shaping your decisions &mdash; and once you see it, you can&rsquo;t unsee it.</p>
             </div>
             <div className="ic-leave-card" data-reveal>
-              <h3>Perspective</h3>
-              <p>You&rsquo;ll stop asking, &ldquo;What&rsquo;s wrong with me?&rdquo; and begin asking, &ldquo;What has this been trying to protect?&rdquo; That one question changes everything.</p>
+              <span className="ic-leave-idx">2</span>
+              <h3>A new way of seeing your next chapter</h3>
+              <p>We&rsquo;ll replace the story that&rsquo;s been keeping you circling with one that lets you move with confidence instead of hesitation.</p>
             </div>
             <div className="ic-leave-card" data-reveal>
-              <h3>Direction</h3>
-              <p>You&rsquo;ll leave knowing exactly what your next meaningful step is. Not because I tell you what to do. Because together, we uncover what already feels true.</p>
-            </div>
-            <div className="ic-leave-card" data-reveal>
-              <h3>Self-Trust</h3>
-              <p>Perhaps the greatest outcome isn&rsquo;t clarity. It&rsquo;s trusting yourself again. And once someone trusts themselves, decisions become much quieter.</p>
+              <span className="ic-leave-idx">3</span>
+              <h3>One meaningful next step</h3>
+              <p>You&rsquo;ll leave knowing exactly what to do next &mdash; not someday, but this week. No overwhelm. No ten-step plan. Just the next right move.</p>
             </div>
           </div>
-          <p className="ic-leave-close ic-leave-close-dark ic-center" data-reveal>
-            Most people don&rsquo;t leave with every answer.<br />
-            They leave with the right question.<br />
-            And that question quietly changes everything that comes after.
+          <p className="ic-leave-fine ic-center" data-reveal>
+            One conversation won&rsquo;t build your next chapter for you. But it can remove the one thing
+            that&rsquo;s been keeping you from starting it.
           </p>
           <div className="ic-softcta ic-center" data-reveal>
             <a href="#book" className="ic-btn ic-btn-line-gold" onClick={scrollToBook}>Begin that shift &rarr;</a>
@@ -824,8 +803,17 @@ export default function ClarityDeepDiveV2Page() {
 
       {/* ============ STICKY CTA (desktop + mobile) ============ */}
       <div className={`ic-sticky ${showBar ? "is-on" : ""}`}>
-        <span>Ready to continue the conversation?</span>
-        <a href="#book" className="ic-btn ic-btn-gold ic-btn-sm" onClick={scrollToBook}>Book your session</a>
+        {pastVideo ? (
+          <>
+            <span>Ready to continue the conversation?</span>
+            <a href="#book" className="ic-btn ic-btn-gold ic-btn-sm" onClick={scrollToBook}>Book Your Clarity Intensive</a>
+          </>
+        ) : (
+          <>
+            <span>Haven&rsquo;t watched yet?</span>
+            <a href="#vsl" className="ic-btn ic-btn-gold ic-btn-sm" onClick={scrollToVideo}>&#9654;&nbsp; Watch Video</a>
+          </>
+        )}
       </div>
     </div>
   );
@@ -1297,6 +1285,33 @@ const CSS = `
 .ic-mirror-close{background:var(--navy); color:var(--cream-light) !important; padding:2.2rem 2rem;
   border-radius:16px; max-width:640px; font-family:'Fraunces',Georgia,serif; font-style:italic;
   box-shadow:var(--shadow-soft);}
+
+
+/* ---------- Conversion pass: watch-first hero ---------- */
+.ic-watchlabel{font-family:Inter,sans-serif; text-transform:uppercase; letter-spacing:.2em;
+  font-size:.78rem; font-weight:700; color:var(--gold-deep); margin:0 0 1.4rem;}
+.ic-hero-ctas-single{margin-top:0;}
+.ic-btn-watch{font-size:1.15rem; padding:1.3rem 3rem; box-shadow:0 14px 40px rgba(184,147,95,.4);}
+.ic-belowvideo{max-width:650px; margin:2.4rem auto 0;}
+.ic-belowvideo p{font-family:'Fraunces',Georgia,serif; font-size:clamp(1.15rem,1.8vw,1.4rem);
+  line-height:1.55; color:var(--navy); font-style:italic;}
+.ic-belowvideo strong{color:var(--gold-deep); font-weight:600; font-style:normal;}
+
+/* bigger video + gentle float + stronger shadow */
+.ic-vp-frame{box-shadow:0 40px 90px rgba(23,33,50,.28); animation:ic-float 6s ease-in-out infinite;}
+@keyframes ic-float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+@media (prefers-reduced-motion: reduce){.ic-vp-frame{animation:none;}}
+
+/* ---------- Concise 3-card Leave With ---------- */
+.ic-leave-three{grid-template-columns:1fr 1fr 1fr;}
+.ic-leave-three .ic-leave-card{position:relative; padding-top:2.6rem;}
+.ic-leave-idx{position:absolute; top:1.4rem; left:1.8rem; font-family:'Fraunces',Georgia,serif;
+  font-size:1.4rem; color:var(--gold); opacity:.9;}
+.ic-leave-three .ic-leave-card h3{font-size:1.2rem; line-height:1.3; margin-top:.4rem;}
+.ic-leave-three .ic-leave-card p{font-size:.98rem;}
+.ic-leave-fine{max-width:600px; margin:3rem auto 0; font-size:1rem; line-height:1.7;
+  color:#B9C2D2; font-style:italic;}
+@media (max-width:960px){.ic-leave-three{grid-template-columns:1fr;}}
 
 /* ---------- Responsive ---------- */
 @media (max-width:960px){
