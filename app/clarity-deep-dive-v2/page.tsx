@@ -847,7 +847,7 @@ const CSS = `
 
 /* ---------- Typography ---------- */
 .ic-eyebrow{font-family:Inter,'Helvetica Neue',Arial,sans-serif; text-transform:uppercase;
-  letter-spacing:.14em; font-size:.92rem; font-weight:700; color:var(--gold-deep); margin:0 0 2rem;}
+  letter-spacing:.14em; font-size:.92rem; font-weight:700; color:var(--gold-deep); margin:0 0 1.1rem;}
 .ic-h1{font-family:'Fraunces',Georgia,'Times New Roman',serif; font-size:clamp(2.6rem,6vw,5.3rem);
   line-height:1.06; font-weight:500; color:var(--navy); margin:0 auto 2.5rem; max-width:1000px;
   letter-spacing:-.01em;}
@@ -892,8 +892,8 @@ const CSS = `
 .ic-sec-navy{background:var(--navy);}
 
 /* ---------- Hero ---------- */
-.ic-hero{min-height:90vh; display:flex; align-items:center;
-  padding:clamp(5rem,9vw,8rem) 0 clamp(4rem,7vw,6rem);
+.ic-hero{display:flex; align-items:center;
+  padding:clamp(2.2rem,4vw,3.4rem) 0 clamp(3rem,5vw,4rem);
   background:radial-gradient(90% 60% at 50% -5%, rgba(184,147,95,.10), transparent 62%), var(--cream);}
 .ic-hero-copy{max-width:680px; margin:0 auto 3.5rem;}
 .ic-hero-copy p{margin:0 0 1.4rem; font-size:clamp(1.08rem,1.45vw,1.22rem); line-height:1.8; color:var(--charcoal);}
@@ -1207,15 +1207,15 @@ const CSS = `
 
 
 /* ---------- Trimmed hero ---------- */
-.ic-h1-trim{max-width:900px; font-size:clamp(2.2rem,4.6vw,3.9rem);}
+.ic-h1-trim{max-width:900px; font-size:clamp(2.2rem,4.6vw,3.9rem); margin-bottom:1.4rem;}
 .ic-h1-trim em{color:var(--gold-deep); font-style:italic;}
 .ic-hero-sub{font-family:Inter,sans-serif; font-size:clamp(1.08rem,1.5vw,1.28rem); color:var(--navy);
-  margin:0 auto 2.6rem; max-width:560px;}
+  margin:0 auto 1.5rem; max-width:560px;}
 .ic-hero-sub strong{font-weight:700; color:var(--navy);}
 .ic-hero-sub-bold{font-weight:700; color:var(--navy);}
 
 /* ---------- Portrait video frame ---------- */
-.ic-video-portrait{display:flex; justify-content:center; margin:0 auto 2.4rem;}
+.ic-video-portrait{display:flex; justify-content:center; margin:0 auto 1.8rem;}
 .ic-vp-frame{position:relative; width:100%; max-width:860px; aspect-ratio:16/9;
   border-radius:18px; overflow:hidden; background:var(--navy);
   box-shadow:var(--shadow-video); border:1px solid rgba(184,147,95,.35);}
@@ -1289,7 +1289,7 @@ const CSS = `
 
 /* ---------- Conversion pass: watch-first hero ---------- */
 .ic-watchlabel{font-family:Inter,sans-serif; text-transform:uppercase; letter-spacing:.2em;
-  font-size:.78rem; font-weight:700; color:var(--gold-deep); margin:0 0 1.4rem;}
+  font-size:.78rem; font-weight:700; color:var(--gold-deep); margin:0 0 1rem;}
 .ic-hero-ctas-single{margin-top:0;}
 .ic-btn-watch{font-size:1.15rem; padding:1.3rem 3rem; box-shadow:0 14px 40px rgba(184,147,95,.4);}
 .ic-belowvideo{max-width:650px; margin:2.4rem auto 0;}
@@ -1326,8 +1326,13 @@ const CSS = `
   .ic-excuses span{font-size:1.1rem; line-height:1.8;}
   .ic-root{font-size:17px;}
   .ic-sec{padding:4rem 0;}
-  .ic-hero{min-height:auto; padding:3.5rem 0 3rem;}
-  .ic-h1{font-size:2.3rem;}
+  .ic-hero{min-height:auto; padding:1.4rem 0 2.2rem;}
+  .ic-h1{font-size:1.95rem; line-height:1.12;}
+  .ic-h1-trim{margin-bottom:1rem;}
+  .ic-eyebrow{font-size:.76rem; margin-bottom:.85rem;}
+  .ic-hero-sub{font-size:1rem; margin-bottom:1.05rem;}
+  .ic-watchlabel{font-size:.7rem; margin-bottom:.85rem;}
+  .ic-video-portrait{margin-bottom:1.4rem;}
   .ic-faces{grid-template-columns:1fr; gap:1.5rem;}
   .ic-leave{grid-template-columns:1fr; gap:1.5rem;}
   .ic-hero-ctas{flex-direction:column; align-items:center;}
