@@ -91,16 +91,8 @@ export default function ClarityDeepDiveV2Page() {
             For accomplished professionals who know there&rsquo;s another chapter waiting
           </p>
           <h1 className="ic-h1 ic-h1-trim" data-reveal>
-            You&rsquo;ve built the successful career.<br />
-            <em>So what&rsquo;s really stopping you from building what&rsquo;s next?</em>
-          </h1>
-          <p className="ic-hero-sub ic-hero-sub-bold" data-reveal>
-            If you&rsquo;ve been carrying the same idea for years&mdash;a business, consulting, writing,
-            a career pivot, or simply a different way of living&mdash;this 10-minute video will help you
-            understand what&rsquo;s really been keeping you stuck.
-          </p>
-
-          <p className="ic-watchlabel" data-reveal>Before you decide anything&hellip; watch this first</p>
+  This 10-minute video explains what&rsquo;s really been keeping you stuck.
+</h1>
 
           <div className="ic-video-portrait" id="vsl" data-reveal>
             {/* Replace this placeholder with your portrait Vimeo iframe.
@@ -114,12 +106,6 @@ export default function ClarityDeepDiveV2Page() {
                 title="The Real Reason You Haven&rsquo;t Started Your Next Chapter"
               />
             </div>
-          </div>
-
-          <div className="ic-hero-ctas ic-hero-ctas-single" data-reveal>
-            <a href="#vsl" className="ic-btn ic-btn-gold ic-btn-lg ic-btn-watch" onClick={scrollToVideo}>
-              &#9654;&nbsp; Watch the 10-Minute Video
-            </a>
           </div>
           <p className="ic-micro" data-reveal>
             No email required. No opt-in. Just watch.
