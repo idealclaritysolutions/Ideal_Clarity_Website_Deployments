@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 const CAL_URL = "https://calendly.com/idealclaritysolutions/clarity-intensive";
 const VIDEO_URL =
-  "https://xfdsht8l8xkamp7u.public.blob.vercel-storage.com/The%20Conversation";
+  "https://xfdsht8l8xkamp7u.public.blob.vercel-storage.com/the-conversation-vsl.mp4";
 
 function useReveal() {
   useEffect(() => {
@@ -111,12 +111,12 @@ export default function TheConversationPage() {
               className="tc-native-video"
               controls
               playsInline
-              preload="metadata"
+              preload="auto"
               controlsList="nodownload"
               disablePictureInPicture
               aria-label="The conversation you have been postponing"
             >
-              <source src={VIDEO_URL} />
+              <source src={VIDEO_URL} type="video/mp4" />
               Your browser does not support embedded video.
             </video>
           </div>
@@ -161,16 +161,6 @@ export default function TheConversationPage() {
           <div className="tc-testimonials">
             <blockquote data-reveal>
               <p>
-                “With Chi-Chi, I found my area of genius and unlocked the
-                mental blocks that were holding me back from fully monetizing
-                my business in a way that reflects my value.
-                I&apos;ve 300x&apos;d my revenue so far.”
-              </p>
-              <cite>— Lola, Rapid Reinvent Hair Treatment</cite>
-            </blockquote>
-
-            <blockquote data-reveal>
-              <p>
                 “Chi-Chi took the time to understand my goals, asked thoughtful
                 questions, and helped turn uncertainty into a clear,
                 actionable path forward.”
@@ -184,6 +174,14 @@ export default function TheConversationPage() {
                 valuable way.”
               </p>
               <cite>— Hannah Bailey, Studio Northwood</cite>
+            </blockquote>
+
+            <blockquote data-reveal>
+              <p>
+                “With Chi-Chi, I found my area of genius and unlocked the
+                mental blocks that were holding me back.”
+              </p>
+              <cite>— Lola, Rapid Reinvent Hair Treatment</cite>
             </blockquote>
           </div>
 
@@ -274,7 +272,7 @@ export default function TheConversationPage() {
                 <button
                   type="button"
                   className="tc-button tc-button-gold tc-offer-button"
-                  onClick={() => scrollToId("calendly-card")}
+                  onClick={() => scrollToId("book")}
                 >
                   Yes — I&apos;m ready for this conversation
                 </button>
@@ -356,7 +354,7 @@ export default function TheConversationPage() {
             <button
               type="button"
               className="tc-button tc-button-gold"
-              onClick={() => scrollToId("calendly-card")}
+              onClick={() => scrollToId("book")}
             >
               Book the conversation
             </button>
@@ -386,7 +384,7 @@ export default function TheConversationPage() {
             <button
               type="button"
               className="tc-button tc-button-gold"
-              onClick={() => scrollToId("calendly-card")}
+              onClick={() => scrollToId("book")}
             >
               Book with zero risk
             </button>
@@ -513,7 +511,7 @@ export default function TheConversationPage() {
         <button
           type="button"
           className="tc-sticky-button"
-          onClick={() => scrollToId("calendly-card")}
+          onClick={() => scrollToId("book")}
         >
           Yes — book my session
         </button>
