@@ -199,75 +199,6 @@ export default function TheConversationPage() {
         </div>
       </section>
 
-      {/* WHAT YOU'LL LEAVE WITH */}
-      <section className="tc-section tc-outcomes-section">
-        <div className="tc-shell">
-          <div className="tc-narrow tc-center">
-            <p className="tc-kicker" data-reveal>
-              What you will leave with
-            </p>
-
-            <h2 className="tc-display" data-reveal>
-              Not just insight. A clear way forward.
-            </h2>
-
-            <p className="tc-lead" data-reveal>
-              The goal is not simply to name what has kept you stuck.
-              It is to help you see it differently, reclaim your agency,
-              and leave knowing what to do next.
-            </p>
-          </div>
-
-          <div className="tc-outcome-cards">
-            <article data-reveal>
-              <span>01</span>
-              <h3>The real barrier, named</h3>
-              <p>
-                We identify the hidden story, belief, or protection mechanism
-                that has quietly been shaping your decisions.
-              </p>
-            </article>
-
-            <article data-reveal>
-              <span>02</span>
-              <h3>A truer story you can move from</h3>
-              <p>
-                We replace the old interpretation with one that reflects who
-                you are now and makes movement feel possible.
-              </p>
-            </article>
-
-            <article data-reveal>
-              <span>03</span>
-              <h3>One specific next move</h3>
-              <p>
-                You leave with an immediate action designed around your real
-                responsibilities, energy, and current life.
-              </p>
-            </article>
-
-            <article data-reveal>
-              <span>04</span>
-              <h3>A written clarity summary</h3>
-              <p>
-                Within 24 hours, you receive the key insights and next step
-                from our conversation so the clarity does not disappear.
-              </p>
-            </article>
-          </div>
-
-          <div className="tc-section-cta" data-reveal>
-            <button
-              type="button"
-              className="tc-button tc-button-ink"
-              onClick={() => scrollToId("offer")}
-            >
-              Show me the Clarity Intensive
-            </button>
-          </div>
-        </div>
-      </section>
-
       {/* FEATURE OFFER CARD */}
       <section className="tc-section tc-offer-section" id="offer">
         <div className="tc-shell">
@@ -354,7 +285,85 @@ export default function TheConversationPage() {
         </div>
       </section>
 
-      {/* GUARANTEE */}
+      
+
+{/* WHAT YOU'LL LEAVE WITH */}
+      <section className="tc-outcomes-section tc-outcomes-continuation">
+        <div className="tc-shell">
+          <div className="tc-outcomes-header" data-reveal>
+            <p className="tc-kicker">
+              What you will leave with
+            </p>
+
+            <h2>
+              Not just insight. A clear way forward.
+            </h2>
+
+            <p>
+              The Clarity Intensive is designed to do more than uncover the
+              problem. You leave with a new way to understand it and a
+              specific action you can take next.
+            </p>
+          </div>
+
+          <div className="tc-outcome-cards">
+            <article data-reveal>
+              <span>01</span>
+              <h3>The real barrier, named</h3>
+              <p>
+                We identify the hidden story, belief, or protection mechanism
+                that has quietly been shaping your decisions.
+              </p>
+            </article>
+
+            <article data-reveal>
+              <span>02</span>
+              <h3>A truer story you can move from</h3>
+              <p>
+                We replace the old interpretation with one that reflects who
+                you are now and makes movement feel possible.
+              </p>
+            </article>
+
+            <article data-reveal>
+              <span>03</span>
+              <h3>One specific next move</h3>
+              <p>
+                You leave with an immediate action designed around your real
+                responsibilities, energy, and current life.
+              </p>
+            </article>
+
+            <article data-reveal>
+              <span>04</span>
+              <h3>A written clarity summary</h3>
+              <p>
+                Within 24 hours, you receive the key insights and next step
+                from our conversation so the clarity does not disappear.
+              </p>
+            </article>
+          </div>
+
+          <div className="tc-outcomes-footer" data-reveal>
+            <p>
+              One conversation. One honest shift. One next move you can
+              actually take.
+            </p>
+
+            <button
+              type="button"
+              className="tc-button tc-button-gold"
+              onClick={() => scrollToId("book")}
+            >
+              Book the conversation
+            </button>
+          </div>
+        </div>
+      </section>
+
+      
+
+{/* GUARANTEE */}
       <section className="tc-section tc-navy">
         <div className="tc-narrow tc-center">
           <p className="tc-kicker tc-gold" data-reveal>
@@ -784,59 +793,142 @@ const CSS = `
   text-align:center;
 }
 
-/* OUTCOMES */
-.tc-outcomes-section{
-  background:var(--warm);
+/* OUTCOMES — VISUAL CONTINUATION OF THE OFFER */
+.tc-outcomes-continuation{
+  position:relative;
+  margin-top:-1px;
+  padding:0 0 clamp(82px,10vw,128px);
+  background:
+    linear-gradient(
+      180deg,
+      #FFFDF8 0%,
+      #FFFDF8 42%,
+      var(--warm) 100%
+    );
+}
+
+.tc-outcomes-continuation .tc-shell{
+  position:relative;
+}
+
+.tc-outcomes-header{
+  max-width:900px;
+  margin:0 auto;
+  padding:52px clamp(26px,5vw,58px) 34px;
+  background:var(--navy);
+  border:1px solid rgba(185,147,92,.35);
+  border-top:0;
+  border-radius:0 0 28px 28px;
+  box-shadow:0 28px 80px rgba(20,32,51,.12);
+  text-align:center;
+}
+
+.tc-outcomes-header .tc-kicker{
+  color:var(--gold);
+}
+
+.tc-outcomes-header h2{
+  margin:0 auto 18px;
+  color:#fff;
+  font-family:'Fraunces',Georgia,serif;
+  font-size:clamp(2.1rem,4.3vw,3.8rem);
+  font-weight:500;
+  line-height:1.1;
+  letter-spacing:-.025em;
+}
+
+.tc-outcomes-header p{
+  max-width:700px;
+  margin:0 auto;
+  color:#D7DCE5;
+  font-size:clamp(1.02rem,1.5vw,1.18rem);
+  line-height:1.75;
 }
 
 .tc-outcome-cards{
   width:min(1040px,100%);
-  margin:52px auto 0;
+  margin:34px auto 0;
   display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:22px;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
 }
 
 .tc-outcome-cards article{
-  padding:34px;
+  position:relative;
+  padding:28px 24px;
   background:#FFFDF8;
   border:1px solid var(--line);
-  border-radius:22px;
-  box-shadow:0 16px 48px rgba(20,32,51,.07);
+  border-radius:20px;
+  box-shadow:0 16px 46px rgba(20,32,51,.07);
+}
+
+.tc-outcome-cards article::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:24px;
+  width:44px;
+  height:3px;
+  background:var(--gold);
+  border-radius:0 0 3px 3px;
 }
 
 .tc-outcome-cards article > span{
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  width:42px;
-  height:42px;
-  margin-bottom:20px;
+  width:38px;
+  height:38px;
+  margin:2px 0 18px;
   background:var(--navy);
   border-radius:50%;
   color:var(--gold);
   font-family:'Fraunces',Georgia,serif;
-  font-size:.95rem;
+  font-size:.9rem;
   font-weight:600;
 }
 
 .tc-outcome-cards h3{
-  margin:0 0 12px;
+  margin:0 0 10px;
   color:var(--ink);
   font-family:'Fraunces',Georgia,serif;
-  font-size:1.55rem;
+  font-size:1.35rem;
   font-weight:500;
-  line-height:1.24;
+  line-height:1.22;
 }
 
 .tc-outcome-cards p{
   margin:0;
   color:var(--muted);
-  line-height:1.75;
+  font-size:.96rem;
+  line-height:1.7;
+}
+
+.tc-outcomes-footer{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  width:min(900px,100%);
+  margin:34px auto 0;
+  padding:24px 28px;
+  background:#FFFDF8;
+  border:1px solid var(--line);
+  border-radius:18px;
+  box-shadow:0 14px 36px rgba(20,32,51,.06);
+}
+
+.tc-outcomes-footer p{
+  margin:0;
+  color:var(--ink);
+  font-family:'Fraunces',Georgia,serif;
+  font-size:1.15rem;
+  line-height:1.45;
 }
 
 /* FEATURE OFFER */
 .tc-offer-section{
+  padding-bottom:0;
   background:linear-gradient(180deg,#FFFDF8,var(--cream));
 }
 
@@ -1212,7 +1304,7 @@ const CSS = `
 }
 
 @media(max-width:900px){
-  .tc-outcome-cards{grid-template-columns:1fr;}
+  .tc-outcome-cards{grid-template-columns:repeat(2,1fr);}
 
   .tc-about,
   .tc-offer-feature{
@@ -1234,6 +1326,28 @@ const CSS = `
 }
 
 @media(max-width:650px){
+  .tc-outcomes-header{
+    padding:42px 22px 30px;
+    border-radius:0 0 22px 22px;
+  }
+
+  .tc-outcome-cards{
+    grid-template-columns:1fr;
+    gap:14px;
+    margin-top:24px;
+  }
+
+  .tc-outcomes-footer{
+    align-items:stretch;
+    flex-direction:column;
+    padding:22px;
+    text-align:center;
+  }
+
+  .tc-outcomes-footer .tc-button{
+    width:100%;
+  }
+
   .tc-shell,
   .tc-narrow{
     width:min(100% - 28px,1120px);
