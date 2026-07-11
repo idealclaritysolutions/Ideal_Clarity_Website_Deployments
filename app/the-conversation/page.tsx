@@ -254,11 +254,10 @@ export default function TheConversationPage() {
                 alt="3D mockup of Build What's Next While Still Employed"
               />
 
-              <p>
-                A practical guide with my real schedule, systems, and
-                strategies for building what&apos;s next without quitting
-                your job.
-              </p>
+              <div className="tc-book-note">
+                <span className="tc-book-check">✓</span>
+                <strong>You'll receive this immediately after your session.</strong>
+              </div>
             </div>
 
             <div className="tc-offer-footer">
@@ -271,7 +270,7 @@ export default function TheConversationPage() {
                 <button
                   type="button"
                   className="tc-button tc-button-ink tc-offer-button"
-                  onClick={() => scrollToId("book")}
+                  onClick={() => scrollToId("calendly-card")}
                 >
                   Yes — I&apos;m ready for this conversation
                 </button>
@@ -353,7 +352,7 @@ export default function TheConversationPage() {
             <button
               type="button"
               className="tc-button tc-button-gold"
-              onClick={() => scrollToId("book")}
+              onClick={() => scrollToId("calendly-card")}
             >
               Book the conversation
             </button>
@@ -383,7 +382,7 @@ export default function TheConversationPage() {
             <button
               type="button"
               className="tc-button tc-button-gold"
-              onClick={() => scrollToId("book")}
+              onClick={() => scrollToId("calendly-card")}
             >
               Book with zero risk
             </button>
@@ -466,7 +465,7 @@ export default function TheConversationPage() {
             <span>Full clarity guarantee</span>
           </div>
 
-          <div className="tc-calendar" data-reveal>
+          <div className="tc-calendar" id="calendly-card" data-reveal>
             <div
               className="calendly-inline-widget"
               data-url={CAL_URL}
@@ -510,7 +509,7 @@ export default function TheConversationPage() {
         <button
           type="button"
           className="tc-sticky-button"
-          onClick={() => scrollToId("book")}
+          onClick={() => scrollToId("calendly-card")}
         >
           Yes — book my session
         </button>
@@ -1069,6 +1068,27 @@ const CSS = `
   margin:18px auto 0;
   color:var(--muted);
   line-height:1.6;
+}
+
+
+.tc-book-note{
+  position:relative;
+  z-index:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  margin-top:18px;
+  color:var(--ink);
+  font-size:1rem;
+  font-weight:600;
+  text-align:center;
+}
+
+.tc-book-check{
+  color:var(--gold);
+  font-size:1.2rem;
+  font-weight:700;
 }
 
 .tc-offer-footer{
