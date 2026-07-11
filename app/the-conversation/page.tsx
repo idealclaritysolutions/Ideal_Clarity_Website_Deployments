@@ -255,7 +255,6 @@ export default function TheConversationPage() {
               />
 
               <div className="tc-book-note">
-                <span className="tc-book-check">✓</span>
                 <strong>You'll receive this immediately after your session.</strong>
               </div>
             </div>
