@@ -64,14 +64,15 @@ export default function TheConversationPage() {
 
   useEffect(() => {
     const updateSticky = () => {
-      const video = document.getElementById("video");
-      if (!video) return;
+      const bridge = document.getElementById("bridge");
+      if (!bridge) return;
 
-      const videoBottom =
-        video.getBoundingClientRect().bottom + window.scrollY;
+      const bridgeTop = bridge.getBoundingClientRect().top;
 
-      // The sticky CTA appears only after the visitor has scrolled past the video.
-      setShowSticky(window.scrollY + 24 >= videoBottom);
+      // Show the sticky CTA as the bridge begins entering the viewport.
+      // This keeps the hero/video distraction-free, then introduces the CTA
+      // once the visitor has started processing the message.
+      setShowSticky(bridgeTop <= window.innerHeight * 0.72);
     };
 
     window.addEventListener("scroll", updateSticky, { passive: true });
@@ -122,16 +123,16 @@ export default function TheConversationPage() {
       </section>
 
       {/* BRIDGE — IMMEDIATELY AFTER THE VIDEO */}
-      <section className="tc-bridge">
+      <section className="tc-bridge" id="bridge">
         <div className="tc-narrow tc-center">
-          <p className="tc-kicker tc-gold" data-reveal>
+          <h2 className="tc-bridge-kicker" data-reveal>
             If that video felt familiar...
-          </p>
+          </h2>
 
-          <h2 className="tc-bridge-title" data-reveal>
+          <h3 className="tc-bridge-title" data-reveal>
             The problem was never that you lacked ambition, discipline,
             or ideas.
-          </h2>
+          </h3>
 
           <p className="tc-bridge-copy" data-reveal>
             Something underneath the logic has been protecting you from
@@ -312,25 +313,6 @@ export default function TheConversationPage() {
                   <strong> Build What&apos;s Next While Still Employed</strong>
                 </li>
               </ul>
-
-              <div className="tc-offer-bottom">
-                <div>
-                  <span className="tc-price-label">Private session</span>
-                  <strong className="tc-price">$750</strong>
-                </div>
-
-                <button
-                  type="button"
-                  className="tc-button tc-button-ink tc-offer-button"
-                  onClick={() => scrollToId("book")}
-                >
-                  Yes — I&apos;m ready for this conversation
-                </button>
-              </div>
-
-              <p className="tc-secure-note">
-                Private booking · Full clarity guarantee
-              </p>
             </div>
 
             <div className="tc-offer-visual">
@@ -346,6 +328,27 @@ export default function TheConversationPage() {
                 strategies for building what&apos;s next without quitting
                 your job.
               </p>
+            </div>
+
+            <div className="tc-offer-footer">
+              <div className="tc-offer-price">
+                <span className="tc-price-label">Private session</span>
+                <strong className="tc-price">$750</strong>
+              </div>
+
+              <div className="tc-offer-action">
+                <button
+                  type="button"
+                  className="tc-button tc-button-ink tc-offer-button"
+                  onClick={() => scrollToId("book")}
+                >
+                  Yes — I&apos;m ready for this conversation
+                </button>
+
+                <p className="tc-secure-note">
+                  Private booking · Full clarity guarantee
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -737,15 +740,27 @@ const CSS = `
   color:#fff;
 }
 
+.tc-bridge-kicker{
+  max-width:760px;
+  margin:0 auto 18px;
+  color:var(--gold);
+  font-family:'Fraunces',Georgia,serif;
+  font-size:clamp(2.15rem,5vw,4.25rem);
+  font-style:italic;
+  font-weight:500;
+  line-height:1.08;
+  letter-spacing:-.025em;
+}
+
 .tc-bridge-title{
   max-width:790px;
   margin:0 auto 24px;
   color:#fff;
   font-family:'Fraunces',Georgia,serif;
-  font-size:clamp(2rem,4.5vw,3.8rem);
+  font-size:clamp(1.55rem,3.2vw,2.55rem);
   font-weight:500;
-  line-height:1.12;
-  letter-spacing:-.025em;
+  line-height:1.2;
+  letter-spacing:-.015em;
 }
 
 .tc-bridge-copy{
@@ -962,6 +977,38 @@ const CSS = `
   margin:18px auto 0;
   color:var(--muted);
   line-height:1.6;
+}
+
+.tc-offer-footer{
+  grid-column:1 / -1;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:28px;
+  padding:28px clamp(38px,6vw,72px);
+  background:var(--navy);
+  border-top:1px solid rgba(185,147,92,.36);
+}
+
+.tc-offer-footer .tc-price-label{
+  color:#AAB4C4;
+}
+
+.tc-offer-footer .tc-price{
+  color:#fff;
+}
+
+.tc-offer-action{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:10px;
+}
+
+.tc-offer-action .tc-secure-note{
+  margin:0;
+  color:#AAB4C4;
+  text-align:right;
 }
 
 .tc-bonus-badge{
@@ -1231,9 +1278,18 @@ const CSS = `
     font-size:.65rem;
   }
 
-  .tc-offer-bottom{
-    align-items:flex-start;
+  .tc-offer-footer{
+    align-items:stretch;
     flex-direction:column;
+    padding:26px 22px;
+  }
+
+  .tc-offer-action{
+    align-items:stretch;
+  }
+
+  .tc-offer-action .tc-secure-note{
+    text-align:left;
   }
 
   .tc-offer-button{
