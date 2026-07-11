@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 
 const CAL_URL = "https://calendly.com/idealclaritysolutions/clarity-intensive";
-const VIMEO_URL =
-  "https://player.vimeo.com/video/1207592990?badge=0&autopause=0&byline=0&title=0&portrait=0&dnt=1&player_id=0&app_id=58479";
+const VIDEO_URL =
+  "https://xfdsht8l8xkamp7u.public.blob.vercel-storage.com/The%20Conversation";
 
 function useReveal() {
   useEffect(() => {
@@ -107,13 +107,18 @@ export default function TheConversationPage() {
           </p>
 
           <div className="tc-video-wrap" id="video" data-reveal>
-            <iframe
-              src={VIMEO_URL}
-              title="The conversation you have been postponing"
-              allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
-              referrerPolicy="strict-origin-when-cross-origin"
-              allowFullScreen
-            />
+            <video
+              className="tc-native-video"
+              controls
+              playsInline
+              preload="metadata"
+              controlsList="nodownload"
+              disablePictureInPicture
+              aria-label="The conversation you have been postponing"
+            >
+              <source src={VIDEO_URL} />
+              Your browser does not support embedded video.
+            </video>
           </div>
 
           <p className="tc-video-note" data-reveal>
@@ -268,7 +273,7 @@ export default function TheConversationPage() {
               <div className="tc-offer-action">
                 <button
                   type="button"
-                  className="tc-button tc-button-ink tc-offer-button"
+                  className="tc-button tc-button-gold tc-offer-button"
                   onClick={() => scrollToId("calendly-card")}
                 >
                   Yes — I&apos;m ready for this conversation
@@ -608,14 +613,16 @@ const CSS = `
   border:1px solid rgba(185,147,92,.45);
   border-radius:22px;
   box-shadow:var(--shadow);
-  aspect-ratio:9/16;
+  line-height:0;
 }
 
-.tc-video-wrap iframe{
-  width:100%;
-  height:100%;
-  border:0;
+.tc-native-video{
   display:block;
+  width:100%;
+  height:auto;
+  aspect-ratio:9 / 16;
+  object-fit:cover;
+  background:#000;
 }
 
 .tc-video-note{
@@ -1018,7 +1025,15 @@ const CSS = `
 }
 
 .tc-offer-button{
-  max-width:330px;
+  max-width:360px;
+  min-height:58px;
+  padding:17px 30px;
+  font-size:1.02rem;
+  box-shadow:0 14px 34px rgba(185,147,92,.34);
+}
+
+.tc-offer-button:hover{
+  box-shadow:0 18px 40px rgba(185,147,92,.42);
 }
 
 .tc-secure-note{
@@ -1084,11 +1099,6 @@ const CSS = `
   text-align:center;
 }
 
-.tc-book-check{
-  color:var(--gold);
-  font-size:1.2rem;
-  font-weight:700;
-}
 
 .tc-offer-footer{
   grid-column:1 / -1;
