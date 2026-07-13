@@ -1,25 +1,33 @@
 "use client";
-
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const CAL_URL = "https://calendly.com/idealclaritysolutions/clarity-intensive";
 const VIDEO_URL =
   "https://xfdsht8l8xkamp7u.public.blob.vercel-storage.com/the-conversation-vsl-final.mp4";
 
+/* ------------------------------------------------------------------ */
+/* GA4 helper — safe no-op if gtag hasn't loaded                        */
+/* ------------------------------------------------------------------ */
+declare global {
+  interface Window {
+    gtag?: (...args: any[]) => void;
+  }
+}
+
+function track(event: string, params?: Record<string, any>) {
+  if (typeof window !== "undefined" && typeof window.gtag === "function") {
+    window.gtag("event", event, params || {});
+  }
+}
+
 function useReveal() {
   useEffect(() => {
-    const elements =
-      document.querySelectorAll<HTMLElement>("[data-reveal]");
-
-    const reduce = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-
+    const elements = document.querySelectorAll<HTMLElement>("[data-reveal]");
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) {
       elements.forEach((el) => el.classList.add("is-visible"));
       return;
     }
-
     const observer = new IntersectionObserver(
       (entries) =>
         entries.forEach((entry) => {
@@ -30,7 +38,6 @@ function useReveal() {
         }),
       { threshold: 0.12 }
     );
-
     elements.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
   }, []);
@@ -39,7 +46,6 @@ function useReveal() {
 function useCalendly() {
   useEffect(() => {
     if (document.getElementById("calendly-widget-script")) return;
-
     const script = document.createElement("script");
     script.id = "calendly-widget-script";
     script.src = "https://assets.calendly.com/assets/external/widget.js";
@@ -48,10 +54,100 @@ function useCalendly() {
   }, []);
 }
 
+/* ------------------------------------------------------------------ */
+/* Video milestone tracking: video_start, 25, 50, 75, video_complete    */
+/* ------------------------------------------------------------------ */
+function useVideoTracking(videoRef: React.RefObject<HTMLVideoElement | null>) {
+  const fired = useRef<Set<string>>(new Set());
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const fireOnce = (name: string) => {
+      if (fired.current.has(name)) return;
+      fired.current.add(name);
+      track(name, { event_category: "VSL", event_label: "The Conversation" });
+    };
+
+    const onPlay = () => fireOnce("video_start");
+
+    const onTimeUpdate = () => {
+      if (!video.duration || !isFinite(video.duration)) return;
+      const percent = (video.currentTime / video.duration) * 100;
+      if (percent >= 25) fireOnce("video_25");
+      if (percent >= 50) fireOnce("video_50");
+      if (percent >= 75) fireOnce("video_75");
+      if (percent >= 95) fireOnce("video_complete");
+    };
+
+    const onEnded = () => fireOnce("video_complete");
+
+    // If the video fails to load/play at all, we want to know — this is the
+    // exact failure that was showing "your browser does not support" to users.
+    const onError = () =>
+      track("video_error", {
+        event_category: "VSL",
+        event_label: "The Conversation",
+      });
+
+    video.addEventListener("play", onPlay);
+    video.addEventListener("timeupdate", onTimeUpdate);
+    video.addEventListener("ended", onEnded);
+    video.addEventListener("error", onError);
+
+    return () => {
+      video.removeEventListener("play", onPlay);
+      video.removeEventListener("timeupdate", onTimeUpdate);
+      video.removeEventListener("ended", onEnded);
+      video.removeEventListener("error", onError);
+    };
+  }, [videoRef]);
+}
+
+/* ------------------------------------------------------------------ */
+/* Time-on-page milestones                                             */
+/* ------------------------------------------------------------------ */
+function useTimeTracking() {
+  useEffect(() => {
+    const timers = [
+      setTimeout(() => track("time_30_seconds", { event_category: "Engagement" }), 30000),
+      setTimeout(() => track("time_60_seconds", { event_category: "Engagement" }), 60000),
+      setTimeout(() => track("time_2_minutes", { event_category: "Engagement" }), 120000),
+      setTimeout(() => track("time_5_minutes", { event_category: "Engagement" }), 300000),
+    ];
+    return () => timers.forEach(clearTimeout);
+  }, []);
+}
+
+/* ------------------------------------------------------------------ */
+/* Fires calendly_visible once the booking widget scrolls into view     */
+/* ------------------------------------------------------------------ */
+function useCalendlyVisible() {
+  useEffect(() => {
+    const el = document.getElementById("calendly-card");
+    if (!el) return;
+    let fired = false;
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !fired) {
+            fired = true;
+            track("calendly_visible", { event_category: "Booking" });
+            io.disconnect();
+          }
+        });
+      },
+      { threshold: 0.25 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+}
+
 function scrollToId(id: string) {
   const target = document.getElementById(id);
   if (!target) return;
-
   const y = target.getBoundingClientRect().top + window.scrollY - 20;
   window.scrollTo({ top: y, behavior: "smooth" });
 }
@@ -59,6 +155,11 @@ function scrollToId(id: string) {
 export default function TheConversationPage() {
   useReveal();
   useCalendly();
+  useTimeTracking();
+  useCalendlyVisible();
+
+  const videoRef = useRef<HTMLVideoElement>(null);
+  useVideoTracking(videoRef);
 
   const [showSticky, setShowSticky] = useState(false);
 
@@ -66,24 +167,30 @@ export default function TheConversationPage() {
     const updateSticky = () => {
       const bridge = document.getElementById("bridge");
       if (!bridge) return;
-
       const bridgeTop = bridge.getBoundingClientRect().top;
-
-      // Show the sticky CTA as the bridge begins entering the viewport.
-      // This keeps the hero/video distraction-free, then introduces the CTA
-      // once the visitor has started processing the message.
       setShowSticky(bridgeTop <= window.innerHeight * 0.72);
     };
-
     window.addEventListener("scroll", updateSticky, { passive: true });
     window.addEventListener("resize", updateSticky);
     updateSticky();
-
     return () => {
       window.removeEventListener("scroll", updateSticky);
       window.removeEventListener("resize", updateSticky);
     };
   }, []);
+
+  /* CTA click tracker — pass a label so we know WHICH cta converted */
+  const trackCTA = (label: string) => {
+    track("cta_click", {
+      event_category: "Landing Page",
+      event_label: label,
+    });
+  };
+
+  const goBook = (label: string) => {
+    trackCTA(label);
+    scrollToId("book");
+  };
 
   return (
     <main className="tc-root">
@@ -95,18 +202,16 @@ export default function TheConversationPage() {
           <p className="tc-eyebrow" data-reveal>
             For accomplished professionals who know there&apos;s another chapter waiting
           </p>
-
           <h1 className="tc-hero-title" data-reveal>
             Gain clarity on the purpose, calling, or business that&apos;s been pulling at you.
           </h1>
-
           <p className="tc-hero-sub" data-reveal>
             In this short video, you&apos;ll discover why you&apos;ve struggled to act on
             what you&apos;ve known for years — and how to finally move forward with confidence.
           </p>
-
           <div className="tc-video-wrap" id="video" data-reveal>
             <video
+              ref={videoRef}
               className="tc-native-video"
               controls
               playsInline
@@ -119,25 +224,22 @@ export default function TheConversationPage() {
               Your browser does not support embedded video.
             </video>
           </div>
-
           <p className="tc-video-note" data-reveal>
             No email required. No obligation. Just watch.
           </p>
         </div>
       </section>
 
-      {/* BRIDGE — IMMEDIATELY AFTER THE VIDEO */}
+      {/* BRIDGE */}
       <section className="tc-bridge" id="bridge">
         <div className="tc-narrow tc-center">
           <h2 className="tc-bridge-kicker" data-reveal>
             If that video felt familiar...
           </h2>
-
           <h3 className="tc-bridge-title" data-reveal>
             You probably do not need more motivation, another course,
             or a better productivity system.
           </h3>
-
           <p className="tc-bridge-copy" data-reveal>
             You need clarity about what is truly calling you, why you have
             found it so difficult to move toward it, and the next step that
@@ -153,11 +255,9 @@ export default function TheConversationPage() {
           <p className="tc-kicker tc-center" data-reveal>
             What people say after the conversation
           </p>
-
           <h2 className="tc-proof-title" data-reveal>
             Sometimes one honest conversation changes what becomes possible.
           </h2>
-
           <div className="tc-testimonials">
             <blockquote data-reveal>
               <p>
@@ -167,7 +267,6 @@ export default function TheConversationPage() {
               </p>
               <cite>— Peace</cite>
             </blockquote>
-
             <blockquote data-reveal>
               <p>
                 “Her guidance reframed and clarified my next steps in a
@@ -175,7 +274,6 @@ export default function TheConversationPage() {
               </p>
               <cite>— Hannah Bailey, Studio Northwood</cite>
             </blockquote>
-
             <blockquote data-reveal>
               <p>
                 “With Chi-Chi, I found my area of genius and unlocked the
@@ -184,17 +282,18 @@ export default function TheConversationPage() {
               <cite>— Lola, Rapid Reinvent Hair Treatment</cite>
             </blockquote>
           </div>
-
           <div className="tc-section-cta" data-reveal>
             <p>
               You do not need another person to tell you what you should want.
               You need a conversation that helps you hear what is already true.
             </p>
-
             <button
               type="button"
               className="tc-button tc-button-gold"
-              onClick={() => scrollToId("offer")}
+              onClick={() => {
+                trackCTA("Testimonials — See what this can give you");
+                scrollToId("offer");
+              }}
             >
               See what this conversation can give you
             </button>
@@ -208,18 +307,15 @@ export default function TheConversationPage() {
           <div className="tc-offer-feature" data-reveal>
             <div className="tc-offer-copy">
               <p className="tc-kicker">The Clarity Intensive</p>
-
               <h2>
                 A private 75-minute conversation to clarify what is calling you,
                 remove what has been standing in the way, and help you begin.
               </h2>
-
               <p className="tc-offer-intro">
                 Whether you already know exactly what your next chapter is or
                 you only know that something more is asking for your attention,
                 we will turn that uncertainty into clarity, direction, and movement.
               </p>
-
               <ul className="tc-outcome-list">
                 <li>
                   <span>✓</span>
@@ -248,35 +344,29 @@ export default function TheConversationPage() {
                 </li>
               </ul>
             </div>
-
             <div className="tc-offer-visual">
               <span className="tc-bonus-badge">Free e-book included</span>
-
               <img
                 src="/build-whats-next-3d.png"
                 alt="3D mockup of Build What's Next While Still Employed"
               />
-
               <div className="tc-book-note">
                 <strong>Included with your session. Delivered immediately afterward.</strong>
               </div>
             </div>
-
             <div className="tc-offer-footer">
               <div className="tc-offer-price">
                 <span className="tc-price-label">Private session</span>
                 <strong className="tc-price">$750</strong>
               </div>
-
               <div className="tc-offer-action">
                 <button
                   type="button"
                   className="tc-button tc-button-gold tc-offer-button"
-                  onClick={() => scrollToId("book")}
+                  onClick={() => goBook("Offer card — Yes let's have the conversation")}
                 >
                   Yes — let&apos;s have the conversation
                 </button>
-
                 <p className="tc-secure-note">
                   Private booking · Full clarity guarantee
                 </p>
@@ -286,27 +376,18 @@ export default function TheConversationPage() {
         </div>
       </section>
 
-      
-
-{/* WHAT YOU'LL LEAVE WITH */}
+      {/* WHAT YOU'LL LEAVE WITH */}
       <section className="tc-outcomes-section tc-outcomes-continuation">
         <div className="tc-shell">
           <div className="tc-outcomes-header" data-reveal>
-            <p className="tc-kicker">
-              What you will leave with
-            </p>
-
-            <h2>
-              Clarity about what is calling you — and a real way to begin.
-            </h2>
-
+            <p className="tc-kicker">What you will leave with</p>
+            <h2>Clarity about what is calling you — and a real way to begin.</h2>
             <p>
               You will not leave with a vague sense of inspiration. You will
               understand what matters, what has been preventing movement,
               and the next action that fits the life you have now.
             </p>
           </div>
-
           <div className="tc-outcome-cards">
             <article data-reveal>
               <span>01</span>
@@ -317,7 +398,6 @@ export default function TheConversationPage() {
                 your attention.
               </p>
             </article>
-
             <article data-reveal>
               <span>02</span>
               <h3>The real reason you have not moved</h3>
@@ -326,7 +406,6 @@ export default function TheConversationPage() {
                 mechanism that has quietly been shaping your decisions.
               </p>
             </article>
-
             <article data-reveal>
               <span>03</span>
               <h3>One practical way to begin</h3>
@@ -335,7 +414,6 @@ export default function TheConversationPage() {
                 current responsibilities, energy, schedule, and season.
               </p>
             </article>
-
             <article data-reveal>
               <span>04</span>
               <h3>A written clarity roadmap</h3>
@@ -345,17 +423,15 @@ export default function TheConversationPage() {
               </p>
             </article>
           </div>
-
           <div className="tc-outcomes-footer" data-reveal>
             <p>
               One conversation to clarify what matters, understand what
               has held you back, and begin moving.
             </p>
-
             <button
               type="button"
               className="tc-button tc-button-gold"
-              onClick={() => scrollToId("book")}
+              onClick={() => goBook("Outcomes — Book the conversation")}
             >
               Book the conversation
             </button>
@@ -363,29 +439,24 @@ export default function TheConversationPage() {
         </div>
       </section>
 
-      
-
-{/* GUARANTEE */}
+      {/* GUARANTEE */}
       <section className="tc-section tc-navy">
         <div className="tc-narrow tc-center">
           <p className="tc-kicker tc-gold" data-reveal>
             The Clarity Guarantee
           </p>
-
           <h2 className="tc-display-light" data-reveal>
             If you leave without meaningful clarity, you do not pay.
           </h2>
-
           <p className="tc-lead tc-light-copy" data-reveal>
             Tell me before we end the conversation, and I will refund you
             in full. No awkward explanation. No hidden conditions.
           </p>
-
           <div className="tc-section-cta" data-reveal>
             <button
               type="button"
               className="tc-button tc-button-gold"
-              onClick={() => scrollToId("book")}
+              onClick={() => goBook("Guarantee — Book with zero risk")}
             >
               Book with zero risk
             </button>
@@ -399,12 +470,9 @@ export default function TheConversationPage() {
           <p className="tc-kicker tc-center" data-reveal>
             Questions you may be carrying
           </p>
-
           <div className="tc-faq" data-reveal>
             <details>
-              <summary>
-                What if I do not know exactly what my purpose is?
-              </summary>
+              <summary>What if I do not know exactly what my purpose is?</summary>
               <p>
                 You do not need a perfectly defined calling before you book.
                 Some clients arrive with one idea they have carried for years.
@@ -413,7 +481,6 @@ export default function TheConversationPage() {
                 as what has made it difficult to act on it.
               </p>
             </details>
-
             <details>
               <summary>What if I want to stay in corporate?</summary>
               <p>
@@ -423,7 +490,6 @@ export default function TheConversationPage() {
                 or changing your relationship with the work you already do.
               </p>
             </details>
-
             <details>
               <summary>Is this therapy?</summary>
               <p>
@@ -432,7 +498,6 @@ export default function TheConversationPage() {
                 and what your next honest move could be.
               </p>
             </details>
-
             <details>
               <summary>Why is there no free discovery call?</summary>
               <p>
@@ -452,21 +517,17 @@ export default function TheConversationPage() {
           <p className="tc-kicker" data-reveal>
             The conversation
           </p>
-
           <h2 className="tc-display" data-reveal>
             Ready to get clear — and begin?
           </h2>
-
           <p className="tc-booking-reassurance" data-reveal>
             You do not need to know exactly what your next chapter is before
             booking. That is part of what this conversation is for.
           </p>
-
           <p className="tc-lead" data-reveal>
             Choose a time. Answer four thoughtful questions. I will read
             every word before we meet so we can begin with what matters most.
           </p>
-
           <div className="tc-booking-reminder" data-reveal>
             <span>75 minutes</span>
             <span>$750</span>
@@ -474,7 +535,6 @@ export default function TheConversationPage() {
             <span>Free e-book</span>
             <span>Full clarity guarantee</span>
           </div>
-
           <div className="tc-calendar" id="calendly-card" data-reveal>
             <div
               className="calendly-inline-widget"
@@ -489,7 +549,6 @@ export default function TheConversationPage() {
       <footer className="tc-footer">
         <div className="tc-narrow tc-center">
           <p>You do not need permission to want another chapter.</p>
-
           <div className="tc-footer-links">
             <a href="mailto:idealclaritysolutions@gmail.com">Email</a>
             <a
@@ -499,11 +558,8 @@ export default function TheConversationPage() {
             >
               Instagram
             </a>
-            <a href="https://www.idealclarity.com/privacy-policy">
-              Privacy
-            </a>
+            <a href="https://www.idealclarity.com/privacy-policy">Privacy</a>
           </div>
-
           <small>
             © 2026 Ideal Clarity Solutions. Coaching and advisory services
             do not guarantee business, income, career, or personal results.
@@ -511,15 +567,13 @@ export default function TheConversationPage() {
         </div>
       </footer>
 
-      {/* STICKY CTA — APPEARS AFTER VIDEO */}
+      {/* STICKY CTA */}
       <div className={`tc-sticky ${showSticky ? "is-visible" : ""}`}>
-        <span>
-          Ready for the conversation you&apos;ve been postponing?
-        </span>
+        <span>Ready for the conversation you&apos;ve been postponing?</span>
         <button
           type="button"
           className="tc-sticky-button"
-          onClick={() => scrollToId("book")}
+          onClick={() => goBook("Sticky bar — Yes book my session")}
         >
           Yes — book my session
         </button>
@@ -530,7 +584,6 @@ export default function TheConversationPage() {
 
 const CSS = `
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&display=swap');
-
 .tc-root{
   --ink:#172132;
   --navy:#142033;
@@ -549,13 +602,11 @@ const CSS = `
   overflow-x:hidden;
   -webkit-font-smoothing:antialiased;
 }
-
 .tc-root *{box-sizing:border-box;}
 .tc-shell{width:min(1120px,calc(100% - 40px));margin:0 auto;}
 .tc-narrow{width:min(760px,calc(100% - 40px));margin:0 auto;}
 .tc-center{text-align:center;}
 .tc-left{text-align:left;}
-
 [data-reveal]{
   opacity:0;
   transform:translateY(18px);
@@ -565,14 +616,12 @@ const CSS = `
 @media(prefers-reduced-motion:reduce){
   [data-reveal]{opacity:1;transform:none;transition:none;}
 }
-
 .tc-hero{
   padding:clamp(48px,8vw,92px) 0 clamp(56px,7vw,88px);
   background:
     radial-gradient(circle at 50% -20%,rgba(185,147,92,.18),transparent 42%),
     var(--cream);
 }
-
 .tc-eyebrow,
 .tc-kicker{
   margin:0 0 18px;
@@ -583,7 +632,6 @@ const CSS = `
   line-height:1.5;
   text-transform:uppercase;
 }
-
 .tc-hero-title,
 .tc-display,
 .tc-display-light{
@@ -591,7 +639,6 @@ const CSS = `
   font-optical-sizing:auto;
   letter-spacing:-.025em;
 }
-
 .tc-hero-title{
   max-width:900px;
   margin:0 auto 20px;
@@ -600,7 +647,6 @@ const CSS = `
   font-weight:500;
   line-height:1.03;
 }
-
 .tc-hero-sub{
   max-width:700px;
   margin:0 auto 34px;
@@ -609,7 +655,6 @@ const CSS = `
   font-size:clamp(1.15rem,2vw,1.45rem);
   line-height:1.55;
 }
-
 .tc-video-wrap{
   position:relative;
   width:min(470px,100%);
@@ -621,7 +666,6 @@ const CSS = `
   box-shadow:var(--shadow);
   line-height:0;
 }
-
 .tc-native-video{
   display:block;
   width:100%;
@@ -630,30 +674,24 @@ const CSS = `
   object-fit:cover;
   background:#000;
 }
-
 .tc-video-note{
   margin:18px 0 0;
   color:var(--muted);
   font-size:.9rem;
 }
-
 .tc-section{
   padding:clamp(76px,10vw,128px) 0;
 }
-
 .tc-proof{
   padding-top:clamp(68px,8vw,98px);
   background:#FFFDF8;
 }
-
 .tc-navy{
   background:var(--navy);
   color:var(--white);
 }
-
 .tc-cream{background:var(--warm);}
 .tc-gold{color:var(--gold);}
-
 .tc-display,
 .tc-display-light{
   margin:0 auto 28px;
@@ -662,11 +700,9 @@ const CSS = `
   font-weight:500;
   line-height:1.1;
 }
-
 .tc-display{color:var(--ink);}
 .tc-display-light{color:var(--white);}
 .tc-display.tc-left{margin-left:0;}
-
 .tc-lead{
   max-width:710px;
   margin:0 auto;
@@ -674,10 +710,8 @@ const CSS = `
   font-size:clamp(1.05rem,1.55vw,1.25rem);
   line-height:1.8;
 }
-
 .tc-light-copy{color:#D7DCE5;}
 .tc-lead.tc-left{margin-left:0;}
-
 .tc-pull{
   max-width:760px;
   margin:0 auto;
@@ -687,12 +721,10 @@ const CSS = `
   font-style:italic;
   line-height:1.45;
 }
-
 .tc-section-cta{
   margin-top:40px;
   text-align:center;
 }
-
 .tc-section-cta p{
   max-width:680px;
   margin:0 auto 20px;
@@ -701,28 +733,24 @@ const CSS = `
   font-size:clamp(1.15rem,2vw,1.45rem);
   line-height:1.55;
 }
-
 .tc-about{
   display:grid;
   grid-template-columns:.82fr 1.18fr;
   gap:clamp(40px,7vw,88px);
   align-items:center;
 }
-
 .tc-about-image img{
   width:100%;
   display:block;
   border-radius:24px;
   box-shadow:var(--shadow);
 }
-
 .tc-body p{
   margin:0 0 20px;
   color:var(--muted);
   font-size:1.08rem;
   line-height:1.8;
 }
-
 .tc-button{
   border:0;
   border-radius:999px;
@@ -731,35 +759,28 @@ const CSS = `
   padding:16px 27px;
   transition:transform .2s ease,box-shadow .2s ease,background .2s ease;
 }
-
 .tc-button:hover{transform:translateY(-2px);}
-
 .tc-button-gold{
   background:var(--gold);
   color:#fff;
   box-shadow:0 12px 30px rgba(185,147,92,.25);
 }
-
 .tc-button-ink{
   background:var(--ink);
   color:#fff;
   box-shadow:0 12px 30px rgba(20,32,51,.16);
 }
-
 .tc-button-outline{
   background:transparent;
   color:var(--ink);
   border:1.5px solid var(--gold);
 }
-
-
 /* BRIDGE */
 .tc-bridge{
   padding:clamp(62px,8vw,94px) 0;
   background:var(--navy);
   color:#fff;
 }
-
 .tc-bridge-kicker{
   max-width:760px;
   margin:0 auto 18px;
@@ -771,7 +792,6 @@ const CSS = `
   line-height:1.08;
   letter-spacing:-.025em;
 }
-
 .tc-bridge-title{
   max-width:790px;
   margin:0 auto 24px;
@@ -782,7 +802,6 @@ const CSS = `
   line-height:1.2;
   letter-spacing:-.015em;
 }
-
 .tc-bridge-copy{
   max-width:680px;
   margin:0 auto;
@@ -790,7 +809,6 @@ const CSS = `
   font-size:clamp(1.05rem,1.6vw,1.22rem);
   line-height:1.8;
 }
-
 /* PROOF */
 .tc-proof-title{
   max-width:760px;
@@ -803,8 +821,7 @@ const CSS = `
   letter-spacing:-.025em;
   text-align:center;
 }
-
-/* OUTCOMES — VISUAL CONTINUATION OF THE OFFER */
+/* OUTCOMES */
 .tc-outcomes-continuation{
   position:relative;
   margin-top:-1px;
@@ -817,11 +834,9 @@ const CSS = `
       var(--warm) 100%
     );
 }
-
 .tc-outcomes-continuation .tc-shell{
   position:relative;
 }
-
 .tc-outcomes-header{
   max-width:900px;
   margin:0 auto;
@@ -833,11 +848,9 @@ const CSS = `
   box-shadow:0 28px 80px rgba(20,32,51,.12);
   text-align:center;
 }
-
 .tc-outcomes-header .tc-kicker{
   color:var(--gold);
 }
-
 .tc-outcomes-header h2{
   margin:0 auto 18px;
   color:#fff;
@@ -847,7 +860,6 @@ const CSS = `
   line-height:1.1;
   letter-spacing:-.025em;
 }
-
 .tc-outcomes-header p{
   max-width:700px;
   margin:0 auto;
@@ -855,7 +867,6 @@ const CSS = `
   font-size:clamp(1.02rem,1.5vw,1.18rem);
   line-height:1.75;
 }
-
 .tc-outcome-cards{
   width:min(1040px,100%);
   margin:34px auto 0;
@@ -863,7 +874,6 @@ const CSS = `
   grid-template-columns:repeat(4,1fr);
   gap:16px;
 }
-
 .tc-outcome-cards article{
   position:relative;
   padding:28px 24px;
@@ -872,7 +882,6 @@ const CSS = `
   border-radius:20px;
   box-shadow:0 16px 46px rgba(20,32,51,.07);
 }
-
 .tc-outcome-cards article::before{
   content:"";
   position:absolute;
@@ -883,7 +892,6 @@ const CSS = `
   background:var(--gold);
   border-radius:0 0 3px 3px;
 }
-
 .tc-outcome-cards article > span{
   display:inline-flex;
   align-items:center;
@@ -898,7 +906,6 @@ const CSS = `
   font-size:.9rem;
   font-weight:600;
 }
-
 .tc-outcome-cards h3{
   margin:0 0 10px;
   color:var(--ink);
@@ -907,14 +914,12 @@ const CSS = `
   font-weight:500;
   line-height:1.22;
 }
-
 .tc-outcome-cards p{
   margin:0;
   color:var(--muted);
   font-size:.96rem;
   line-height:1.7;
 }
-
 .tc-outcomes-footer{
   display:flex;
   align-items:center;
@@ -928,7 +933,6 @@ const CSS = `
   border-radius:18px;
   box-shadow:0 14px 36px rgba(20,32,51,.06);
 }
-
 .tc-outcomes-footer p{
   margin:0;
   color:var(--ink);
@@ -936,13 +940,11 @@ const CSS = `
   font-size:1.15rem;
   line-height:1.45;
 }
-
 /* FEATURE OFFER */
 .tc-offer-section{
   padding-bottom:0;
   background:linear-gradient(180deg,#FFFDF8,var(--cream));
 }
-
 .tc-offer-feature{
   display:grid;
   grid-template-columns:1.08fr .92fr;
@@ -952,11 +954,9 @@ const CSS = `
   border-radius:30px;
   box-shadow:0 32px 90px rgba(20,32,51,.15);
 }
-
 .tc-offer-copy{
   padding:clamp(38px,6vw,72px);
 }
-
 .tc-offer-copy h2{
   margin:0 0 22px;
   color:var(--ink);
@@ -966,20 +966,17 @@ const CSS = `
   line-height:1.08;
   letter-spacing:-.025em;
 }
-
 .tc-offer-intro{
   margin:0 0 28px;
   color:var(--muted);
   font-size:1.06rem;
   line-height:1.75;
 }
-
 .tc-outcome-list{
   list-style:none;
   padding:0;
   margin:0 0 34px;
 }
-
 .tc-outcome-list li{
   display:flex;
   gap:12px;
@@ -987,7 +984,6 @@ const CSS = `
   color:var(--ink);
   line-height:1.55;
 }
-
 .tc-outcome-list li span{
   flex:0 0 auto;
   width:22px;
@@ -1002,7 +998,6 @@ const CSS = `
   font-size:.76rem;
   font-weight:700;
 }
-
 .tc-offer-bottom{
   display:flex;
   align-items:center;
@@ -1011,7 +1006,6 @@ const CSS = `
   padding-top:26px;
   border-top:1px solid var(--line);
 }
-
 .tc-price-label{
   display:block;
   color:var(--gold-deep);
@@ -1020,7 +1014,6 @@ const CSS = `
   letter-spacing:.13em;
   text-transform:uppercase;
 }
-
 .tc-price{
   display:block;
   margin-top:2px;
@@ -1029,7 +1022,6 @@ const CSS = `
   font-size:2.75rem;
   font-weight:500;
 }
-
 .tc-offer-button{
   max-width:360px;
   min-height:58px;
@@ -1037,17 +1029,14 @@ const CSS = `
   font-size:1.02rem;
   box-shadow:0 14px 34px rgba(185,147,92,.34);
 }
-
 .tc-offer-button:hover{
   box-shadow:0 18px 40px rgba(185,147,92,.42);
 }
-
 .tc-secure-note{
   margin:16px 0 0;
   color:var(--muted);
   font-size:.85rem;
 }
-
 .tc-offer-visual{
   position:relative;
   display:flex;
@@ -1060,7 +1049,6 @@ const CSS = `
     linear-gradient(145deg,#F3E8D5,#FFFDF8);
   text-align:center;
 }
-
 .tc-offer-visual::before{
   content:"";
   position:absolute;
@@ -1070,7 +1058,6 @@ const CSS = `
   border-radius:50%;
   z-index:0;
 }
-
 .tc-offer-visual img{
   position:relative;
   z-index:1;
@@ -1080,7 +1067,6 @@ const CSS = `
   object-fit:contain;
   filter:drop-shadow(0 24px 32px rgba(20,32,51,.23));
 }
-
 .tc-offer-visual p{
   position:relative;
   z-index:1;
@@ -1089,8 +1075,6 @@ const CSS = `
   color:var(--muted);
   line-height:1.6;
 }
-
-
 .tc-book-note{
   position:relative;
   z-index:1;
@@ -1104,8 +1088,6 @@ const CSS = `
   font-weight:600;
   text-align:center;
 }
-
-
 .tc-offer-footer{
   grid-column:1 / -1;
   display:flex;
@@ -1116,28 +1098,23 @@ const CSS = `
   background:var(--navy);
   border-top:1px solid rgba(185,147,92,.36);
 }
-
 .tc-offer-footer .tc-price-label{
   color:#AAB4C4;
 }
-
 .tc-offer-footer .tc-price{
   color:#fff;
 }
-
 .tc-offer-action{
   display:flex;
   flex-direction:column;
   align-items:flex-end;
   gap:10px;
 }
-
 .tc-offer-action .tc-secure-note{
   margin:0;
   color:#AAB4C4;
   text-align:right;
 }
-
 .tc-bonus-badge{
   position:absolute;
   top:32px;
@@ -1160,7 +1137,6 @@ const CSS = `
   text-transform:uppercase;
   box-shadow:0 14px 30px rgba(20,32,51,.2);
 }
-
 /* TESTIMONIALS */
 .tc-testimonials{
   width:min(900px,100%);
@@ -1169,7 +1145,6 @@ const CSS = `
   grid-template-columns:repeat(3,1fr);
   gap:22px;
 }
-
 .tc-testimonials blockquote{
   margin:0;
   padding:30px;
@@ -1178,7 +1153,6 @@ const CSS = `
   border-radius:20px;
   box-shadow:0 15px 45px rgba(20,32,51,.07);
 }
-
 .tc-testimonials p{
   margin:0 0 18px;
   color:var(--ink);
@@ -1187,25 +1161,21 @@ const CSS = `
   font-style:italic;
   line-height:1.6;
 }
-
 .tc-testimonials cite{
   color:var(--gold-deep);
   font-size:.86rem;
   font-style:normal;
   font-weight:700;
 }
-
 /* FAQ */
 .tc-faq{
   margin-top:38px;
   border-top:1px solid rgba(20,32,51,.15);
 }
-
 .tc-faq details{
   border-bottom:1px solid rgba(20,32,51,.15);
   padding:22px 0;
 }
-
 .tc-faq summary{
   padding-right:38px;
   position:relative;
@@ -1216,9 +1186,7 @@ const CSS = `
   font-weight:500;
   list-style:none;
 }
-
 .tc-faq summary::-webkit-details-marker{display:none;}
-
 .tc-faq summary::after{
   content:"+";
   position:absolute;
@@ -1227,16 +1195,12 @@ const CSS = `
   color:var(--gold-deep);
   font-size:1.7rem;
 }
-
 .tc-faq details[open] summary::after{content:"–";}
-
 .tc-faq p{
   margin:17px 0 0;
   color:var(--muted);
   line-height:1.75;
 }
-
-
 .tc-booking-reassurance{
   max-width:690px;
   margin:0 auto 18px;
@@ -1250,7 +1214,6 @@ const CSS = `
   font-style:italic;
   line-height:1.55;
 }
-
 .tc-booking-reminder{
   display:flex;
   flex-wrap:wrap;
@@ -1258,7 +1221,6 @@ const CSS = `
   gap:10px;
   margin:30px 0 0;
 }
-
 .tc-booking-reminder span{
   padding:8px 13px;
   background:#FFFDF8;
@@ -1268,7 +1230,6 @@ const CSS = `
   font-size:.86rem;
   font-weight:600;
 }
-
 .tc-calendar{
   margin-top:34px;
   padding:12px;
@@ -1278,21 +1239,18 @@ const CSS = `
   border-radius:22px;
   box-shadow:var(--shadow);
 }
-
 /* FOOTER */
 .tc-footer{
   padding:72px 0 132px;
   background:var(--navy);
   color:#D7DCE5;
 }
-
 .tc-footer p{
   margin:0;
   color:#fff;
   font-family:'Fraunces',Georgia,serif;
   font-size:1.35rem;
 }
-
 .tc-footer-links{
   display:flex;
   flex-wrap:wrap;
@@ -1300,18 +1258,15 @@ const CSS = `
   gap:24px;
   margin:30px 0;
 }
-
 .tc-footer-links a{
   color:var(--gold);
   text-decoration:none;
 }
-
 .tc-footer small{
   color:#8E99AA;
   line-height:1.6;
 }
-
-/* LARGER STICKY CTA */
+/* STICKY CTA */
 .tc-sticky{
   position:fixed;
   left:0;
@@ -1332,15 +1287,12 @@ const CSS = `
   transition:transform .3s ease;
   backdrop-filter:blur(14px);
 }
-
 .tc-sticky.is-visible{transform:translateY(0);}
-
 .tc-sticky span{
   font-family:'Fraunces',Georgia,serif;
   font-size:clamp(1.05rem,2vw,1.35rem);
   line-height:1.25;
 }
-
 .tc-sticky-button{
   min-width:205px;
   padding:14px 24px;
@@ -1352,88 +1304,70 @@ const CSS = `
   font:700 .96rem 'DM Sans',Arial,sans-serif;
   box-shadow:0 10px 24px rgba(185,147,92,.25);
 }
-
 @media(max-width:900px){
   .tc-outcome-cards{grid-template-columns:repeat(2,1fr);}
-
   .tc-about,
   .tc-offer-feature{
     grid-template-columns:1fr;
   }
-
   .tc-about-image{
     width:min(420px,100%);
     margin:0 auto;
   }
-
   .tc-offer-visual{
     min-height:480px;
   }
-
   .tc-testimonials{
     grid-template-columns:1fr;
   }
 }
-
 @media(max-width:650px){
   .tc-outcomes-header{
     padding:42px 22px 30px;
     border-radius:0 0 22px 22px;
   }
-
   .tc-outcome-cards{
     grid-template-columns:1fr;
     gap:14px;
     margin-top:24px;
   }
-
   .tc-outcomes-footer{
     align-items:stretch;
     flex-direction:column;
     padding:22px;
     text-align:center;
   }
-
   .tc-outcomes-footer .tc-button{
     width:100%;
   }
-
   .tc-shell,
   .tc-narrow{
     width:min(100% - 28px,1120px);
   }
-
   .tc-hero{
     padding-top:38px;
   }
-
   .tc-eyebrow{
     font-size:.68rem;
   }
-
   .tc-video-wrap{
     width:min(100%,420px);
     border-radius:15px;
   }
-
   .tc-section{
     padding:72px 0;
   }
-
   .tc-offer-copy{
     padding:32px 22px;
   }
-
   .tc-offer-visual{
     min-height:420px;
     padding:46px 20px 34px;
   }
-
   .tc-offer-visual::before{
     width:230px;
     height:230px;
   }
-
   .tc-bonus-badge{
     top:18px;
     right:18px;
@@ -1441,42 +1375,34 @@ const CSS = `
     height:88px;
     font-size:.65rem;
   }
-
   .tc-offer-footer{
     align-items:stretch;
     flex-direction:column;
     padding:26px 22px;
   }
-
   .tc-offer-action{
     align-items:stretch;
   }
-
   .tc-offer-action .tc-secure-note{
     text-align:left;
   }
-
   .tc-offer-button{
     width:100%;
     max-width:none;
   }
-
   .tc-testimonials blockquote{
     padding:26px 22px;
   }
-
   .tc-sticky{
     min-height:96px;
     justify-content:space-between;
     gap:14px;
     padding:13px 14px;
   }
-
   .tc-sticky span{
     max-width:48%;
     font-size:.92rem;
   }
-
   .tc-sticky-button{
     min-width:0;
     width:49%;
