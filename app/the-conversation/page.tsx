@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 const CAL_URL = "https://calendly.com/idealclaritysolutions/clarity-intensive";
 const VIDEO_URL =
-  "https://xfdsht8l8xkamp7u.public.blob.vercel-storage.com/the-conversation-vsl.mp4";
+  "https://xfdsht8l8xkamp7u.public.blob.vercel-storage.com/the-conversation-vsl-final.mp4";
 
 function useReveal() {
   useEffect(() => {
