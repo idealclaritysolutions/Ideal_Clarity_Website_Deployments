@@ -93,17 +93,16 @@ export default function TheConversationPage() {
       <section className="tc-hero">
         <div className="tc-shell tc-center">
           <p className="tc-eyebrow" data-reveal>
-            For accomplished professionals who cannot shake the feeling
-            that there is something more
+            For accomplished professionals who know there&apos;s another chapter waiting
           </p>
 
           <h1 className="tc-hero-title" data-reveal>
-            You already know something is calling you.
+            Gain clarity on the purpose, calling, or business that&apos;s been pulling at you.
           </h1>
 
           <p className="tc-hero-sub" data-reveal>
-            This short video explains what has been keeping you stuck
-            — and how to finally begin moving toward what matters.
+            In this short video, you&apos;ll discover why you&apos;ve struggled to act on
+            what you&apos;ve known for years — and how to finally move forward with confidence.
           </p>
 
           <div className="tc-video-wrap" id="video" data-reveal>
@@ -135,14 +134,15 @@ export default function TheConversationPage() {
           </h2>
 
           <h3 className="tc-bridge-title" data-reveal>
-            The problem was never that you lacked ambition, discipline,
-            or ideas.
+            You probably do not need more motivation, another course,
+            or a better productivity system.
           </h3>
 
           <p className="tc-bridge-copy" data-reveal>
-            Something underneath the logic has been protecting you from
-            moving. Once you can see it clearly, you can stop letting it
-            make your decisions — and begin moving toward what matters.
+            You need clarity about what is truly calling you, why you have
+            found it so difficult to move toward it, and the next step that
+            makes sense for your life now. That is exactly what this
+            conversation is designed to create.
           </p>
         </div>
       </section>
@@ -210,32 +210,32 @@ export default function TheConversationPage() {
               <p className="tc-kicker">The Clarity Intensive</p>
 
               <h2>
-                A private 75-minute conversation that creates real clarity
-                and momentum.
+                A private 75-minute conversation to clarify what is calling you,
+                remove what has been standing in the way, and help you begin.
               </h2>
 
               <p className="tc-offer-intro">
-                In our time together, we will uncover what has been keeping
-                you stuck — and create the clarity and direction you need
-                to finally move forward.
+                Whether you already know exactly what your next chapter is or
+                you only know that something more is asking for your attention,
+                we will turn that uncertainty into clarity, direction, and movement.
               </p>
 
               <ul className="tc-outcome-list">
                 <li>
                   <span>✓</span>
-                  Identify the hidden story keeping you stuck
+                  Gain clarity on the purpose, calling, or business that is pulling at you
                 </li>
                 <li>
                   <span>✓</span>
-                  Get clear on the work, idea, or life that is calling you
+                  Understand why you have not fully acted on it — even after years of knowing
                 </li>
                 <li>
                   <span>✓</span>
-                  Replace the old story with one you can move from
+                  Identify the hidden story, belief, or protection mechanism keeping you in place
                 </li>
                 <li>
                   <span>✓</span>
-                  Create one next step that fits your real life right now
+                  Create one practical next move that fits your real life right now
                 </li>
                 <li>
                   <span>✓</span>
@@ -258,7 +258,7 @@ export default function TheConversationPage() {
               />
 
               <div className="tc-book-note">
-                <strong>You'll receive this immediately after your session.</strong>
+                <strong>Included with your session. Delivered immediately afterward.</strong>
               </div>
             </div>
 
@@ -274,7 +274,7 @@ export default function TheConversationPage() {
                   className="tc-button tc-button-gold tc-offer-button"
                   onClick={() => scrollToId("book")}
                 >
-                  Yes — I&apos;m ready for this conversation
+                  Yes — let&apos;s have the conversation
                 </button>
 
                 <p className="tc-secure-note">
@@ -297,58 +297,59 @@ export default function TheConversationPage() {
             </p>
 
             <h2>
-              Not just insight. A clear way forward.
+              Clarity about what is calling you — and a real way to begin.
             </h2>
 
             <p>
-              The Clarity Intensive is designed to do more than uncover the
-              problem. You leave with a new way to understand it and a
-              specific action you can take next.
+              You will not leave with a vague sense of inspiration. You will
+              understand what matters, what has been preventing movement,
+              and the next action that fits the life you have now.
             </p>
           </div>
 
           <div className="tc-outcome-cards">
             <article data-reveal>
               <span>01</span>
-              <h3>The real barrier, named</h3>
+              <h3>Clarity on what is truly calling you</h3>
               <p>
-                We identify the hidden story, belief, or protection mechanism
-                that has quietly been shaping your decisions.
+                Whether it is a purpose, business, creative pursuit, or a
+                different way of living, we clarify what keeps asking for
+                your attention.
               </p>
             </article>
 
             <article data-reveal>
               <span>02</span>
-              <h3>A truer story you can move from</h3>
+              <h3>The real reason you have not moved</h3>
               <p>
-                We replace the old interpretation with one that reflects who
-                you are now and makes movement feel possible.
+                We identify the hidden belief, inherited rule, or protection
+                mechanism that has quietly been shaping your decisions.
               </p>
             </article>
 
             <article data-reveal>
               <span>03</span>
-              <h3>One specific next move</h3>
+              <h3>One practical way to begin</h3>
               <p>
-                You leave with an immediate action designed around your real
-                responsibilities, energy, and current life.
+                You leave with a specific next action designed around your
+                current responsibilities, energy, schedule, and season.
               </p>
             </article>
 
             <article data-reveal>
               <span>04</span>
-              <h3>A written clarity summary</h3>
+              <h3>A written clarity roadmap</h3>
               <p>
-                Within 24 hours, you receive the key insights and next step
-                from our conversation so the clarity does not disappear.
+                Within 24 hours, you receive the key insights, reframe, and
+                next move from our conversation so the clarity does not fade.
               </p>
             </article>
           </div>
 
           <div className="tc-outcomes-footer" data-reveal>
             <p>
-              One conversation. One honest shift. One next move you can
-              actually take.
+              One conversation to clarify what matters, understand what
+              has held you back, and begin moving.
             </p>
 
             <button
@@ -405,9 +406,11 @@ export default function TheConversationPage() {
                 What if I do not know exactly what my purpose is?
               </summary>
               <p>
-                You do not need a perfectly defined calling. You only need
-                something that keeps returning to you — an idea, direction,
-                or form of work you cannot quite dismiss.
+                You do not need a perfectly defined calling before you book.
+                Some clients arrive with one idea they have carried for years.
+                Others only know that something is missing. The conversation
+                is designed to help you clarify what is true for you, as well
+                as what has made it difficult to act on it.
               </p>
             </details>
 
@@ -451,12 +454,17 @@ export default function TheConversationPage() {
           </p>
 
           <h2 className="tc-display" data-reveal>
-            Ready to stop postponing what keeps calling you?
+            Ready to get clear — and begin?
           </h2>
+
+          <p className="tc-booking-reassurance" data-reveal>
+            You do not need to know exactly what your next chapter is before
+            booking. That is part of what this conversation is for.
+          </p>
 
           <p className="tc-lead" data-reveal>
             Choose a time. Answer four thoughtful questions. I will read
-            every word before we meet.
+            every word before we meet so we can begin with what matters most.
           </p>
 
           <div className="tc-booking-reminder" data-reveal>
@@ -1226,6 +1234,21 @@ const CSS = `
   margin:17px 0 0;
   color:var(--muted);
   line-height:1.75;
+}
+
+
+.tc-booking-reassurance{
+  max-width:690px;
+  margin:0 auto 18px;
+  padding:16px 20px;
+  background:rgba(185,147,92,.10);
+  border:1px solid var(--line);
+  border-radius:16px;
+  color:var(--ink);
+  font-family:'Fraunces',Georgia,serif;
+  font-size:clamp(1.05rem,1.6vw,1.25rem);
+  font-style:italic;
+  line-height:1.55;
 }
 
 .tc-booking-reminder{
