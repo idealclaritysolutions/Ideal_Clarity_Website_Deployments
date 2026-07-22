@@ -80,16 +80,21 @@ export default function MutualAdvantagePage() {
             <p className="eyebrow">THE MUTUAL ADVANTAGE INTENSIVE™</p>
 
             <h1>
-              You’re qualified.
+              You keep getting interviews.
               <br />
-              <span>Your interview just isn’t making the case.</span>
+              <span>You keep not getting offers.</span>
             </h1>
 
+            <p className="heroSub">
+              You’re qualified. Your interview just isn’t making the case.
+            </p>
+
             <p className="heroLead">
-              Stop trying to give the “perfect” answer. Learn how to show
-              interviewers <strong>who you are professionally</strong>, why your
-              results were not accidental, and why you can create that value
-              again in their organization.
+              In one focused 90-minute session, we’ll build the case your
+              interviews have been missing:{" "}
+              <strong>who you are professionally</strong>, why your results
+              were never accidental, and why you’ll create that value again in
+              their organization.
             </p>
 
             <div className="heroActions">
@@ -687,9 +692,9 @@ export default function MutualAdvantagePage() {
         }
 
         h1 {
-          margin-bottom: 26px;
-          font-size: clamp(3rem, 7.3vw, 6.7rem);
-          max-width: 900px;
+          margin-bottom: 22px;
+          font-size: clamp(2.7rem, 6.2vw, 5.6rem);
+          max-width: 980px;
         }
 
         h1 span {
@@ -827,6 +832,15 @@ export default function MutualAdvantagePage() {
 
         .eyebrow.light {
           color: #ffd3a6;
+        }
+
+        .heroSub {
+          margin-bottom: 14px;
+          color: #fff;
+          font-size: clamp(1.28rem, 2.4vw, 1.7rem);
+          font-weight: 800;
+          letter-spacing: -0.015em;
+          line-height: 1.3;
         }
 
         .heroLead {
@@ -1408,7 +1422,7 @@ export default function MutualAdvantagePage() {
 
         @media (max-width: 700px) {
           h1 {
-            font-size: clamp(2.85rem, 14vw, 4.7rem);
+            font-size: clamp(2.3rem, 11vw, 3.6rem);
           }
 
           h2 {
