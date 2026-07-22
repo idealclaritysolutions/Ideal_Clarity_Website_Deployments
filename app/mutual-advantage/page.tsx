@@ -86,15 +86,23 @@ export default function MutualAdvantagePage() {
             </h1>
 
             <p className="heroSub">
-              You’re qualified. Your interview just isn’t making the case.
+              The best candidate doesn’t always get the offer.
+              <br />
+              The candidate who communicates their value most clearly usually
+              does.
+              <br />
+              <span className="heroSubAccent">
+                The Mutual Advantage Method™ helps you become that candidate.
+              </span>
             </p>
 
             <p className="heroLead">
-              In one focused 90-minute session, we’ll build the case your
-              interviews have been missing:{" "}
-              <strong>who you are professionally</strong>, why your results
-              were never accidental, and why you’ll create that value again in
-              their organization.
+              Most professionals spend years learning how to{" "}
+              <strong>create</strong> value—but almost no time learning how to{" "}
+              <strong>communicate</strong> that value in an interview. The
+              Mutual Advantage Method™ changes that by helping you communicate
+              your experience in a way that’s clear, credible, and directly
+              connected to what employers are trying to determine.
             </p>
 
             <div className="heroActions">
@@ -113,18 +121,29 @@ export default function MutualAdvantagePage() {
             </div>
           </div>
 
-          <aside className="heroCard" aria-label="Core promise">
+          <aside className="heroCard" aria-label="Core philosophy">
+            <div className="statBadge" aria-label="Chi-Chi's interview results">
+              <span className="statBadgeTop">34 interviews → 1 offer</span>
+              <span className="statBadgeBig">80%</span>
+              <span className="statBadgeBottom">success rate today</span>
+            </div>
+
             <div className="quoteIcon">
               <QuoteIcon />
             </div>
+            <p>Interviews aren’t tests.</p>
             <p>
-              Your résumé tells them <em>what</em> you’ve done.
+              They’re mutual business conversations where both sides are
+              deciding whether working together creates value.
             </p>
             <p>
-              Your interview must help them understand <em>who</em> produced
-              those results—and why they should believe you can do it again.
+              The best interviews don’t feel like performances. They feel like
+              two professionals exploring whether there’s a genuine{" "}
+              <em>mutual advantage</em>.
             </p>
-            <div className="cardLabel">The core idea behind the method</div>
+            <div className="cardLabel">
+              The philosophy behind the Mutual Advantage Method™
+            </div>
           </aside>
         </div>
       </section>
@@ -288,9 +307,10 @@ export default function MutualAdvantagePage() {
               <h2>A different way to understand interviews.</h2>
             </div>
             <p>
-              Interviews are not tests. They are mutual business conversations
-              where both sides are deciding whether working together creates
-              value.
+              A hiring decision is a business decision—and business decisions
+              follow logic. The method works backwards from that logic: from
+              what the employer needs, to what their questions are really
+              asking, to answers that make your value obvious.
             </p>
           </div>
 
@@ -455,10 +475,12 @@ export default function MutualAdvantagePage() {
             </p>
             <p>
               I also know what it feels like to be a qualified candidate who
-              keeps approaching interviews as a performance. Once I stopped
-              treating them like tests and started treating them like mutual
-              business conversations, the way I prepared—and the outcomes I
-              achieved—changed.
+              keeps approaching interviews as a performance. I went through{" "}
+              <strong>34 interviews before getting a single role</strong>. Once
+              I stopped treating interviews like tests and started treating
+              them like mutual business conversations, the way I prepared—and
+              the outcomes I achieved—changed. Since then, my interview success
+              rate has been <strong>80%</strong>.
             </p>
             <p>
               I created the Mutual Advantage Method™ to help experienced
@@ -905,13 +927,64 @@ export default function MutualAdvantagePage() {
           font-size: 0.82rem;
         }
 
+        .heroSubAccent {
+          color: var(--orange);
+        }
+
         .heroCard {
+          position: relative;
           padding: 34px;
           border: 1px solid rgba(255, 255, 255, 0.16);
           border-radius: 24px;
           background: rgba(255, 255, 255, 0.07);
           backdrop-filter: blur(16px);
           box-shadow: 0 28px 80px rgba(0, 0, 0, 0.24);
+        }
+
+        .statBadge {
+          position: absolute;
+          top: -46px;
+          right: -34px;
+          z-index: 5;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          width: 158px;
+          height: 158px;
+          border-radius: 50%;
+          transform: rotate(7deg);
+          color: var(--ink-deep);
+          background: var(--orange);
+          box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+          text-align: center;
+          line-height: 1.15;
+        }
+
+        .statBadgeTop {
+          max-width: 120px;
+          font-size: 0.68rem;
+          font-weight: 750;
+          text-transform: uppercase;
+          letter-spacing: 0.04em;
+          opacity: 0.85;
+        }
+
+        .statBadgeBig {
+          margin: 3px 0 1px;
+          font-size: 2.7rem;
+          font-weight: 900;
+          letter-spacing: -0.04em;
+          line-height: 1;
+        }
+
+        .statBadgeBottom {
+          max-width: 110px;
+          font-size: 0.68rem;
+          font-weight: 750;
+          text-transform: uppercase;
+          letter-spacing: 0.04em;
+          opacity: 0.85;
         }
 
         .quoteIcon {
@@ -1482,6 +1555,18 @@ export default function MutualAdvantagePage() {
           .priceCard,
           .heroCard {
             padding: 26px;
+            margin-top: 34px;
+          }
+
+          .statBadge {
+            top: -40px;
+            right: 8px;
+            width: 128px;
+            height: 128px;
+          }
+
+          .statBadgeBig {
+            font-size: 2.1rem;
           }
 
           .bubble {
