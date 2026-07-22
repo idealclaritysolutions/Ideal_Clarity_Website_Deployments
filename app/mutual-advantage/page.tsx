@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 };
 
 const CALENDLY_URL =
-  "https://calendly.com/REPLACE-WITH-YOUR-CALENDLY-LINK";
+  "https://calendly.com/idealclaritysolutions/the-mutual-advantage-intensive-session";
 
 const CheckIcon = () => (
   <svg
@@ -535,7 +535,7 @@ export default function MutualAdvantagePage() {
         <a href="#investment">View details</a>
       </div>
 
-      <style jsx global>{`
+      <style>{`
         :root {
           --ink: #102844;
           --ink-deep: #081a2f;
