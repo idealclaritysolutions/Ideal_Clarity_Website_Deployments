@@ -93,11 +93,11 @@ export default function MutualAdvantagePage() {
             </p>
 
             <div className="heroActions">
-              <a className="primaryButton" href="#investment">
-                See what we’ll build together <ArrowIcon />
+              <a className="primaryButton" href="#probably-here">
+                Keep scrolling ↓
               </a>
               <a className="textLink" href="#method">
-                Explore the method
+                Why most interview advice doesn’t work
               </a>
             </div>
 
@@ -124,41 +124,153 @@ export default function MutualAdvantagePage() {
         </div>
       </section>
 
+      <section
+        className="section"
+        id="probably-here"
+        style={{ background: "#fff" }}
+      >
+        <div className="shell narrow">
+          <p className="eyebrow dark">YOU’RE PROBABLY HERE BECAUSE…</p>
+
+          <h2>
+            You’re doing everything people told you to do…
+            <br />
+            but you’re still not getting the offer.
+          </h2>
+
+          <div className="deliverableGrid">
+            <article className="deliverable">
+              <div className="deliverableCheck">
+                <CheckIcon />
+              </div>
+              <div>
+                <h3>You keep getting interviews.</h3>
+                <p>
+                  Which means your résumé is working. Something changes once
+                  the conversation starts.
+                </p>
+              </div>
+            </article>
+
+            <article className="deliverable">
+              <div className="deliverableCheck">
+                <CheckIcon />
+              </div>
+              <div>
+                <h3>You leave interviews feeling… “I thought that went well.”</h3>
+                <p>Then another rejection arrives.</p>
+              </div>
+            </article>
+
+            <article className="deliverable">
+              <div className="deliverableCheck">
+                <CheckIcon />
+              </div>
+              <div>
+                <h3>You’ve watched YouTube…</h3>
+                <p>
+                  Used ChatGPT. Practiced STAR. Read articles. Yet nothing
+                  seems to change.
+                </p>
+              </div>
+            </article>
+
+            <article className="deliverable">
+              <div className="deliverableCheck">
+                <CheckIcon />
+              </div>
+              <div>
+                <h3>You’re beginning to question yourself.</h3>
+                <p>Even though deep down… you know you’re qualified.</p>
+              </div>
+            </article>
+          </div>
+
+          <p
+            style={{
+              marginTop: 40,
+              textAlign: "center",
+              fontWeight: 700,
+              fontSize: "1.3rem",
+            }}
+          >
+            If that sounds familiar… you’re exactly who I built this for.
+          </p>
+        </div>
+      </section>
+
       <section className="problem section">
         <div className="shell narrow">
-          <p className="eyebrow dark">WHY STRONG CANDIDATES STILL GET REJECTED</p>
-          <h2>
-            Most interview advice solves the wrong problem.
-          </h2>
+          <p className="eyebrow dark">
+            WHY MOST INTERVIEW ADVICE DOESN’T WORK
+          </p>
+          <h2>Most coaching starts with your answers. That’s backwards.</h2>
 
           <div className="problemGrid">
             <div className="problemCard muted">
-              <p className="problemLabel">What candidates are taught to do</p>
-              <ul>
-                <li>Memorize polished answers</li>
-                <li>Recite accomplishments</li>
-                <li>Follow a generic formula</li>
-                <li>Try to impress the interviewer</li>
-              </ul>
+              <p className="problemLabel">Interview coaching usually teaches</p>
+              <div className="flowChain mutedChain">
+                <span>✔ Better answers</span>
+                <span>✔ Better stories</span>
+                <span>✔ Better confidence</span>
+                <span className="flowArrow">↓</span>
+                <span className="flowResult">Hope for better results</span>
+              </div>
             </div>
 
             <div className="problemCard accent">
-              <p className="problemLabel">What interviewers actually need</p>
-              <ul>
-                <li>Evidence they can trust</li>
-                <li>A clear professional identity</li>
-                <li>Confidence you understand their problem</li>
-                <li>A reason to believe you can create value again</li>
-              </ul>
+              <p className="problemLabel">
+                The Mutual Advantage Method teaches
+              </p>
+              <div className="flowChain">
+                <span>Employer Needs</span>
+                <span className="flowArrow">↓</span>
+                <span>Hiring Decisions</span>
+                <span className="flowArrow">↓</span>
+                <span>Interview Questions</span>
+                <span className="flowArrow">↓</span>
+                <span>Professional Identity</span>
+                <span className="flowArrow">↓</span>
+                <span className="flowResult">Your Answers</span>
+              </div>
             </div>
           </div>
 
           <p className="centerStatement">
-            You do not need more rehearsed answers.
-            <br />
-            <strong>
-              You need a stronger business case for why you are the right hire.
-            </strong>
+            When you understand what interviewers are actually trying to
+            learn, your answers naturally become{" "}
+            <strong>more relevant, more strategic, and more convincing.</strong>
+          </p>
+        </div>
+      </section>
+
+      <section className="convo section">
+        <div className="shell narrow">
+          <p className="eyebrow light">CONVERSATIONS I HEAR ALL THE TIME</p>
+          <h2>Maybe one of these sounds like you.</h2>
+
+          <div className="convoBubbles">
+            <div className="bubble">
+              <p>I don’t understand it.</p>
+              <p>I keep getting interviews…</p>
+              <p>but never the offer.</p>
+            </div>
+
+            <div className="bubble">
+              <p>Everyone keeps telling me I interview well…</p>
+              <p>so why isn’t anything happening?</p>
+            </div>
+
+            <div className="bubble">
+              <p>I know I’m qualified.</p>
+              <p>I just don’t know how to communicate it.</p>
+            </div>
+          </div>
+
+          <p className="convoDisclaimer">
+            These aren’t testimonials. They’re versions of conversations I’ve
+            had with professionals before they changed how they approached
+            interviews.
           </p>
         </div>
       </section>
@@ -319,43 +431,6 @@ export default function MutualAdvantagePage() {
         </div>
       </section>
 
-      <section className="fit section">
-        <div className="shell fitGrid">
-          <div className="fitCard good">
-            <p className="eyebrow dark">THIS IS FOR YOU IF…</p>
-            <h2>You know you are capable—but your interviews are not proving it.</h2>
-            <ul className="checkList">
-              <li>
-                <CheckIcon /> You are getting interviews but not enough offers.
-              </li>
-              <li>
-                <CheckIcon /> You struggle to explain your value without
-                rambling.
-              </li>
-              <li>
-                <CheckIcon /> You are pursuing a competitive or higher-level
-                role.
-              </li>
-              <li>
-                <CheckIcon /> You want a framework you can use throughout your
-                career.
-              </li>
-            </ul>
-          </div>
-
-          <div className="fitCard neutral">
-            <p className="eyebrow dark">THIS IS NOT FOR YOU IF…</p>
-            <h2>You are looking for shortcuts, scripts, or guaranteed outcomes.</h2>
-            <ul className="plainList">
-              <li>You want someone to invent experiences you do not have.</li>
-              <li>You are unwilling to examine how you currently interview.</li>
-              <li>You only want a last-minute list of “perfect” answers.</li>
-              <li>You expect anyone to guarantee a hiring decision.</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
       <section className="about section">
         <div className="shell aboutGrid">
           <div className="portraitWrap">
@@ -418,9 +493,33 @@ export default function MutualAdvantagePage() {
           </div>
 
           <div className="priceCard">
-            <p className="priceLabel">Your investment</p>
+            <p className="priceStatement">
+              Your next interview could determine the next several years of
+              your career.
+            </p>
+            <p className="priceSubStatement">
+              Let’s make sure it tells the right story.
+            </p>
             <div className="price">$697</div>
             <p className="priceNote">One private 90-minute intensive</p>
+
+            <ul className="checkList compact priceChecklist">
+              <li>
+                <CheckIcon /> 90-minute strategy intensive
+              </li>
+              <li>
+                <CheckIcon /> Résumé review
+              </li>
+              <li>
+                <CheckIcon /> Job description analysis
+              </li>
+              <li>
+                <CheckIcon /> Personalized interview framework
+              </li>
+              <li>
+                <CheckIcon /> Action plan
+              </li>
+            </ul>
 
             <a
               className="primaryButton full"
@@ -498,8 +597,8 @@ export default function MutualAdvantagePage() {
       <section className="finalCta">
         <div className="shell finalCtaInner">
           <div>
-            <p className="eyebrow light">YOU ALREADY HAVE THE EXPERIENCE.</p>
-            <h2>Now make the interviewer understand its value.</h2>
+            <p className="eyebrow light">YOU DON’T NEED BETTER ANSWERS.</p>
+            <h2>You need a better way to communicate your value.</h2>
           </div>
           <a
             className="primaryButton lightButton"
@@ -864,14 +963,12 @@ export default function MutualAdvantagePage() {
           font-weight: 850;
         }
 
-        .problemCard ul,
-        .plainList {
+        .problemCard ul {
           margin: 0;
           padding-left: 20px;
         }
 
-        .problemCard li,
-        .plainList li {
+        .problemCard li {
           margin: 12px 0;
         }
 
@@ -936,6 +1033,106 @@ export default function MutualAdvantagePage() {
         .identityCopy > p {
           color: rgba(255, 255, 255, 0.75);
           font-size: 1.14rem;
+        }
+
+        .flowChain {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          margin-top: 6px;
+          font-size: 1.02rem;
+          font-weight: 650;
+        }
+
+        .mutedChain {
+          color: var(--muted);
+        }
+
+        .flowArrow {
+          opacity: 0.55;
+          font-size: 1.1rem;
+          font-weight: 400;
+          line-height: 1;
+        }
+
+        .flowResult {
+          font-weight: 850;
+        }
+
+        .problemCard.accent .flowResult {
+          color: var(--orange);
+        }
+
+        .convo {
+          color: #fff;
+          background:
+            radial-gradient(circle at 80% 10%, rgba(242, 140, 40, 0.1), transparent 40%),
+            var(--ink-deep);
+        }
+
+        .convoBubbles {
+          display: flex;
+          flex-direction: column;
+          gap: 22px;
+          max-width: 560px;
+          margin-top: 44px;
+        }
+
+        .bubble {
+          position: relative;
+          align-self: flex-start;
+          max-width: 88%;
+          padding: 16px 20px;
+          border-radius: 22px;
+          border-bottom-left-radius: 6px;
+          background: rgba(255, 255, 255, 0.12);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .bubble:nth-child(2) {
+          align-self: flex-end;
+          border-bottom-left-radius: 22px;
+          border-bottom-right-radius: 6px;
+          background: rgba(242, 140, 40, 0.22);
+        }
+
+        .bubble p {
+          margin: 0;
+          font-size: 1.04rem;
+          line-height: 1.5;
+        }
+
+        .bubble p + p {
+          margin-top: 4px;
+        }
+
+        .convoDisclaimer {
+          max-width: 640px;
+          margin-top: 44px;
+          color: rgba(255, 255, 255, 0.55);
+          font-size: 0.86rem;
+        }
+
+        .priceStatement {
+          margin-bottom: 6px;
+          font-size: 1.14rem;
+          font-weight: 800;
+          line-height: 1.4;
+          letter-spacing: -0.01em;
+        }
+
+        .priceSubStatement {
+          margin-bottom: 14px;
+          color: rgba(255, 255, 255, 0.72);
+          font-size: 0.98rem;
+        }
+
+        .priceChecklist {
+          margin: 0 0 26px;
+        }
+
+        .priceChecklist li {
+          font-size: 0.98rem;
         }
 
         .checkList {
@@ -1008,36 +1205,6 @@ export default function MutualAdvantagePage() {
           color: var(--muted);
           background: #fff;
           font-size: 0.85rem;
-        }
-
-        .fit {
-          background: #f7f9fb;
-        }
-
-        .fitGrid {
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 26px;
-        }
-
-        .fitCard {
-          padding: 42px;
-          border-radius: 22px;
-        }
-
-        .fitCard.good {
-          border: 1px solid #dfe9e5;
-          background: #fff;
-          box-shadow: var(--shadow);
-        }
-
-        .fitCard.neutral {
-          border: 1px solid var(--line);
-          background: #edf1f5;
-        }
-
-        .fitCard h2 {
-          font-size: clamp(2rem, 3.3vw, 3.2rem);
         }
 
         .aboutGrid {
@@ -1293,16 +1460,18 @@ export default function MutualAdvantagePage() {
 
           .problemGrid,
           .deliverableGrid,
-          .fitGrid,
           .pillarGrid {
             grid-template-columns: 1fr;
           }
 
           .problemCard,
-          .fitCard,
           .priceCard,
           .heroCard {
             padding: 26px;
+          }
+
+          .bubble {
+            max-width: 100%;
           }
 
           .pillar {
