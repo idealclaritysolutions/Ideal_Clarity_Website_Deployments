@@ -538,8 +538,6 @@ export default function MutualAdvantagePage() {
             <p className="priceSubStatement">
               Let’s make sure it tells the right story.
             </p>
-            <div className="price">$697</div>
-            <p className="priceNote">One private 90-minute intensive</p>
 
             <p className="priceListHeading">During our session, we’ll build:</p>
             <ul className="checkList compact priceChecklist">
@@ -578,13 +576,18 @@ export default function MutualAdvantagePage() {
               </li>
             </ul>
 
+            <p className="priceLine">
+              <span className="priceAmount">$697</span> · one private
+              90-minute intensive
+            </p>
+
             <a
               className="primaryButton full"
               href={CALENDLY_URL}
               target="_blank"
               rel="noreferrer"
             >
-              Book the Mutual Advantage Intensive <ArrowIcon />
+              Make my next interview count <ArrowIcon />
             </a>
 
             <p className="microcopy">
@@ -1257,12 +1260,12 @@ export default function MutualAdvantagePage() {
         }
 
         .priceListHeading {
-          margin: 0 0 12px;
+          margin: 22px 0 14px;
           font-size: 0.82rem;
           font-weight: 800;
           text-transform: uppercase;
           letter-spacing: 0.08em;
-          color: rgba(255, 255, 255, 0.66);
+          color: var(--orange);
         }
 
         .priceDivider {
@@ -1276,7 +1279,27 @@ export default function MutualAdvantagePage() {
         }
 
         .priceChecklist:last-of-type {
-          margin-bottom: 26px;
+          margin-bottom: 28px;
+        }
+
+        .priceChecklist li {
+          color: #fff;
+          font-size: 1.04rem;
+          font-weight: 600;
+        }
+
+        .priceLine {
+          margin: 0 0 14px;
+          text-align: center;
+          color: rgba(255, 255, 255, 0.72);
+          font-size: 1rem;
+        }
+
+        .priceAmount {
+          color: #fff;
+          font-size: 1.35rem;
+          font-weight: 850;
+          letter-spacing: -0.02em;
         }
 
         .priceChecklist li {
@@ -1434,19 +1457,6 @@ export default function MutualAdvantagePage() {
           font-size: 0.88rem;
           text-transform: uppercase;
           letter-spacing: 0.12em;
-        }
-
-        .price {
-          margin: 8px 0;
-          font-size: clamp(3.8rem, 7vw, 6.2rem);
-          font-weight: 900;
-          letter-spacing: -0.06em;
-          line-height: 1;
-        }
-
-        .priceNote {
-          margin-bottom: 26px;
-          color: rgba(255, 255, 255, 0.72);
         }
 
         .full {
