@@ -364,11 +364,6 @@ export default function MutualAdvantagePage() {
               alt="Chi-Chi, creator of the Mutual Advantage Method"
               className="portrait"
             />
-            <div className="portraitNote">
-              Replace this image with:
-              <br />
-              <code>/public/images/chichi-headshot.jpg</code>
-            </div>
           </div>
 
           <div>
