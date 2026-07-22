@@ -85,24 +85,27 @@ export default function MutualAdvantagePage() {
               <span>You keep not getting offers.</span>
             </h1>
 
+            <div className="statStrip" aria-label="Chi-Chi's interview results">
+              <span className="statStripFrom">34 interviews → 1 offer</span>
+              <span className="statStripArrow">➔</span>
+              <span className="statStripNow">
+                <strong>80%</strong> success rate today
+              </span>
+            </div>
+
             <p className="heroSub">
-              The best candidate doesn’t always get the offer.
-              <br />
-              The candidate who communicates their value most clearly usually
-              does.
+              The best candidate doesn’t always win.
               <br />
               <span className="heroSubAccent">
-                The Mutual Advantage Method™ helps you become that candidate.
+                The one who communicates their value most clearly does.
               </span>
             </p>
 
             <p className="heroLead">
-              Most professionals spend years learning how to{" "}
-              <strong>create</strong> value—but almost no time learning how to{" "}
-              <strong>communicate</strong> that value in an interview. The
-              Mutual Advantage Method™ changes that by helping you communicate
-              your experience in a way that’s clear, credible, and directly
-              connected to what employers are trying to determine.
+              You’ve spent years learning to <strong>create</strong> value—and
+              almost no time learning to <strong>communicate</strong> it.
+              <br />
+              One focused 90-minute session changes that.
             </p>
 
             <div className="heroActions">
@@ -466,7 +469,7 @@ export default function MutualAdvantagePage() {
             />
           </div>
 
-          <div>
+          <div className="aboutCopy">
             <p className="eyebrow dark">MEET CHI-CHI</p>
             <h2>I have seen interviews from both sides of the table.</h2>
             <p>
@@ -475,12 +478,20 @@ export default function MutualAdvantagePage() {
             </p>
             <p>
               I also know what it feels like to be a qualified candidate who
-              keeps approaching interviews as a performance. I went through{" "}
-              <strong>34 interviews before getting a single role</strong>. Once
-              I stopped treating interviews like tests and started treating
-              them like mutual business conversations, the way I prepared—and
-              the outcomes I achieved—changed. Since then, my interview success
-              rate has been <strong>80%</strong>.
+              keeps approaching interviews as a performance—because I was one.
+            </p>
+            <p>
+              Early in my career, I went through{" "}
+              <strong>34 interviews before landing a single role</strong>.
+            </p>
+            <p>
+              Then I stopped treating interviews like tests and started
+              treating them like mutual business conversations. Everything
+              about how I prepared changed—and so did my results:{" "}
+              <strong>
+                an 80% interview success rate, meaning 8 of the last 10 roles
+                I’ve interviewed for ended in an offer.
+              </strong>
             </p>
             <p>
               I created the Mutual Advantage Method™ to help experienced
@@ -530,21 +541,40 @@ export default function MutualAdvantagePage() {
             <div className="price">$697</div>
             <p className="priceNote">One private 90-minute intensive</p>
 
+            <p className="priceListHeading">During our session, we’ll build:</p>
             <ul className="checkList compact priceChecklist">
               <li>
-                <CheckIcon /> 90-minute strategy intensive
+                <CheckIcon /> Your “Tell Me About Yourself” narrative, built on
+                your Professional Identity Statement
               </li>
               <li>
-                <CheckIcon /> Résumé review
+                <CheckIcon /> Your interview positioning strategy
               </li>
               <li>
-                <CheckIcon /> Job description analysis
+                <CheckIcon /> Your personalized interview framework
               </li>
               <li>
-                <CheckIcon /> Personalized interview framework
+                <CheckIcon /> Your action plan
+              </li>
+            </ul>
+
+            <div className="priceDivider" />
+
+            <p className="priceListHeading">So that you can…</p>
+            <ul className="checkList compact priceChecklist">
+              <li>
+                <CheckIcon /> Stop trying to impress interviewers
               </li>
               <li>
-                <CheckIcon /> Action plan
+                <CheckIcon /> Stop rambling through your answers
+              </li>
+              <li>
+                <CheckIcon /> Communicate your value with clarity and
+                confidence
+              </li>
+              <li>
+                <CheckIcon /> Become the candidate employers can clearly
+                envision succeeding in the role
               </li>
             </ul>
 
@@ -933,14 +963,15 @@ export default function MutualAdvantagePage() {
         .statBadge {
           position: absolute;
           top: -46px;
-          right: -34px;
+          right: -30px;
           z-index: 5;
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          width: 158px;
-          height: 158px;
+          width: 164px;
+          height: 164px;
+          padding: 20px;
           border-radius: 50%;
           transform: rotate(7deg);
           color: var(--ink-deep);
@@ -951,29 +982,51 @@ export default function MutualAdvantagePage() {
         }
 
         .statBadgeTop {
-          max-width: 120px;
-          font-size: 0.68rem;
-          font-weight: 750;
+          font-size: 0.6rem;
+          font-weight: 800;
           text-transform: uppercase;
-          letter-spacing: 0.04em;
+          letter-spacing: 0.03em;
           opacity: 0.85;
         }
 
         .statBadgeBig {
           margin: 3px 0 1px;
-          font-size: 2.7rem;
+          font-size: 2.5rem;
           font-weight: 900;
           letter-spacing: -0.04em;
           line-height: 1;
         }
 
         .statBadgeBottom {
-          max-width: 110px;
-          font-size: 0.68rem;
-          font-weight: 750;
+          font-size: 0.6rem;
+          font-weight: 800;
           text-transform: uppercase;
-          letter-spacing: 0.04em;
+          letter-spacing: 0.03em;
           opacity: 0.85;
+        }
+
+        .statStrip {
+          display: none;
+          align-items: center;
+          gap: 10px;
+          width: fit-content;
+          margin: -4px 0 22px;
+          padding: 10px 16px;
+          border-radius: 999px;
+          color: var(--ink-deep);
+          background: var(--orange);
+          font-size: 0.86rem;
+          font-weight: 750;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+        }
+
+        .statStrip strong {
+          font-weight: 900;
+          font-size: 1.05rem;
+        }
+
+        .statStripArrow {
+          opacity: 0.7;
         }
 
         .quoteIcon {
@@ -1203,8 +1256,27 @@ export default function MutualAdvantagePage() {
           font-size: 0.98rem;
         }
 
+        .priceListHeading {
+          margin: 0 0 12px;
+          font-size: 0.82rem;
+          font-weight: 800;
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
+          color: rgba(255, 255, 255, 0.66);
+        }
+
+        .priceDivider {
+          height: 1px;
+          margin: 22px 0;
+          background: rgba(255, 255, 255, 0.14);
+        }
+
         .priceChecklist {
-          margin: 0 0 26px;
+          margin: 0;
+        }
+
+        .priceChecklist:last-of-type {
+          margin-bottom: 26px;
         }
 
         .priceChecklist li {
@@ -1281,6 +1353,11 @@ export default function MutualAdvantagePage() {
           color: var(--muted);
           background: #fff;
           font-size: 0.85rem;
+        }
+
+        .aboutCopy p:not(.eyebrow) {
+          margin-bottom: 18px;
+          line-height: 1.65;
         }
 
         .aboutGrid {
@@ -1471,7 +1548,15 @@ export default function MutualAdvantagePage() {
 
           .heroCard {
             max-width: 640px;
-            margin-top: 52px;
+            margin-top: 0;
+          }
+
+          .statBadge {
+            display: none;
+          }
+
+          .statStrip {
+            display: inline-flex;
           }
 
           .portraitWrap {
@@ -1504,6 +1589,16 @@ export default function MutualAdvantagePage() {
           .brandLogo {
             height: 40px;
             padding: 4px 9px;
+          }
+
+          .statStrip {
+            gap: 8px;
+            padding: 9px 13px;
+            font-size: 0.78rem;
+          }
+
+          .statStrip strong {
+            font-size: 0.95rem;
           }
 
           .nav {
@@ -1550,18 +1645,7 @@ export default function MutualAdvantagePage() {
           .priceCard,
           .heroCard {
             padding: 26px;
-            margin-top: 34px;
-          }
-
-          .statBadge {
-            top: -40px;
-            right: 8px;
-            width: 128px;
-            height: 128px;
-          }
-
-          .statBadgeBig {
-            font-size: 2.1rem;
+            margin-top: 0;
           }
 
           .bubble {
