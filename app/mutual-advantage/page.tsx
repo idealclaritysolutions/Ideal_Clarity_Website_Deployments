@@ -59,11 +59,11 @@ export default function MutualAdvantagePage() {
     <main>
       <header className="nav">
         <a className="brand" href="#top" aria-label="Ideal Clarity home">
-          <span className="brandMark">IC</span>
-          <span>
-            <strong>Ideal Clarity</strong>
-            <small>Make the next move make sense.</small>
-          </span>
+          <img
+            src="/images/ideal-clarity-logo.png"
+            alt="Ideal Clarity — Here to make it make sense."
+            className="brandLogo"
+          />
         </a>
 
         <a className="navCta" href="#investment">
@@ -769,25 +769,13 @@ export default function MutualAdvantagePage() {
           gap: 12px;
         }
 
-        .brandMark {
-          display: grid;
-          width: 42px;
-          height: 42px;
-          place-items: center;
-          border-radius: 50%;
-          color: #fff;
-          background: var(--orange);
-          font-weight: 850;
-        }
-
-        .brand strong,
-        .brand small {
+        .brandLogo {
           display: block;
-        }
-
-        .brand small {
-          opacity: 0.7;
-          font-size: 0.74rem;
+          height: 48px;
+          width: auto;
+          padding: 5px 12px;
+          border-radius: 12px;
+          background: #fff;
         }
 
         .navCta {
@@ -837,7 +825,7 @@ export default function MutualAdvantagePage() {
           display: grid;
           grid-template-columns: minmax(0, 1.5fr) minmax(300px, 0.72fr);
           gap: 72px;
-          align-items: center;
+          align-items: start;
         }
 
         .eyebrow {
@@ -933,6 +921,7 @@ export default function MutualAdvantagePage() {
 
         .heroCard {
           position: relative;
+          margin-top: clamp(72px, 9.5vw, 138px);
           padding: 34px;
           border: 1px solid rgba(255, 255, 255, 0.16);
           border-radius: 24px;
@@ -1482,6 +1471,7 @@ export default function MutualAdvantagePage() {
 
           .heroCard {
             max-width: 640px;
+            margin-top: 52px;
           }
 
           .portraitWrap {
@@ -1509,6 +1499,11 @@ export default function MutualAdvantagePage() {
 
           .section {
             padding: 78px 0;
+          }
+
+          .brandLogo {
+            height: 40px;
+            padding: 4px 9px;
           }
 
           .nav {
