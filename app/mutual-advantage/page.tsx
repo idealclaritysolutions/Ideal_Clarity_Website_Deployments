@@ -99,8 +99,8 @@ export default function MutualAdvantagePage() {
           </div>
           <div className="credDivide" aria-hidden="true" />
           <div className="credSeg">
-            <span className="credLabel">Now</span>
-            <strong>~80% of interviews end in an offer</strong>
+            <span className="credLabel">The result</span>
+            <strong>~80% of my interviews ended in offers</strong>
           </div>
         </div>
       </section>
@@ -124,8 +124,8 @@ export default function MutualAdvantagePage() {
             <span className="tNode">Built the Mutual Advantage Method™</span>
             <span className="tArrow" aria-hidden="true">↓</span>
             <span className="tNode tAccent">
-              Today, approximately 80% of the interviews I pursue result in an
-              offer
+              Went from 1 offer in 34 interviews to 8 of my last 10 ending in
+              an offer—an ~80% success rate
             </span>
           </div>
 
@@ -498,8 +498,8 @@ export default function MutualAdvantagePage() {
               That question—explored across more than a decade in HR,
               recruiting, hiring panels, and program leadership inside a
               Fortune 1 environment—eventually became the Mutual Advantage
-              Method™. Today, approximately 80% of the interviews I pursue
-              result in an offer.
+              Method™. I went from 1 offer in 34 interviews to 8 of my last 10
+              interviews ending in an offer—an 80% success rate.
             </p>
             <p>
               Now I help experienced professionals understand the hiring
