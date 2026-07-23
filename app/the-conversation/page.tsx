@@ -1,1690 +1,1413 @@
-import type { Metadata } from "next";
+"use client";
+import { useEffect, useRef, useState } from "react";
 
-export const metadata: Metadata = {
-  title: "The Mutual Advantage Method™ | Ideal Clarity",
-  description:
-    "A private interview strategy intensive for experienced professionals who are qualified—but are not consistently turning interviews into offers.",
-};
+const CAL_URL = "https://calendly.com/idealclaritysolutions/clarity-intensive";
+const VIDEO_URL =
+  "https://xfdsht8l8xkamp7u.public.blob.vercel-storage.com/the-conversation-vsl-final.mp4";
 
-const CALENDLY_URL =
-  "https://calendly.com/idealclaritysolutions/the-mutual-advantage-intensive-session";
+/* ------------------------------------------------------------------ */
+/* GA4 helper — safe no-op if gtag hasn't loaded                        */
+/* ------------------------------------------------------------------ */
+declare global {
+  interface Window {
+    gtag?: (...args: any[]) => void;
+  }
+}
 
-const CheckIcon = () => (
-  <svg
-    aria-hidden="true"
-    viewBox="0 0 24 24"
-    width="20"
-    height="20"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2.25"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M20 6 9 17l-5-5" />
-  </svg>
-);
+function track(event: string, params?: Record<string, any>) {
+  if (typeof window !== "undefined" && typeof window.gtag === "function") {
+    window.gtag("event", event, params || {});
+  }
+}
 
-const ArrowIcon = () => (
-  <svg
-    aria-hidden="true"
-    viewBox="0 0 24 24"
-    width="18"
-    height="18"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2.25"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M5 12h14" />
-    <path d="m13 6 6 6-6 6" />
-  </svg>
-);
+function useReveal() {
+  useEffect(() => {
+    const elements = document.querySelectorAll<HTMLElement>("[data-reveal]");
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      elements.forEach((el) => el.classList.add("is-visible"));
+      return;
+    }
+    const observer = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        }),
+      { threshold: 0.12 }
+    );
+    elements.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+}
 
-const QuoteIcon = () => (
-  <svg
-    aria-hidden="true"
-    viewBox="0 0 24 24"
-    width="28"
-    height="28"
-    fill="currentColor"
-  >
-    <path d="M7.6 6C4.7 7.8 3 10.3 3 13.5 3 16.2 4.6 18 7 18c2.1 0 3.7-1.6 3.7-3.8 0-2-1.4-3.4-3.4-3.4-.3 0-.7.1-1 .2.5-1.4 1.5-2.6 3-3.6L7.6 6Zm10.3 0c-2.9 1.8-4.6 4.3-4.6 7.5 0 2.7 1.6 4.5 4 4.5 2.1 0 3.7-1.6 3.7-3.8 0-2-1.4-3.4-3.4-3.4-.3 0-.7.1-1 .2.5-1.4 1.5-2.6 3-3.6L17.9 6Z" />
-  </svg>
-);
+function useCalendly() {
+  useEffect(() => {
+    if (document.getElementById("calendly-widget-script")) return;
+    const script = document.createElement("script");
+    script.id = "calendly-widget-script";
+    script.src = "https://assets.calendly.com/assets/external/widget.js";
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
+}
 
-export default function MutualAdvantagePage() {
+/* ------------------------------------------------------------------ */
+/* Video milestone tracking: video_start, 25, 50, 75, video_complete    */
+/* ------------------------------------------------------------------ */
+function useVideoTracking(videoRef: React.RefObject<HTMLVideoElement | null>) {
+  const fired = useRef<Set<string>>(new Set());
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const fireOnce = (name: string) => {
+      if (fired.current.has(name)) return;
+      fired.current.add(name);
+      track(name, { event_category: "VSL", event_label: "The Conversation" });
+    };
+
+    const onPlay = () => fireOnce("video_start");
+
+    const onTimeUpdate = () => {
+      if (!video.duration || !isFinite(video.duration)) return;
+      const percent = (video.currentTime / video.duration) * 100;
+      if (percent >= 25) fireOnce("video_25");
+      if (percent >= 50) fireOnce("video_50");
+      if (percent >= 75) fireOnce("video_75");
+      if (percent >= 95) fireOnce("video_complete");
+    };
+
+    const onEnded = () => fireOnce("video_complete");
+
+    // If the video fails to load/play at all, we want to know — this is the
+    // exact failure that was showing "your browser does not support" to users.
+    const onError = () =>
+      track("video_error", {
+        event_category: "VSL",
+        event_label: "The Conversation",
+      });
+
+    video.addEventListener("play", onPlay);
+    video.addEventListener("timeupdate", onTimeUpdate);
+    video.addEventListener("ended", onEnded);
+    video.addEventListener("error", onError);
+
+    return () => {
+      video.removeEventListener("play", onPlay);
+      video.removeEventListener("timeupdate", onTimeUpdate);
+      video.removeEventListener("ended", onEnded);
+      video.removeEventListener("error", onError);
+    };
+  }, [videoRef]);
+}
+
+/* ------------------------------------------------------------------ */
+/* Time-on-page milestones                                             */
+/* ------------------------------------------------------------------ */
+function useTimeTracking() {
+  useEffect(() => {
+    const timers = [
+      setTimeout(() => track("time_30_seconds", { event_category: "Engagement" }), 30000),
+      setTimeout(() => track("time_60_seconds", { event_category: "Engagement" }), 60000),
+      setTimeout(() => track("time_2_minutes", { event_category: "Engagement" }), 120000),
+      setTimeout(() => track("time_5_minutes", { event_category: "Engagement" }), 300000),
+    ];
+    return () => timers.forEach(clearTimeout);
+  }, []);
+}
+
+/* ------------------------------------------------------------------ */
+/* Fires calendly_visible once the booking widget scrolls into view     */
+/* ------------------------------------------------------------------ */
+function useCalendlyVisible() {
+  useEffect(() => {
+    const el = document.getElementById("calendly-card");
+    if (!el) return;
+    let fired = false;
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !fired) {
+            fired = true;
+            track("calendly_visible", { event_category: "Booking" });
+            io.disconnect();
+          }
+        });
+      },
+      { threshold: 0.25 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+}
+
+function scrollToId(id: string) {
+  const target = document.getElementById(id);
+  if (!target) return;
+  const y = target.getBoundingClientRect().top + window.scrollY - 20;
+  window.scrollTo({ top: y, behavior: "smooth" });
+}
+
+export default function TheConversationPage() {
+  useReveal();
+  useCalendly();
+  useTimeTracking();
+  useCalendlyVisible();
+
+  const videoRef = useRef<HTMLVideoElement>(null);
+  useVideoTracking(videoRef);
+
+  const [showSticky, setShowSticky] = useState(false);
+
+  useEffect(() => {
+    const updateSticky = () => {
+      const bridge = document.getElementById("bridge");
+      if (!bridge) return;
+      const bridgeTop = bridge.getBoundingClientRect().top;
+      setShowSticky(bridgeTop <= window.innerHeight * 0.72);
+    };
+    window.addEventListener("scroll", updateSticky, { passive: true });
+    window.addEventListener("resize", updateSticky);
+    updateSticky();
+    return () => {
+      window.removeEventListener("scroll", updateSticky);
+      window.removeEventListener("resize", updateSticky);
+    };
+  }, []);
+
+  /* CTA click tracker — pass a label so we know WHICH cta converted */
+  const trackCTA = (label: string) => {
+    track("cta_click", {
+      event_category: "Landing Page",
+      event_label: label,
+    });
+  };
+
+  const goBook = (label: string) => {
+    trackCTA(label);
+    scrollToId("book");
+  };
+
   return (
-    <main>
-      <header className="nav">
-        <a className="brand" href="#top" aria-label="Ideal Clarity home">
-          <span className="brandMark">IC</span>
-          <span>
-            <strong>Ideal Clarity</strong>
-            <small>Make the next move make sense.</small>
-          </span>
-        </a>
+    <main className="tc-root">
+      <style>{CSS}</style>
 
-        <a className="navCta" href="#investment">
-          See the Intensive
-        </a>
-      </header>
-
-      <section className="hero" id="top">
-        <div className="heroGlow heroGlowOne" />
-        <div className="heroGlow heroGlowTwo" />
-
-        <div className="shell heroGrid">
-          <div className="heroCopy">
-            <p className="eyebrow">THE MUTUAL ADVANTAGE INTENSIVE™</p>
-
-            <h1>
-              You’re qualified.
-              <br />
-              <span>Your interview just isn’t making the case.</span>
-            </h1>
-
-            <p className="heroLead">
-              Stop trying to give the “perfect” answer. Learn how to show
-              interviewers <strong>who you are professionally</strong>, why your
-              results were not accidental, and why you can create that value
-              again in their organization.
-            </p>
-
-            <div className="heroActions">
-              <a className="primaryButton" href="#probably-here">
-                Keep scrolling <span aria-hidden="true">↓</span>
-              </a>
-              <a className="textLink" href="#why-it-works">
-                Why most interview advice doesn’t work
-              </a>
-            </div>
-
-            <div className="credibilityRow" aria-label="Experience highlights">
-              <span>10+ years in a Fortune 1 environment</span>
-              <span>HR + recruiting experience</span>
-              <span>Hiring-panel perspective</span>
-            </div>
+      {/* HERO */}
+      <section className="tc-hero">
+        <div className="tc-shell tc-center">
+          <p className="tc-eyebrow" data-reveal>
+            For accomplished professionals who know there&apos;s another chapter waiting
+          </p>
+          <h1 className="tc-hero-title" data-reveal>
+            Gain clarity on the purpose, calling, or business that&apos;s been pulling at you.
+          </h1>
+          <p className="tc-hero-sub" data-reveal>
+            In this short video, you&apos;ll discover why you&apos;ve struggled to act on
+            what you&apos;ve known for years — and how to finally move forward with confidence.
+          </p>
+          <div className="tc-video-wrap" id="video" data-reveal>
+            <video
+              ref={videoRef}
+              className="tc-native-video"
+              controls
+              playsInline
+              preload="auto"
+              controlsList="nodownload"
+              disablePictureInPicture
+              aria-label="The conversation you have been postponing"
+            >
+              <source src={VIDEO_URL} type="video/mp4" />
+              Your browser does not support embedded video.
+            </video>
           </div>
-
-          <aside className="heroCard" aria-label="The philosophy behind the method">
-            <div className="quoteIcon">
-              <QuoteIcon />
-            </div>
-            <p>
-              <em>Interviews are not tests.</em>
-            </p>
-            <p>
-              They are mutual business conversations where the employer is
-              deciding whether you can meet a need—and you are deciding whether
-              the opportunity can meet yours.
-            </p>
-            <p>
-              The goal is not to perform. It is to determine whether working
-              together creates meaningful value for both sides.
-            </p>
-            <div className="cardLabel">
-              The philosophy behind the Mutual Advantage Method™
-            </div>
-          </aside>
+          <p className="tc-video-note" data-reveal>
+            No email required. No obligation. Just watch.
+          </p>
         </div>
       </section>
 
-      <section className="recognition section" id="probably-here">
-        <div className="shell narrow">
-          <p className="eyebrow dark">YOU’RE PROBABLY HERE BECAUSE…</p>
-          <h2>
-            You are doing what people told you to do—but your interviews still
-            are not turning into offers.
+      {/* BRIDGE */}
+      <section className="tc-bridge" id="bridge">
+        <div className="tc-narrow tc-center">
+          <h2 className="tc-bridge-kicker" data-reveal>
+            If that video felt familiar...
           </h2>
+          <h3 className="tc-bridge-title" data-reveal>
+            You probably do not need more motivation, another course,
+            or a better productivity system.
+          </h3>
+          <p className="tc-bridge-copy" data-reveal>
+            You need clarity about what is truly calling you, why you have
+            found it so difficult to move toward it, and the next step that
+            makes sense for your life now. That is exactly what this
+            conversation is designed to create.
+          </p>
+        </div>
+      </section>
 
-          <div className="recognitionGrid">
-            <article className="recognitionCard">
+      {/* TESTIMONIALS */}
+      <section className="tc-section tc-proof">
+        <div className="tc-shell">
+          <p className="tc-kicker tc-center" data-reveal>
+            What people say after the conversation
+          </p>
+          <h2 className="tc-proof-title" data-reveal>
+            Sometimes one honest conversation changes what becomes possible.
+          </h2>
+          <div className="tc-testimonials">
+            <blockquote data-reveal>
+              <p>
+                “Chi-Chi took the time to understand my goals, asked thoughtful
+                questions, and helped turn uncertainty into a clear,
+                actionable path forward.”
+              </p>
+              <cite>— Peace</cite>
+            </blockquote>
+            <blockquote data-reveal>
+              <p>
+                “Her guidance reframed and clarified my next steps in a
+                valuable way.”
+              </p>
+              <cite>— Hannah Bailey, Studio Northwood</cite>
+            </blockquote>
+            <blockquote data-reveal>
+              <p>
+                “With Chi-Chi, I found my area of genius and unlocked the
+                mental blocks that were holding me back.”
+              </p>
+              <cite>— Lola, Rapid Reinvent Hair Treatment</cite>
+            </blockquote>
+          </div>
+          <div className="tc-section-cta" data-reveal>
+            <p>
+              You do not need another person to tell you what you should want.
+              You need a conversation that helps you hear what is already true.
+            </p>
+            <button
+              type="button"
+              className="tc-button tc-button-gold"
+              onClick={() => {
+                trackCTA("Testimonials — See what this can give you");
+                scrollToId("offer");
+              }}
+            >
+              See what this conversation can give you
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* FEATURE OFFER CARD */}
+      <section className="tc-section tc-offer-section" id="offer">
+        <div className="tc-shell">
+          <div className="tc-offer-feature" data-reveal>
+            <div className="tc-offer-copy">
+              <p className="tc-kicker">The Clarity Intensive</p>
+              <h2>
+                A private 75-minute conversation to clarify what is calling you,
+                remove what has been standing in the way, and help you begin.
+              </h2>
+              <p className="tc-offer-intro">
+                Whether you already know exactly what your next chapter is or
+                you only know that something more is asking for your attention,
+                we will turn that uncertainty into clarity, direction, and movement.
+              </p>
+              <ul className="tc-outcome-list">
+                <li>
+                  <span>✓</span>
+                  Gain clarity on the purpose, calling, or business that is pulling at you
+                </li>
+                <li>
+                  <span>✓</span>
+                  Understand why you have not fully acted on it — even after years of knowing
+                </li>
+                <li>
+                  <span>✓</span>
+                  Identify the hidden story, belief, or protection mechanism keeping you in place
+                </li>
+                <li>
+                  <span>✓</span>
+                  Create one practical next move that fits your real life right now
+                </li>
+                <li>
+                  <span>✓</span>
+                  Receive a personalized written clarity summary within 24 hours
+                </li>
+                <li>
+                  <span>✓</span>
+                  Receive the e-book
+                  <strong> Build What&apos;s Next While Still Employed</strong>
+                </li>
+              </ul>
+            </div>
+            <div className="tc-offer-visual">
+              <span className="tc-bonus-badge">Free e-book included</span>
+              <img
+                src="/build-whats-next-3d.png"
+                alt="3D mockup of Build What's Next While Still Employed"
+              />
+              <div className="tc-book-note">
+                <strong>Included with your session. Delivered immediately afterward.</strong>
+              </div>
+            </div>
+            <div className="tc-offer-footer">
+              <div className="tc-offer-price">
+                <span className="tc-price-label">Private session</span>
+                <strong className="tc-price">$750</strong>
+              </div>
+              <div className="tc-offer-action">
+                <button
+                  type="button"
+                  className="tc-button tc-button-gold tc-offer-button"
+                  onClick={() => goBook("Offer card — Yes let's have the conversation")}
+                >
+                  Yes — let&apos;s have the conversation
+                </button>
+                <p className="tc-secure-note">
+                  Private booking · Full clarity guarantee
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* WHAT YOU'LL LEAVE WITH */}
+      <section className="tc-outcomes-section tc-outcomes-continuation">
+        <div className="tc-shell">
+          <div className="tc-outcomes-header" data-reveal>
+            <p className="tc-kicker">What you will leave with</p>
+            <h2>Clarity about what is calling you — and a real way to begin.</h2>
+            <p>
+              You will not leave with a vague sense of inspiration. You will
+              understand what matters, what has been preventing movement,
+              and the next action that fits the life you have now.
+            </p>
+          </div>
+          <div className="tc-outcome-cards">
+            <article data-reveal>
               <span>01</span>
-              <h3>You keep getting interviews.</h3>
+              <h3>Clarity on what is truly calling you</h3>
               <p>
-                Your résumé is opening doors. Something changes once the
-                conversation begins.
+                Whether it is a purpose, business, creative pursuit, or a
+                different way of living, we clarify what keeps asking for
+                your attention.
               </p>
             </article>
-
-            <article className="recognitionCard">
+            <article data-reveal>
               <span>02</span>
-              <h3>You leave thinking it went well.</h3>
+              <h3>The real reason you have not moved</h3>
               <p>
-                Then another rejection arrives—and you are left trying to figure
-                out what the interviewer saw that you did not.
+                We identify the hidden belief, inherited rule, or protection
+                mechanism that has quietly been shaping your decisions.
               </p>
             </article>
-
-            <article className="recognitionCard">
+            <article data-reveal>
               <span>03</span>
-              <h3>You have tried the usual advice.</h3>
+              <h3>One practical way to begin</h3>
               <p>
-                YouTube. STAR. ChatGPT. Articles. More practice. Yet you still
-                do not know how to consistently excel in the room.
+                You leave with a specific next action designed around your
+                current responsibilities, energy, schedule, and season.
               </p>
             </article>
-
-            <article className="recognitionCard">
+            <article data-reveal>
               <span>04</span>
-              <h3>You are starting to question yourself.</h3>
+              <h3>A written clarity roadmap</h3>
               <p>
-                Even though your experience tells you that you are qualified for
-                the roles you are pursuing.
+                Within 24 hours, you receive the key insights, reframe, and
+                next move from our conversation so the clarity does not fade.
               </p>
             </article>
           </div>
-
-          <p className="recognitionClose">
-            If that sounds familiar, you are exactly who I built this for.
-          </p>
-        </div>
-      </section>
-
-      <section className="whyWorks section" id="why-it-works">
-        <div className="shell narrow">
-          <p className="eyebrow dark">WHY MOST INTERVIEW ADVICE DOESN’T WORK</p>
-          <h2>The best candidate does not always get the offer.</h2>
-          <p className="whyWorksLead">
-            The candidate who communicates their value most clearly usually
-            does. The Mutual Advantage Method™ helps you become that candidate.
-          </p>
-
-          <div className="comparisonGrid">
-            <article className="comparisonCard standard">
-              <p className="comparisonLabel">Most interview coaching</p>
-              <div className="comparisonFlow">
-                <strong>Interview questions</strong>
-                <span>↓</span>
-                <strong>Better answers</strong>
-                <span>↓</span>
-                <strong>Hope for better results</strong>
-              </div>
-              <p>
-                It starts with the question and teaches you to perform a more
-                polished response.
-              </p>
-            </article>
-
-            <article className="comparisonCard methodCard">
-              <p className="comparisonLabel">The Mutual Advantage Method™</p>
-              <div className="comparisonFlow">
-                <strong>Employer needs</strong>
-                <span>↓</span>
-                <strong>Hiring decisions</strong>
-                <span>↓</span>
-                <strong>Interview questions</strong>
-                <span>↓</span>
-                <strong>Your professional value</strong>
-                <span>↓</span>
-                <strong>Your answers</strong>
-              </div>
-              <p>
-                It starts with the business need underneath the question—so you
-                can respond with relevance, evidence, and intention.
-              </p>
-            </article>
-          </div>
-
-          <div className="transformationPanel">
-            <p>With the Mutual Advantage Method™, you stop:</p>
-            <div className="transformationGrid">
-              <span>Trying to impress</span>
-              <span>Rambling and hoping they connect the dots</span>
-              <span>Wondering how to excel in interviews</span>
-            </div>
-            <p className="transformationFinish">
-              You communicate your value with confidence—and become the
-              candidate they can clearly picture creating value in the role.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="conversations section">
-        <div className="shell narrow">
-          <p className="eyebrow light">CONVERSATIONS I HEAR ALL THE TIME</p>
-          <h2>Qualified professionals often describe the same frustration.</h2>
-
-          <div className="messageStack" aria-label="Common interview frustrations">
-            <article className="messageBubble left">
-              <span>Common conversation</span>
-              <p>
-                “I don’t understand it. I keep getting interviews—but I never
-                get the offer.”
-              </p>
-            </article>
-
-            <article className="messageBubble right">
-              <span>Common conversation</span>
-              <p>
-                “Everyone keeps telling me I interview well… so why isn’t
-                anything happening?”
-              </p>
-            </article>
-
-            <article className="messageBubble left">
-              <span>Common conversation</span>
-              <p>
-                “I know I’m qualified. I just don’t know how to communicate that
-                during interviews.”
-              </p>
-            </article>
-          </div>
-
-          <p className="conversationNote">
-            These are not testimonials. They are versions of conversations I
-            have heard from professionals before they changed how they approached
-            interviews.
-          </p>
-        </div>
-      </section>
-
-      <section className="method section" id="method">
-        <div className="shell">
-          <div className="sectionIntro">
-            <div>
-              <p className="eyebrow dark">THE MUTUAL ADVANTAGE METHOD™</p>
-              <h2>A different way to excel in interviews.</h2>
-            </div>
+          <div className="tc-outcomes-footer" data-reveal>
             <p>
-              The method helps you understand the business decision beneath each
-              question, communicate the value you have already proven, and assess
-              whether the opportunity creates value for you too.
+              One conversation to clarify what matters, understand what
+              has held you back, and begin moving.
             </p>
-          </div>
-
-          <div className="pillarGrid">
-            <article className="pillar">
-              <span className="pillarNumber">01</span>
-              <h3>Professional Identity</h3>
-              <p>
-                Define the strengths, patterns, judgment, and character traits
-                that explain how you consistently create results.
-              </p>
-            </article>
-
-            <article className="pillar">
-              <span className="pillarNumber">02</span>
-              <h3>Evidence of Value</h3>
-              <p>
-                Connect your achievements to the capabilities that produced them
-                so your stories become proof—not résumé repetition.
-              </p>
-            </article>
-
-            <article className="pillar">
-              <span className="pillarNumber">03</span>
-              <h3>Employer Perspective</h3>
-              <p>
-                Understand what each question is designed to assess and what
-                uncertainty the interviewer is trying to resolve.
-              </p>
-            </article>
-
-            <article className="pillar">
-              <span className="pillarNumber">04</span>
-              <h3>Strategic Positioning</h3>
-              <p>
-                Build a clear, credible case connecting who you are, what you
-                have done, and why it matters for this role.
-              </p>
-            </article>
+            <button
+              type="button"
+              className="tc-button tc-button-gold"
+              onClick={() => goBook("Outcomes — Book the conversation")}
+            >
+              Book the conversation
+            </button>
           </div>
         </div>
       </section>
 
-      <section className="identity section">
-        <div className="shell identityGrid">
-          <div>
-            <p className="eyebrow light">THE QUESTION BEHIND THE QUESTION</p>
-            <h2>“Tell me about yourself” is not asking for your biography.</h2>
-          </div>
-
-          <div className="identityCopy">
-            <p>
-              The interviewer already has your résumé. What they are really
-              evaluating is the professional identity behind it:
-            </p>
-
-            <ul className="checkList">
-              <li>
-                <CheckIcon />
-                What qualities repeatedly show up in the way you work?
-              </li>
-              <li>
-                <CheckIcon />
-                What abilities produced the successes on your résumé?
-              </li>
-              <li>
-                <CheckIcon />
-                Can you recognize what is relevant to this opportunity?
-              </li>
-              <li>
-                <CheckIcon />
-                Can they trust you to recreate that value on their team?
-              </li>
-            </ul>
-
-            <p className="identityClosing">
-              That is the difference between walking through your history and
-              making a compelling case for your future.
-            </p>
+      {/* GUARANTEE */}
+      <section className="tc-section tc-navy">
+        <div className="tc-narrow tc-center">
+          <p className="tc-kicker tc-gold" data-reveal>
+            The Clarity Guarantee
+          </p>
+          <h2 className="tc-display-light" data-reveal>
+            If you leave without meaningful clarity, you do not pay.
+          </h2>
+          <p className="tc-lead tc-light-copy" data-reveal>
+            Tell me before we end the conversation, and I will refund you
+            in full. No awkward explanation. No hidden conditions.
+          </p>
+          <div className="tc-section-cta" data-reveal>
+            <button
+              type="button"
+              className="tc-button tc-button-gold"
+              onClick={() => goBook("Guarantee — Book with zero risk")}
+            >
+              Book with zero risk
+            </button>
           </div>
         </div>
       </section>
 
-      <section className="intensive section">
-        <div className="shell">
-          <div className="sectionIntro">
-            <div>
-              <p className="eyebrow dark">THE PRIVATE INTENSIVE</p>
-              <h2>We will not prepare generic answers.</h2>
-            </div>
-            <p>
-              We will build a personalized interview strategy around your
-              experience, your target role, and the value the employer needs to
-              see.
-            </p>
-          </div>
-
-          <div className="deliverableGrid">
-            {[
-              [
-                "Your Professional Identity Statement",
-                "A clear articulation of the kind of professional you are and the value you consistently create.",
-              ],
-              [
-                "Your “Tell Me About Yourself” Narrative",
-                "A concise, memorable opening that connects your identity, achievements, and fit.",
-              ],
-              [
-                "Your Evidence-Based Story Bank",
-                "Role-relevant examples that prove your strengths instead of merely claiming them.",
-              ],
-              [
-                "Your Interviewer Assessment Map",
-                "A practical guide to what common questions are really measuring.",
-              ],
-              [
-                "Your Positioning Strategy",
-                "A cohesive case for why your background makes sense for this specific opportunity.",
-              ],
-              [
-                "Your Personalized Action Plan",
-                "Clear next steps so you know exactly what to practice before your interview.",
-              ],
-            ].map(([title, copy]) => (
-              <article className="deliverable" key={title}>
-                <div className="deliverableCheck">
-                  <CheckIcon />
-                </div>
-                <div>
-                  <h3>{title}</h3>
-                  <p>{copy}</p>
-                </div>
-              </article>
-            ))}
-          </div>
-
-          <div className="notIncluded">
-            <strong>This is not:</strong>
-            <span>a generic mock interview</span>
-            <span>a list of scripted answers</span>
-            <span>a promise that anyone can guarantee an offer</span>
+      {/* FAQ */}
+      <section className="tc-section tc-cream">
+        <div className="tc-narrow">
+          <p className="tc-kicker tc-center" data-reveal>
+            Questions you may be carrying
+          </p>
+          <div className="tc-faq" data-reveal>
+            <details>
+              <summary>What if I do not know exactly what my purpose is?</summary>
+              <p>
+                You do not need a perfectly defined calling before you book.
+                Some clients arrive with one idea they have carried for years.
+                Others only know that something is missing. The conversation
+                is designed to help you clarify what is true for you, as well
+                as what has made it difficult to act on it.
+              </p>
+            </details>
+            <details>
+              <summary>What if I want to stay in corporate?</summary>
+              <p>
+                That is completely valid. This is not an invitation to blow
+                up your life. It is an invitation to make room for what
+                matters, whether that means building alongside your career
+                or changing your relationship with the work you already do.
+              </p>
+            </details>
+            <details>
+              <summary>Is this therapy?</summary>
+              <p>
+                No. This is a focused coaching and advisory conversation
+                about what is happening now, what has kept you circling,
+                and what your next honest move could be.
+              </p>
+            </details>
+            <details>
+              <summary>Why is there no free discovery call?</summary>
+              <p>
+                Because I would rather spend our first conversation doing
+                the real work. You already know how I think from the video
+                and this page, and the session is protected by a full
+                clarity guarantee.
+              </p>
+            </details>
           </div>
         </div>
       </section>
 
-      <section className="about section">
-        <div className="shell aboutGrid">
-          <div className="portraitWrap">
-            <img
-              src="/images/chichi-headshot.jpg"
-              alt="Chi-Chi, creator of the Mutual Advantage Method"
-              className="portrait"
+      {/* BOOKING */}
+      <section className="tc-section" id="book">
+        <div className="tc-narrow tc-center">
+          <p className="tc-kicker" data-reveal>
+            The conversation
+          </p>
+          <h2 className="tc-display" data-reveal>
+            Ready to get clear — and begin?
+          </h2>
+          <p className="tc-booking-reassurance" data-reveal>
+            You do not need to know exactly what your next chapter is before
+            booking. That is part of what this conversation is for.
+          </p>
+          <p className="tc-lead" data-reveal>
+            Choose a time. Answer four thoughtful questions. I will read
+            every word before we meet so we can begin with what matters most.
+          </p>
+          <div className="tc-booking-reminder" data-reveal>
+            <span>75 minutes</span>
+            <span>$750</span>
+            <span>Written summary</span>
+            <span>Free e-book</span>
+            <span>Full clarity guarantee</span>
+          </div>
+          <div className="tc-calendar" id="calendly-card" data-reveal>
+            <div
+              className="calendly-inline-widget"
+              data-url={CAL_URL}
+              style={{ minWidth: "320px", height: "760px" }}
             />
           </div>
-
-          <div>
-            <p className="eyebrow dark">MEET CHI-CHI</p>
-            <h2>I have seen interviews from both sides of the table.</h2>
-            <p>
-              My perspective comes from experience across HR, recruiting, hiring
-              panels, and program leadership inside a Fortune 1 environment.
-            </p>
-            <p>
-              I also know what it feels like to be a qualified candidate who
-              keeps approaching interviews as a performance. Once I stopped
-              treating them like tests and started treating them like mutual
-              business conversations, the way I prepared—and the outcomes I
-              achieved—changed.
-            </p>
-            <p>
-              I created the Mutual Advantage Method™ to help experienced
-              professionals stop performing for approval, understand the business
-              decision beneath the questions, and communicate their value with
-              clarity, confidence, and credibility.
-            </p>
-          </div>
         </div>
       </section>
 
-      <section className="investment section" id="investment">
-        <div className="shell investmentGrid">
-          <div>
-            <p className="eyebrow light">THE MUTUAL ADVANTAGE INTENSIVE™</p>
-            <h2>Your next interview could shape the next several years of your career.</h2>
-            <p className="investmentLead">
-              Let’s make sure it communicates the right value. In one private
-              90-minute session, we will apply the Mutual Advantage Method™ to
-              your experience, your target role, and the decisions the employer
-              needs to make.
-            </p>
-
-            <ul className="checkList compact">
-              <li>
-                <CheckIcon /> 90-minute private strategy session
-              </li>
-              <li>
-                <CheckIcon /> Pre-session résumé and job-description review
-              </li>
-              <li>
-                <CheckIcon /> Personalized frameworks and working materials
-              </li>
-              <li>
-                <CheckIcon /> Action plan for your next interview
-              </li>
-            </ul>
-          </div>
-
-          <div className="priceCard">
-            <p className="priceLabel">Your investment</p>
-            <div className="price">$697</div>
-            <p className="priceNote">One private 90-minute intensive</p>
-
+      {/* FOOTER */}
+      <footer className="tc-footer">
+        <div className="tc-narrow tc-center">
+          <p>You do not need permission to want another chapter.</p>
+          <div className="tc-footer-links">
+            <a href="mailto:idealclaritysolutions@gmail.com">Email</a>
             <a
-              className="primaryButton full"
-              href={CALENDLY_URL}
+              href="https://instagram.com/idealclarity"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
             >
-              Book the Mutual Advantage Intensive <ArrowIcon />
+              Instagram
             </a>
-
-            <p className="microcopy">
-              Secure checkout and scheduling are completed through Calendly.
-              No job offer is guaranteed.
-            </p>
+            <a href="https://www.idealclarity.com/privacy-policy">Privacy</a>
           </div>
-        </div>
-      </section>
-
-      <section className="faq section">
-        <div className="shell narrow">
-          <p className="eyebrow dark">FREQUENTLY ASKED QUESTIONS</p>
-          <h2>Before you book</h2>
-
-          <div className="faqList">
-            <details>
-              <summary>Can you guarantee I will get the job?</summary>
-              <p>
-                No. No ethical interview professional can control or guarantee a
-                company’s hiring decision. What I can do is help you build a
-                clearer, stronger, evidence-based case for why you are a fit.
-              </p>
-            </details>
-
-            <details>
-              <summary>Is this just a mock interview?</summary>
-              <p>
-                No. A mock interview may be part of the work when useful, but
-                the Intensive focuses first on the strategy behind your answers:
-                your professional identity, evidence, positioning, and the
-                interviewer’s decision criteria.
-              </p>
-            </details>
-
-            <details>
-              <summary>What should I send before the session?</summary>
-              <p>
-                You will be asked to provide your résumé, the target job
-                description, your interview timeline, and the areas where you
-                currently feel least confident.
-              </p>
-            </details>
-
-            <details>
-              <summary>What if I do not have an interview scheduled yet?</summary>
-              <p>
-                You can still benefit. We can build the framework around the
-                types of roles you are targeting so you are prepared before an
-                opportunity becomes urgent.
-              </p>
-            </details>
-
-            <details>
-              <summary>Who is this best suited for?</summary>
-              <p>
-                The Intensive is designed primarily for experienced
-                professionals, career changers, and emerging or established
-                leaders pursuing competitive roles where clear positioning
-                matters.
-              </p>
-            </details>
-          </div>
-        </div>
-      </section>
-
-      <section className="finalCta">
-        <div className="shell finalCtaInner">
-          <div>
-            <p className="eyebrow light">YOU DO NOT NEED BETTER-SOUNDING ANSWERS.</p>
-            <h2>You need a better way to communicate your value.</h2>
-          </div>
-          <a
-            className="primaryButton lightButton"
-            href={CALENDLY_URL}
-            target="_blank"
-            rel="noreferrer"
-          >
-            Book your Intensive <ArrowIcon />
-          </a>
-        </div>
-      </section>
-
-      <footer>
-        <div className="shell footerInner">
-          <span>© {new Date().getFullYear()} Ideal Clarity Solutions</span>
-          <span>
-            The Mutual Advantage Method™ is an independent career-development
-            framework. It is not affiliated with or endorsed by any employer.
-          </span>
+          <small>
+            © 2026 Ideal Clarity Solutions. Coaching and advisory services
+            do not guarantee business, income, career, or personal results.
+          </small>
         </div>
       </footer>
 
-      <div className="mobileBar">
-        <div>
-          <strong>Mutual Advantage Intensive™</strong>
-          <span>Private 90-minute strategy session</span>
-        </div>
-        <a href="#investment">View details</a>
+      {/* STICKY CTA */}
+      <div className={`tc-sticky ${showSticky ? "is-visible" : ""}`}>
+        <span>Ready for the conversation you&apos;ve been postponing?</span>
+        <button
+          type="button"
+          className="tc-sticky-button"
+          onClick={() => goBook("Sticky bar — Yes book my session")}
+        >
+          Yes — book my session
+        </button>
       </div>
-
-      <style>{`
-        :root {
-          --ink: #102844;
-          --ink-deep: #081a2f;
-          --orange: #f28c28;
-          --orange-dark: #cf6f15;
-          --cream: #fff8ef;
-          --sand: #f3eadf;
-          --paper: #ffffff;
-          --muted: #607086;
-          --line: #dfe6ee;
-          --success: #227a5b;
-          --shadow: 0 24px 70px rgba(16, 40, 68, 0.12);
-        }
-
-        * {
-          box-sizing: border-box;
-        }
-
-        html {
-          scroll-behavior: smooth;
-        }
-
-        body {
-          margin: 0;
-          color: var(--ink);
-          background: var(--paper);
-          font-family:
-            Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-            "Segoe UI", sans-serif;
-          line-height: 1.6;
-        }
-
-        a {
-          color: inherit;
-          text-decoration: none;
-        }
-
-        button,
-        a {
-          -webkit-tap-highlight-color: transparent;
-        }
-
-        h1,
-        h2,
-        h3,
-        p {
-          margin-top: 0;
-        }
-
-        h1,
-        h2,
-        h3 {
-          line-height: 1.08;
-          letter-spacing: -0.035em;
-        }
-
-        h1 {
-          margin-bottom: 26px;
-          font-size: clamp(3rem, 7.3vw, 6.7rem);
-          max-width: 900px;
-        }
-
-        h1 span {
-          color: var(--orange);
-        }
-
-        h2 {
-          margin-bottom: 24px;
-          font-size: clamp(2.25rem, 4.5vw, 4.4rem);
-        }
-
-        h3 {
-          margin-bottom: 12px;
-          font-size: 1.35rem;
-        }
-
-        p {
-          font-size: 1.06rem;
-        }
-
-        .shell {
-          width: min(1180px, calc(100% - 40px));
-          margin: 0 auto;
-        }
-
-        .narrow {
-          width: min(900px, calc(100% - 40px));
-        }
-
-        .section {
-          padding: 110px 0;
-        }
-
-        .nav {
-          position: relative;
-          z-index: 20;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          min-height: 82px;
-          padding: 0 max(24px, calc((100vw - 1180px) / 2));
-          border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-          color: #fff;
-          background: var(--ink-deep);
-        }
-
-        .brand {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-        }
-
-        .brandMark {
-          display: grid;
-          width: 42px;
-          height: 42px;
-          place-items: center;
-          border-radius: 50%;
-          color: #fff;
-          background: var(--orange);
-          font-weight: 850;
-        }
-
-        .brand strong,
-        .brand small {
-          display: block;
-        }
-
-        .brand small {
-          opacity: 0.7;
-          font-size: 0.74rem;
-        }
-
-        .navCta {
-          padding: 10px 16px;
-          border: 1px solid rgba(255, 255, 255, 0.25);
-          border-radius: 999px;
-          font-size: 0.92rem;
-          font-weight: 750;
-        }
-
-        .hero {
-          position: relative;
-          overflow: hidden;
-          padding: 110px 0 125px;
-          color: #fff;
-          background:
-            linear-gradient(125deg, rgba(8, 26, 47, 0.98), rgba(16, 40, 68, 0.96)),
-            var(--ink-deep);
-        }
-
-        .heroGlow {
-          position: absolute;
-          border-radius: 999px;
-          filter: blur(8px);
-          pointer-events: none;
-        }
-
-        .heroGlowOne {
-          top: -220px;
-          right: -120px;
-          width: 520px;
-          height: 520px;
-          background: rgba(242, 140, 40, 0.18);
-        }
-
-        .heroGlowTwo {
-          bottom: -280px;
-          left: -160px;
-          width: 600px;
-          height: 600px;
-          background: rgba(51, 125, 171, 0.16);
-        }
-
-        .heroGrid {
-          position: relative;
-          z-index: 2;
-          display: grid;
-          grid-template-columns: minmax(0, 1.5fr) minmax(300px, 0.72fr);
-          gap: 72px;
-          align-items: center;
-        }
-
-        .eyebrow {
-          margin-bottom: 18px;
-          color: #ffc789;
-          font-size: 0.78rem;
-          font-weight: 850;
-          letter-spacing: 0.17em;
-        }
-
-        .eyebrow.dark {
-          color: var(--orange-dark);
-        }
-
-        .eyebrow.light {
-          color: #ffd3a6;
-        }
-
-        .heroLead {
-          max-width: 780px;
-          margin-bottom: 34px;
-          color: rgba(255, 255, 255, 0.84);
-          font-size: clamp(1.14rem, 2vw, 1.42rem);
-        }
-
-        .heroLead strong {
-          color: #fff;
-        }
-
-        .heroActions {
-          display: flex;
-          flex-wrap: wrap;
-          align-items: center;
-          gap: 20px;
-          margin-bottom: 36px;
-        }
-
-        .primaryButton {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          gap: 10px;
-          min-height: 56px;
-          padding: 15px 22px;
-          border-radius: 12px;
-          color: #fff;
-          background: linear-gradient(135deg, var(--orange), var(--orange-dark));
-          box-shadow: 0 14px 30px rgba(242, 140, 40, 0.24);
-          font-weight: 850;
-          transition:
-            transform 0.2s ease,
-            box-shadow 0.2s ease;
-        }
-
-        .primaryButton:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 18px 34px rgba(242, 140, 40, 0.3);
-        }
-
-        .textLink {
-          color: rgba(255, 255, 255, 0.8);
-          font-weight: 750;
-          text-decoration: underline;
-          text-underline-offset: 5px;
-        }
-
-        .credibilityRow {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 10px;
-        }
-
-        .credibilityRow span {
-          padding: 8px 11px;
-          border: 1px solid rgba(255, 255, 255, 0.14);
-          border-radius: 999px;
-          color: rgba(255, 255, 255, 0.74);
-          font-size: 0.82rem;
-        }
-
-        .heroCard {
-          padding: 34px;
-          border: 1px solid rgba(255, 255, 255, 0.16);
-          border-radius: 24px;
-          background: rgba(255, 255, 255, 0.07);
-          backdrop-filter: blur(16px);
-          box-shadow: 0 28px 80px rgba(0, 0, 0, 0.24);
-        }
-
-        .quoteIcon {
-          color: var(--orange);
-        }
-
-        .heroCard p {
-          margin-bottom: 14px;
-          font-size: 1.24rem;
-          line-height: 1.48;
-        }
-
-        .heroCard em {
-          color: #ffc789;
-          font-style: normal;
-          font-weight: 850;
-        }
-
-        .cardLabel {
-          margin-top: 24px;
-          padding-top: 20px;
-          border-top: 1px solid rgba(255, 255, 255, 0.13);
-          color: rgba(255, 255, 255, 0.58);
-          font-size: 0.78rem;
-          text-transform: uppercase;
-          letter-spacing: 0.1em;
-        }
-
-        .recognition {
-          background: #fff;
-        }
-
-        .recognition h2,
-        .whyWorks h2,
-        .whyWorksLead {
-          text-align: center;
-        }
-
-        .recognitionGrid {
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 20px;
-          margin-top: 48px;
-        }
-
-        .recognitionCard {
-          padding: 30px;
-          border: 1px solid var(--line);
-          border-radius: 18px;
-          background: #fff;
-          box-shadow: 0 14px 42px rgba(16, 40, 68, 0.06);
-        }
-
-        .recognitionCard > span {
-          display: block;
-          margin-bottom: 26px;
-          color: var(--orange-dark);
-          font-size: 0.76rem;
-          font-weight: 900;
-          letter-spacing: 0.13em;
-        }
-
-        .recognitionCard p {
-          margin-bottom: 0;
-          color: var(--muted);
-        }
-
-        .recognitionClose {
-          max-width: 680px;
-          margin: 42px auto 0;
-          font-size: clamp(1.25rem, 2.4vw, 1.75rem);
-          font-weight: 800;
-          text-align: center;
-        }
-
-        .whyWorks {
-          background: var(--cream);
-        }
-
-        .whyWorksLead {
-          max-width: 760px;
-          margin: -6px auto 48px;
-          color: var(--muted);
-          font-size: clamp(1.18rem, 2.2vw, 1.48rem);
-        }
-
-        .comparisonGrid {
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 24px;
-        }
-
-        .comparisonCard {
-          padding: 34px;
-          border-radius: 22px;
-        }
-
-        .comparisonCard.standard {
-          border: 1px solid #eadfce;
-          background: rgba(255, 255, 255, 0.58);
-        }
-
-        .comparisonCard.methodCard {
-          border: 1px solid #efc392;
-          background: #fff;
-          box-shadow: var(--shadow);
-        }
-
-        .comparisonLabel {
-          margin-bottom: 24px;
-          color: var(--orange-dark);
-          font-size: 0.8rem;
-          font-weight: 900;
-          letter-spacing: 0.1em;
-          text-transform: uppercase;
-        }
-
-        .comparisonFlow {
-          display: grid;
-          gap: 8px;
-          margin-bottom: 24px;
-          text-align: center;
-        }
-
-        .comparisonFlow strong {
-          padding: 13px 15px;
-          border: 1px solid var(--line);
-          border-radius: 10px;
-          background: #fff;
-        }
-
-        .comparisonFlow span {
-          color: var(--orange-dark);
-          font-weight: 900;
-        }
-
-        .comparisonCard > p:last-child {
-          margin-bottom: 0;
-          color: var(--muted);
-        }
-
-        .transformationPanel {
-          margin-top: 28px;
-          padding: 30px;
-          border-radius: 18px;
-          color: #fff;
-          background: var(--ink);
-        }
-
-        .transformationPanel > p:first-child {
-          margin-bottom: 18px;
-          color: #ffd3a6;
-          font-weight: 850;
-        }
-
-        .transformationGrid {
-          display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-          gap: 12px;
-        }
-
-        .transformationGrid span {
-          padding: 15px;
-          border: 1px solid rgba(255, 255, 255, 0.14);
-          border-radius: 12px;
-          background: rgba(255, 255, 255, 0.06);
-          text-align: center;
-        }
-
-        .transformationFinish {
-          max-width: 780px;
-          margin: 26px auto 0;
-          font-size: clamp(1.15rem, 2vw, 1.42rem);
-          font-weight: 800;
-          text-align: center;
-        }
-
-        .conversations {
-          color: #fff;
-          background: var(--ink-deep);
-        }
-
-        .conversations h2 {
-          max-width: 780px;
-          margin-bottom: 46px;
-        }
-
-        .messageStack {
-          display: grid;
-          gap: 20px;
-        }
-
-        .messageBubble {
-          width: min(640px, 88%);
-          padding: 22px 24px;
-          border-radius: 22px;
-          box-shadow: 0 18px 48px rgba(0, 0, 0, 0.18);
-        }
-
-        .messageBubble.left {
-          justify-self: start;
-          border-bottom-left-radius: 7px;
-          color: var(--ink);
-          background: #fff;
-        }
-
-        .messageBubble.right {
-          justify-self: end;
-          border-bottom-right-radius: 7px;
-          color: #fff;
-          background: var(--orange-dark);
-        }
-
-        .messageBubble span {
-          display: block;
-          margin-bottom: 8px;
-          opacity: 0.66;
-          font-size: 0.72rem;
-          font-weight: 850;
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
-        }
-
-        .messageBubble p {
-          margin-bottom: 0;
-          font-size: clamp(1.12rem, 2.1vw, 1.42rem);
-          line-height: 1.5;
-        }
-
-        .conversationNote {
-          max-width: 720px;
-          margin: 34px auto 0;
-          color: rgba(255, 255, 255, 0.58);
-          font-size: 0.82rem;
-          text-align: center;
-        }
-
-        .problem {
-          background: var(--cream);
-        }
-
-        .problem h2,
-        .centerStatement {
-          text-align: center;
-        }
-
-        .problemGrid {
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 24px;
-          margin: 54px 0;
-        }
-
-        .problemCard {
-          padding: 34px;
-          border-radius: 20px;
-        }
-
-        .problemCard.muted {
-          border: 1px solid #eadfce;
-          background: rgba(255, 255, 255, 0.52);
-        }
-
-        .problemCard.accent {
-          border: 1px solid #efc392;
-          background: #fff;
-          box-shadow: var(--shadow);
-        }
-
-        .problemLabel {
-          margin-bottom: 20px;
-          font-weight: 850;
-        }
-
-        .problemCard ul,
-        .plainList {
-          margin: 0;
-          padding-left: 20px;
-        }
-
-        .problemCard li,
-        .plainList li {
-          margin: 12px 0;
-        }
-
-        .centerStatement {
-          font-size: clamp(1.3rem, 2.6vw, 1.9rem);
-        }
-
-        .sectionIntro {
-          display: grid;
-          grid-template-columns: 1.08fr 0.92fr;
-          gap: 80px;
-          align-items: end;
-          margin-bottom: 56px;
-        }
-
-        .sectionIntro p:last-child {
-          color: var(--muted);
-          font-size: 1.18rem;
-        }
-
-        .pillarGrid {
-          display: grid;
-          grid-template-columns: repeat(4, minmax(0, 1fr));
-          gap: 18px;
-        }
-
-        .pillar {
-          min-height: 290px;
-          padding: 28px;
-          border: 1px solid var(--line);
-          border-radius: 18px;
-          background: #fff;
-        }
-
-        .pillarNumber {
-          display: block;
-          margin-bottom: 62px;
-          color: var(--orange-dark);
-          font-size: 0.78rem;
-          font-weight: 900;
-          letter-spacing: 0.13em;
-        }
-
-        .pillar p,
-        .deliverable p,
-        .about p {
-          color: var(--muted);
-        }
-
-        .identity {
-          color: #fff;
-          background: var(--ink);
-        }
-
-        .identityGrid {
-          display: grid;
-          grid-template-columns: 0.9fr 1.1fr;
-          gap: 90px;
-          align-items: start;
-        }
-
-        .identityCopy > p {
-          color: rgba(255, 255, 255, 0.75);
-          font-size: 1.14rem;
-        }
-
-        .checkList {
-          display: grid;
-          gap: 14px;
-          margin: 28px 0;
-          padding: 0;
-          list-style: none;
-        }
-
-        .checkList li {
-          display: flex;
-          gap: 12px;
-          align-items: flex-start;
-        }
-
-        .checkList svg {
-          flex: 0 0 auto;
-          margin-top: 2px;
-          color: var(--orange);
-        }
-
-        .identityClosing {
-          padding-left: 18px;
-          border-left: 3px solid var(--orange);
-          color: #fff !important;
-          font-weight: 750;
-        }
-
-        .deliverableGrid {
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 20px;
-        }
-
-        .deliverable {
-          display: flex;
-          gap: 18px;
-          padding: 28px;
-          border: 1px solid var(--line);
-          border-radius: 18px;
-        }
-
-        .deliverableCheck {
-          display: grid;
-          flex: 0 0 38px;
-          width: 38px;
-          height: 38px;
-          place-items: center;
-          border-radius: 50%;
-          color: #fff;
-          background: var(--success);
-        }
-
-        .notIncluded {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 12px;
-          align-items: center;
-          margin-top: 28px;
-          padding: 20px 24px;
-          border-radius: 14px;
-          background: var(--cream);
-        }
-
-        .notIncluded span {
-          padding: 6px 10px;
-          border: 1px solid #eadfce;
-          border-radius: 999px;
-          color: var(--muted);
-          background: #fff;
-          font-size: 0.85rem;
-        }
-
-        .fit {
-          background: #f7f9fb;
-        }
-
-        .fitGrid {
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 26px;
-        }
-
-        .fitCard {
-          padding: 42px;
-          border-radius: 22px;
-        }
-
-        .fitCard.good {
-          border: 1px solid #dfe9e5;
-          background: #fff;
-          box-shadow: var(--shadow);
-        }
-
-        .fitCard.neutral {
-          border: 1px solid var(--line);
-          background: #edf1f5;
-        }
-
-        .fitCard h2 {
-          font-size: clamp(2rem, 3.3vw, 3.2rem);
-        }
-
-        .aboutGrid {
-          display: grid;
-          grid-template-columns: 0.74fr 1.26fr;
-          gap: 80px;
-          align-items: center;
-        }
-
-        .portraitWrap {
-          position: relative;
-        }
-
-        .portrait {
-          display: block;
-          width: 100%;
-          aspect-ratio: 4 / 5;
-          object-fit: cover;
-          border-radius: 26px;
-          background: var(--sand);
-          box-shadow: var(--shadow);
-        }
-
-        .portraitNote {
-          position: absolute;
-          right: 18px;
-          bottom: 18px;
-          padding: 12px 14px;
-          border-radius: 10px;
-          color: #fff;
-          background: rgba(8, 26, 47, 0.84);
-          font-size: 0.72rem;
-        }
-
-        .portraitNote code {
-          color: #ffd3a6;
-        }
-
-        .investment {
-          color: #fff;
-          background:
-            radial-gradient(circle at 20% 20%, rgba(242, 140, 40, 0.12), transparent 30%),
-            var(--ink-deep);
-        }
-
-        .investmentGrid {
-          display: grid;
-          grid-template-columns: 1.12fr 0.88fr;
-          gap: 80px;
-          align-items: center;
-        }
-
-        .investmentLead {
-          max-width: 680px;
-          color: rgba(255, 255, 255, 0.76);
-          font-size: 1.18rem;
-        }
-
-        .compact {
-          margin-bottom: 0;
-        }
-
-        .priceCard {
-          padding: 38px;
-          border: 1px solid rgba(255, 255, 255, 0.16);
-          border-radius: 24px;
-          background: rgba(255, 255, 255, 0.08);
-          backdrop-filter: blur(14px);
-        }
-
-        .priceLabel {
-          margin-bottom: 0;
-          color: rgba(255, 255, 255, 0.65);
-          font-size: 0.88rem;
-          text-transform: uppercase;
-          letter-spacing: 0.12em;
-        }
-
-        .price {
-          margin: 8px 0;
-          font-size: clamp(3.8rem, 7vw, 6.2rem);
-          font-weight: 900;
-          letter-spacing: -0.06em;
-          line-height: 1;
-        }
-
-        .priceNote {
-          margin-bottom: 26px;
-          color: rgba(255, 255, 255, 0.72);
-        }
-
-        .full {
-          width: 100%;
-        }
-
-        .microcopy {
-          margin: 16px 0 0;
-          color: rgba(255, 255, 255, 0.55);
-          font-size: 0.76rem;
-          text-align: center;
-        }
-
-        .faq {
-          background: var(--cream);
-        }
-
-        .faqList {
-          margin-top: 38px;
-        }
-
-        details {
-          border-bottom: 1px solid #ded5ca;
-        }
-
-        summary {
-          cursor: pointer;
-          padding: 24px 0;
-          font-size: 1.08rem;
-          font-weight: 850;
-        }
-
-        details p {
-          max-width: 760px;
-          padding: 0 0 24px;
-          color: var(--muted);
-        }
-
-        .finalCta {
-          padding: 76px 0;
-          color: #fff;
-          background: var(--orange-dark);
-        }
-
-        .finalCtaInner {
-          display: flex;
-          gap: 40px;
-          align-items: center;
-          justify-content: space-between;
-        }
-
-        .finalCta h2 {
-          max-width: 760px;
-          margin-bottom: 0;
-        }
-
-        .lightButton {
-          flex: 0 0 auto;
-          color: var(--ink);
-          background: #fff;
-          box-shadow: none;
-        }
-
-        footer {
-          padding: 34px 0 100px;
-          color: rgba(255, 255, 255, 0.58);
-          background: var(--ink-deep);
-        }
-
-        .footerInner {
-          display: flex;
-          gap: 20px;
-          justify-content: space-between;
-          font-size: 0.74rem;
-        }
-
-        .footerInner span:last-child {
-          max-width: 660px;
-          text-align: right;
-        }
-
-        .mobileBar {
-          display: none;
-        }
-
-        @media (max-width: 960px) {
-          .heroGrid,
-          .sectionIntro,
-          .identityGrid,
-          .aboutGrid,
-          .investmentGrid {
-            grid-template-columns: 1fr;
-            gap: 44px;
-          }
-
-          .pillarGrid {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-          }
-
-          .heroCard {
-            max-width: 640px;
-          }
-
-          .portraitWrap {
-            max-width: 480px;
-          }
-
-          .sectionIntro {
-            margin-bottom: 40px;
-          }
-        }
-
-        @media (max-width: 700px) {
-          h1 {
-            font-size: clamp(2.85rem, 14vw, 4.7rem);
-          }
-
-          h2 {
-            font-size: clamp(2.1rem, 10vw, 3.4rem);
-          }
-
-          .shell,
-          .narrow {
-            width: min(100% - 28px, 1180px);
-          }
-
-          .section {
-            padding: 78px 0;
-          }
-
-          .nav {
-            min-height: 72px;
-            padding: 0 16px;
-          }
-
-          .navCta {
-            display: none;
-          }
-
-          .brand small {
-            display: none;
-          }
-
-          .hero {
-            padding: 78px 0 90px;
-          }
-
-          .heroGrid {
-            gap: 36px;
-          }
-
-          .heroActions {
-            align-items: stretch;
-            flex-direction: column;
-          }
-
-          .primaryButton {
-            width: 100%;
-          }
-
-          .textLink {
-            text-align: center;
-          }
-
-          .recognitionGrid,
-          .comparisonGrid,
-          .transformationGrid,
-          .problemGrid,
-          .deliverableGrid,
-          .fitGrid,
-          .pillarGrid {
-            grid-template-columns: 1fr;
-          }
-
-          .messageBubble {
-            width: 94%;
-          }
-
-          .problemCard,
-          .fitCard,
-          .priceCard,
-          .heroCard {
-            padding: 26px;
-          }
-
-          .pillar {
-            min-height: auto;
-          }
-
-          .pillarNumber {
-            margin-bottom: 32px;
-          }
-
-          .notIncluded {
-            align-items: flex-start;
-            flex-direction: column;
-          }
-
-          .finalCtaInner,
-          .footerInner {
-            align-items: stretch;
-            flex-direction: column;
-          }
-
-          .footerInner span:last-child {
-            text-align: left;
-          }
-
-          footer {
-            padding-bottom: 120px;
-          }
-
-          .mobileBar {
-            position: fixed;
-            z-index: 50;
-            right: 10px;
-            bottom: 10px;
-            left: 10px;
-            display: flex;
-            gap: 14px;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 12px 12px 15px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 16px;
-            color: #fff;
-            background: rgba(8, 26, 47, 0.96);
-            box-shadow: 0 18px 50px rgba(8, 26, 47, 0.25);
-            backdrop-filter: blur(14px);
-          }
-
-          .mobileBar strong,
-          .mobileBar span {
-            display: block;
-          }
-
-          .mobileBar strong {
-            font-size: 0.78rem;
-          }
-
-          .mobileBar span {
-            color: rgba(255, 255, 255, 0.62);
-            font-size: 0.67rem;
-          }
-
-          .mobileBar a {
-            flex: 0 0 auto;
-            padding: 10px 12px;
-            border-radius: 9px;
-            color: #fff;
-            background: var(--orange-dark);
-            font-size: 0.75rem;
-            font-weight: 850;
-          }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          html {
-            scroll-behavior: auto;
-          }
-
-          .primaryButton {
-            transition: none;
-          }
-        }
-      `}</style>
     </main>
   );
 }
+
+const CSS = `
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&display=swap');
+.tc-root{
+  --ink:#172132;
+  --navy:#142033;
+  --navy-soft:#1D2B42;
+  --cream:#FAF7F0;
+  --warm:#F4ECDE;
+  --white:#FFFFFF;
+  --gold:#B9935C;
+  --gold-deep:#9C7847;
+  --muted:#6D675F;
+  --line:rgba(185,147,92,.28);
+  --shadow:0 24px 70px rgba(20,32,51,.13);
+  background:var(--cream);
+  color:var(--ink);
+  font-family:'DM Sans',Arial,sans-serif;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+.tc-root *{box-sizing:border-box;}
+.tc-shell{width:min(1120px,calc(100% - 40px));margin:0 auto;}
+.tc-narrow{width:min(760px,calc(100% - 40px));margin:0 auto;}
+.tc-center{text-align:center;}
+.tc-left{text-align:left;}
+[data-reveal]{
+  opacity:0;
+  transform:translateY(18px);
+  transition:opacity .7s ease,transform .7s ease;
+}
+[data-reveal].is-visible{opacity:1;transform:none;}
+@media(prefers-reduced-motion:reduce){
+  [data-reveal]{opacity:1;transform:none;transition:none;}
+}
+.tc-hero{
+  padding:clamp(48px,8vw,92px) 0 clamp(56px,7vw,88px);
+  background:
+    radial-gradient(circle at 50% -20%,rgba(185,147,92,.18),transparent 42%),
+    var(--cream);
+}
+.tc-eyebrow,
+.tc-kicker{
+  margin:0 0 18px;
+  color:var(--gold-deep);
+  font-size:.78rem;
+  font-weight:700;
+  letter-spacing:.17em;
+  line-height:1.5;
+  text-transform:uppercase;
+}
+.tc-hero-title,
+.tc-display,
+.tc-display-light{
+  font-family:'Fraunces',Georgia,serif;
+  font-optical-sizing:auto;
+  letter-spacing:-.025em;
+}
+.tc-hero-title{
+  max-width:900px;
+  margin:0 auto 20px;
+  color:var(--ink);
+  font-size:clamp(2.7rem,7vw,5.6rem);
+  font-weight:500;
+  line-height:1.03;
+}
+.tc-hero-sub{
+  max-width:700px;
+  margin:0 auto 34px;
+  color:var(--muted);
+  font-family:'Fraunces',Georgia,serif;
+  font-size:clamp(1.15rem,2vw,1.45rem);
+  line-height:1.55;
+}
+.tc-video-wrap{
+  position:relative;
+  width:min(470px,100%);
+  margin:0 auto;
+  overflow:hidden;
+  background:#000;
+  border:1px solid rgba(185,147,92,.45);
+  border-radius:22px;
+  box-shadow:var(--shadow);
+  line-height:0;
+}
+.tc-native-video{
+  display:block;
+  width:100%;
+  height:auto;
+  aspect-ratio:9 / 16;
+  object-fit:cover;
+  background:#000;
+}
+.tc-video-note{
+  margin:18px 0 0;
+  color:var(--muted);
+  font-size:.9rem;
+}
+.tc-section{
+  padding:clamp(76px,10vw,128px) 0;
+}
+.tc-proof{
+  padding-top:clamp(68px,8vw,98px);
+  background:#FFFDF8;
+}
+.tc-navy{
+  background:var(--navy);
+  color:var(--white);
+}
+.tc-cream{background:var(--warm);}
+.tc-gold{color:var(--gold);}
+.tc-display,
+.tc-display-light{
+  margin:0 auto 28px;
+  max-width:900px;
+  font-size:clamp(2.2rem,5vw,4.35rem);
+  font-weight:500;
+  line-height:1.1;
+}
+.tc-display{color:var(--ink);}
+.tc-display-light{color:var(--white);}
+.tc-display.tc-left{margin-left:0;}
+.tc-lead{
+  max-width:710px;
+  margin:0 auto;
+  color:var(--muted);
+  font-size:clamp(1.05rem,1.55vw,1.25rem);
+  line-height:1.8;
+}
+.tc-light-copy{color:#D7DCE5;}
+.tc-lead.tc-left{margin-left:0;}
+.tc-pull{
+  max-width:760px;
+  margin:0 auto;
+  color:var(--gold-deep);
+  font-family:'Fraunces',Georgia,serif;
+  font-size:clamp(1.55rem,3vw,2.3rem);
+  font-style:italic;
+  line-height:1.45;
+}
+.tc-section-cta{
+  margin-top:40px;
+  text-align:center;
+}
+.tc-section-cta p{
+  max-width:680px;
+  margin:0 auto 20px;
+  color:var(--muted);
+  font-family:'Fraunces',Georgia,serif;
+  font-size:clamp(1.15rem,2vw,1.45rem);
+  line-height:1.55;
+}
+.tc-about{
+  display:grid;
+  grid-template-columns:.82fr 1.18fr;
+  gap:clamp(40px,7vw,88px);
+  align-items:center;
+}
+.tc-about-image img{
+  width:100%;
+  display:block;
+  border-radius:24px;
+  box-shadow:var(--shadow);
+}
+.tc-body p{
+  margin:0 0 20px;
+  color:var(--muted);
+  font-size:1.08rem;
+  line-height:1.8;
+}
+.tc-button{
+  border:0;
+  border-radius:999px;
+  cursor:pointer;
+  font:600 1rem 'DM Sans',Arial,sans-serif;
+  padding:16px 27px;
+  transition:transform .2s ease,box-shadow .2s ease,background .2s ease;
+}
+.tc-button:hover{transform:translateY(-2px);}
+.tc-button-gold{
+  background:var(--gold);
+  color:#fff;
+  box-shadow:0 12px 30px rgba(185,147,92,.25);
+}
+.tc-button-ink{
+  background:var(--ink);
+  color:#fff;
+  box-shadow:0 12px 30px rgba(20,32,51,.16);
+}
+.tc-button-outline{
+  background:transparent;
+  color:var(--ink);
+  border:1.5px solid var(--gold);
+}
+/* BRIDGE */
+.tc-bridge{
+  padding:clamp(62px,8vw,94px) 0;
+  background:var(--navy);
+  color:#fff;
+}
+.tc-bridge-kicker{
+  max-width:760px;
+  margin:0 auto 18px;
+  color:var(--gold);
+  font-family:'Fraunces',Georgia,serif;
+  font-size:clamp(2.15rem,5vw,4.25rem);
+  font-style:italic;
+  font-weight:500;
+  line-height:1.08;
+  letter-spacing:-.025em;
+}
+.tc-bridge-title{
+  max-width:790px;
+  margin:0 auto 24px;
+  color:#fff;
+  font-family:'Fraunces',Georgia,serif;
+  font-size:clamp(1.55rem,3.2vw,2.55rem);
+  font-weight:500;
+  line-height:1.2;
+  letter-spacing:-.015em;
+}
+.tc-bridge-copy{
+  max-width:680px;
+  margin:0 auto;
+  color:#D7DCE5;
+  font-size:clamp(1.05rem,1.6vw,1.22rem);
+  line-height:1.8;
+}
+/* PROOF */
+.tc-proof-title{
+  max-width:760px;
+  margin:0 auto;
+  color:var(--ink);
+  font-family:'Fraunces',Georgia,serif;
+  font-size:clamp(2rem,4vw,3.45rem);
+  font-weight:500;
+  line-height:1.12;
+  letter-spacing:-.025em;
+  text-align:center;
+}
+/* OUTCOMES */
+.tc-outcomes-continuation{
+  position:relative;
+  margin-top:-1px;
+  padding:0 0 clamp(82px,10vw,128px);
+  background:
+    linear-gradient(
+      180deg,
+      #FFFDF8 0%,
+      #FFFDF8 42%,
+      var(--warm) 100%
+    );
+}
+.tc-outcomes-continuation .tc-shell{
+  position:relative;
+}
+.tc-outcomes-header{
+  max-width:900px;
+  margin:0 auto;
+  padding:52px clamp(26px,5vw,58px) 34px;
+  background:var(--navy);
+  border:1px solid rgba(185,147,92,.35);
+  border-top:0;
+  border-radius:0 0 28px 28px;
+  box-shadow:0 28px 80px rgba(20,32,51,.12);
+  text-align:center;
+}
+.tc-outcomes-header .tc-kicker{
+  color:var(--gold);
+}
+.tc-outcomes-header h2{
+  margin:0 auto 18px;
+  color:#fff;
+  font-family:'Fraunces',Georgia,serif;
+  font-size:clamp(2.1rem,4.3vw,3.8rem);
+  font-weight:500;
+  line-height:1.1;
+  letter-spacing:-.025em;
+}
+.tc-outcomes-header p{
+  max-width:700px;
+  margin:0 auto;
+  color:#D7DCE5;
+  font-size:clamp(1.02rem,1.5vw,1.18rem);
+  line-height:1.75;
+}
+.tc-outcome-cards{
+  width:min(1040px,100%);
+  margin:34px auto 0;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+}
+.tc-outcome-cards article{
+  position:relative;
+  padding:28px 24px;
+  background:#FFFDF8;
+  border:1px solid var(--line);
+  border-radius:20px;
+  box-shadow:0 16px 46px rgba(20,32,51,.07);
+}
+.tc-outcome-cards article::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:24px;
+  width:44px;
+  height:3px;
+  background:var(--gold);
+  border-radius:0 0 3px 3px;
+}
+.tc-outcome-cards article > span{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:38px;
+  height:38px;
+  margin:2px 0 18px;
+  background:var(--navy);
+  border-radius:50%;
+  color:var(--gold);
+  font-family:'Fraunces',Georgia,serif;
+  font-size:.9rem;
+  font-weight:600;
+}
+.tc-outcome-cards h3{
+  margin:0 0 10px;
+  color:var(--ink);
+  font-family:'Fraunces',Georgia,serif;
+  font-size:1.35rem;
+  font-weight:500;
+  line-height:1.22;
+}
+.tc-outcome-cards p{
+  margin:0;
+  color:var(--muted);
+  font-size:.96rem;
+  line-height:1.7;
+}
+.tc-outcomes-footer{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  width:min(900px,100%);
+  margin:34px auto 0;
+  padding:24px 28px;
+  background:#FFFDF8;
+  border:1px solid var(--line);
+  border-radius:18px;
+  box-shadow:0 14px 36px rgba(20,32,51,.06);
+}
+.tc-outcomes-footer p{
+  margin:0;
+  color:var(--ink);
+  font-family:'Fraunces',Georgia,serif;
+  font-size:1.15rem;
+  line-height:1.45;
+}
+/* FEATURE OFFER */
+.tc-offer-section{
+  padding-bottom:0;
+  background:linear-gradient(180deg,#FFFDF8,var(--cream));
+}
+.tc-offer-feature{
+  display:grid;
+  grid-template-columns:1.08fr .92fr;
+  overflow:hidden;
+  background:#FFFDF8;
+  border:1px solid var(--line);
+  border-radius:30px;
+  box-shadow:0 32px 90px rgba(20,32,51,.15);
+}
+.tc-offer-copy{
+  padding:clamp(38px,6vw,72px);
+}
+.tc-offer-copy h2{
+  margin:0 0 22px;
+  color:var(--ink);
+  font-family:'Fraunces',Georgia,serif;
+  font-size:clamp(2.2rem,4vw,3.65rem);
+  font-weight:500;
+  line-height:1.08;
+  letter-spacing:-.025em;
+}
+.tc-offer-intro{
+  margin:0 0 28px;
+  color:var(--muted);
+  font-size:1.06rem;
+  line-height:1.75;
+}
+.tc-outcome-list{
+  list-style:none;
+  padding:0;
+  margin:0 0 34px;
+}
+.tc-outcome-list li{
+  display:flex;
+  gap:12px;
+  margin:0 0 14px;
+  color:var(--ink);
+  line-height:1.55;
+}
+.tc-outcome-list li span{
+  flex:0 0 auto;
+  width:22px;
+  height:22px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  margin-top:2px;
+  background:var(--gold);
+  border-radius:50%;
+  color:#fff;
+  font-size:.76rem;
+  font-weight:700;
+}
+.tc-offer-bottom{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:26px;
+  padding-top:26px;
+  border-top:1px solid var(--line);
+}
+.tc-price-label{
+  display:block;
+  color:var(--gold-deep);
+  font-size:.74rem;
+  font-weight:700;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+}
+.tc-price{
+  display:block;
+  margin-top:2px;
+  color:var(--ink);
+  font-family:'Fraunces',Georgia,serif;
+  font-size:2.75rem;
+  font-weight:500;
+}
+.tc-offer-button{
+  max-width:360px;
+  min-height:58px;
+  padding:17px 30px;
+  font-size:1.02rem;
+  box-shadow:0 14px 34px rgba(185,147,92,.34);
+}
+.tc-offer-button:hover{
+  box-shadow:0 18px 40px rgba(185,147,92,.42);
+}
+.tc-secure-note{
+  margin:16px 0 0;
+  color:var(--muted);
+  font-size:.85rem;
+}
+.tc-offer-visual{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:clamp(38px,5vw,58px);
+  background:
+    radial-gradient(circle at 45% 38%,rgba(185,147,92,.35),transparent 37%),
+    linear-gradient(145deg,#F3E8D5,#FFFDF8);
+  text-align:center;
+}
+.tc-offer-visual::before{
+  content:"";
+  position:absolute;
+  width:280px;
+  height:280px;
+  background:rgba(185,147,92,.36);
+  border-radius:50%;
+  z-index:0;
+}
+.tc-offer-visual img{
+  position:relative;
+  z-index:1;
+  width:min(390px,100%);
+  height:auto;
+  display:block;
+  object-fit:contain;
+  filter:drop-shadow(0 24px 32px rgba(20,32,51,.23));
+}
+.tc-offer-visual p{
+  position:relative;
+  z-index:1;
+  max-width:390px;
+  margin:18px auto 0;
+  color:var(--muted);
+  line-height:1.6;
+}
+.tc-book-note{
+  position:relative;
+  z-index:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  margin-top:18px;
+  color:var(--ink);
+  font-size:1rem;
+  font-weight:600;
+  text-align:center;
+}
+.tc-offer-footer{
+  grid-column:1 / -1;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:28px;
+  padding:28px clamp(38px,6vw,72px);
+  background:var(--navy);
+  border-top:1px solid rgba(185,147,92,.36);
+}
+.tc-offer-footer .tc-price-label{
+  color:#AAB4C4;
+}
+.tc-offer-footer .tc-price{
+  color:#fff;
+}
+.tc-offer-action{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:10px;
+}
+.tc-offer-action .tc-secure-note{
+  margin:0;
+  color:#AAB4C4;
+  text-align:right;
+}
+.tc-bonus-badge{
+  position:absolute;
+  top:32px;
+  right:28px;
+  z-index:2;
+  width:106px;
+  height:106px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:16px;
+  background:var(--navy);
+  border-radius:50%;
+  color:var(--gold);
+  font-size:.75rem;
+  font-weight:700;
+  letter-spacing:.07em;
+  line-height:1.25;
+  text-align:center;
+  text-transform:uppercase;
+  box-shadow:0 14px 30px rgba(20,32,51,.2);
+}
+/* TESTIMONIALS */
+.tc-testimonials{
+  width:min(900px,100%);
+  margin:48px auto 0;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:22px;
+}
+.tc-testimonials blockquote{
+  margin:0;
+  padding:30px;
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:20px;
+  box-shadow:0 15px 45px rgba(20,32,51,.07);
+}
+.tc-testimonials p{
+  margin:0 0 18px;
+  color:var(--ink);
+  font-family:'Fraunces',Georgia,serif;
+  font-size:1.12rem;
+  font-style:italic;
+  line-height:1.6;
+}
+.tc-testimonials cite{
+  color:var(--gold-deep);
+  font-size:.86rem;
+  font-style:normal;
+  font-weight:700;
+}
+/* FAQ */
+.tc-faq{
+  margin-top:38px;
+  border-top:1px solid rgba(20,32,51,.15);
+}
+.tc-faq details{
+  border-bottom:1px solid rgba(20,32,51,.15);
+  padding:22px 0;
+}
+.tc-faq summary{
+  padding-right:38px;
+  position:relative;
+  color:var(--ink);
+  cursor:pointer;
+  font-family:'Fraunces',Georgia,serif;
+  font-size:1.25rem;
+  font-weight:500;
+  list-style:none;
+}
+.tc-faq summary::-webkit-details-marker{display:none;}
+.tc-faq summary::after{
+  content:"+";
+  position:absolute;
+  right:0;
+  top:-4px;
+  color:var(--gold-deep);
+  font-size:1.7rem;
+}
+.tc-faq details[open] summary::after{content:"–";}
+.tc-faq p{
+  margin:17px 0 0;
+  color:var(--muted);
+  line-height:1.75;
+}
+.tc-booking-reassurance{
+  max-width:690px;
+  margin:0 auto 18px;
+  padding:16px 20px;
+  background:rgba(185,147,92,.10);
+  border:1px solid var(--line);
+  border-radius:16px;
+  color:var(--ink);
+  font-family:'Fraunces',Georgia,serif;
+  font-size:clamp(1.05rem,1.6vw,1.25rem);
+  font-style:italic;
+  line-height:1.55;
+}
+.tc-booking-reminder{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:10px;
+  margin:30px 0 0;
+}
+.tc-booking-reminder span{
+  padding:8px 13px;
+  background:#FFFDF8;
+  border:1px solid var(--line);
+  border-radius:999px;
+  color:var(--ink);
+  font-size:.86rem;
+  font-weight:600;
+}
+.tc-calendar{
+  margin-top:34px;
+  padding:12px;
+  overflow:hidden;
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:22px;
+  box-shadow:var(--shadow);
+}
+/* FOOTER */
+.tc-footer{
+  padding:72px 0 132px;
+  background:var(--navy);
+  color:#D7DCE5;
+}
+.tc-footer p{
+  margin:0;
+  color:#fff;
+  font-family:'Fraunces',Georgia,serif;
+  font-size:1.35rem;
+}
+.tc-footer-links{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:24px;
+  margin:30px 0;
+}
+.tc-footer-links a{
+  color:var(--gold);
+  text-decoration:none;
+}
+.tc-footer small{
+  color:#8E99AA;
+  line-height:1.6;
+}
+/* STICKY CTA */
+.tc-sticky{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  z-index:50;
+  min-height:86px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:30px;
+  padding:15px 24px;
+  background:rgba(20,32,51,.98);
+  border-top:1px solid rgba(185,147,92,.62);
+  box-shadow:0 -14px 36px rgba(20,32,51,.18);
+  color:#fff;
+  transform:translateY(115%);
+  transition:transform .3s ease;
+  backdrop-filter:blur(14px);
+}
+.tc-sticky.is-visible{transform:translateY(0);}
+.tc-sticky span{
+  font-family:'Fraunces',Georgia,serif;
+  font-size:clamp(1.05rem,2vw,1.35rem);
+  line-height:1.25;
+}
+.tc-sticky-button{
+  min-width:205px;
+  padding:14px 24px;
+  background:var(--gold);
+  border:0;
+  border-radius:999px;
+  color:#fff;
+  cursor:pointer;
+  font:700 .96rem 'DM Sans',Arial,sans-serif;
+  box-shadow:0 10px 24px rgba(185,147,92,.25);
+}
+@media(max-width:900px){
+  .tc-outcome-cards{grid-template-columns:repeat(2,1fr);}
+  .tc-about,
+  .tc-offer-feature{
+    grid-template-columns:1fr;
+  }
+  .tc-about-image{
+    width:min(420px,100%);
+    margin:0 auto;
+  }
+  .tc-offer-visual{
+    min-height:480px;
+  }
+  .tc-testimonials{
+    grid-template-columns:1fr;
+  }
+}
+@media(max-width:650px){
+  .tc-outcomes-header{
+    padding:42px 22px 30px;
+    border-radius:0 0 22px 22px;
+  }
+  .tc-outcome-cards{
+    grid-template-columns:1fr;
+    gap:14px;
+    margin-top:24px;
+  }
+  .tc-outcomes-footer{
+    align-items:stretch;
+    flex-direction:column;
+    padding:22px;
+    text-align:center;
+  }
+  .tc-outcomes-footer .tc-button{
+    width:100%;
+  }
+  .tc-shell,
+  .tc-narrow{
+    width:min(100% - 28px,1120px);
+  }
+  .tc-hero{
+    padding-top:38px;
+  }
+  .tc-eyebrow{
+    font-size:.68rem;
+  }
+  .tc-video-wrap{
+    width:min(100%,420px);
+    border-radius:15px;
+  }
+  .tc-section{
+    padding:72px 0;
+  }
+  .tc-offer-copy{
+    padding:32px 22px;
+  }
+  .tc-offer-visual{
+    min-height:420px;
+    padding:46px 20px 34px;
+  }
+  .tc-offer-visual::before{
+    width:230px;
+    height:230px;
+  }
+  .tc-bonus-badge{
+    top:18px;
+    right:18px;
+    width:88px;
+    height:88px;
+    font-size:.65rem;
+  }
+  .tc-offer-footer{
+    align-items:stretch;
+    flex-direction:column;
+    padding:26px 22px;
+  }
+  .tc-offer-action{
+    align-items:stretch;
+  }
+  .tc-offer-action .tc-secure-note{
+    text-align:left;
+  }
+  .tc-offer-button{
+    width:100%;
+    max-width:none;
+  }
+  .tc-testimonials blockquote{
+    padding:26px 22px;
+  }
+  .tc-sticky{
+    min-height:96px;
+    justify-content:space-between;
+    gap:14px;
+    padding:13px 14px;
+  }
+  .tc-sticky span{
+    max-width:48%;
+    font-size:.92rem;
+  }
+  .tc-sticky-button{
+    min-width:0;
+    width:49%;
+    padding:13px 12px;
+    font-size:.84rem;
+  }
+}
+`;
