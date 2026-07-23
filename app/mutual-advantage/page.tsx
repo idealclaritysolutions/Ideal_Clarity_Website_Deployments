@@ -1,57 +1,24 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "The Mutual Advantage Method™ | Ideal Clarity",
+  title: "The Mutual Advantage Method™ | Interview Strategy for Experienced Professionals",
   description:
-    "You keep getting interviews but not offers. Book a free interview strategy call and find out what's getting lost between your experience and their decision.",
+    "Turn unpredictable interviews into clear, mutual business conversations—and learn to communicate the value you already know how to create.",
 };
 
-// ⚠️ REPLACE with your new Interview Strategy Call Calendly link:
-const STRATEGY_CALL_URL =
+const CALENDLY_URL =
   "https://calendly.com/idealclaritysolutions/interview-strategy-call-with-chi-chi";
 
 const CheckIcon = () => (
-  <svg
-    aria-hidden="true"
-    viewBox="0 0 24 24"
-    width="20"
-    height="20"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2.25"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
+  <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round">
     <path d="M20 6 9 17l-5-5" />
   </svg>
 );
 
 const ArrowIcon = () => (
-  <svg
-    aria-hidden="true"
-    viewBox="0 0 24 24"
-    width="18"
-    height="18"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2.25"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
+  <svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round">
     <path d="M5 12h14" />
     <path d="m13 6 6 6-6 6" />
-  </svg>
-);
-
-const QuoteIcon = () => (
-  <svg
-    aria-hidden="true"
-    viewBox="0 0 24 24"
-    width="28"
-    height="28"
-    fill="currentColor"
-  >
-    <path d="M7.6 6C4.7 7.8 3 10.3 3 13.5 3 16.2 4.6 18 7 18c2.1 0 3.7-1.6 3.7-3.8 0-2-1.4-3.4-3.4-3.4-.3 0-.7.1-1 .2.5-1.4 1.5-2.6 3-3.6L7.6 6Zm10.3 0c-2.9 1.8-4.6 4.3-4.6 7.5 0 2.7 1.6 4.5 4 4.5 2.1 0 3.7-1.6 3.7-3.8 0-2-1.4-3.4-3.4-3.4-.3 0-.7.1-1 .2.5-1.4 1.5-2.6 3-3.6L17.9 6Z" />
   </svg>
 );
 
@@ -60,466 +27,361 @@ export default function MutualAdvantagePage() {
     <main>
       <header className="nav">
         <a className="brand" href="#top" aria-label="Ideal Clarity home">
-          <img
-            src="/images/ideal-clarity-logo.png"
-            alt="Ideal Clarity — Here to make it make sense."
-            className="brandLogo"
-          />
+          <span className="brandMark">IC</span>
+          <span>
+            <strong>Ideal Clarity</strong>
+            <small>The Mutual Advantage Method™</small>
+          </span>
         </a>
-
-        <a className="navCta" href="#strategy-call">
-          Book a free call
+        <a className="navCta" href="#book">
+          Book a free conversation
         </a>
       </header>
 
+      {/* HERO — recognition first */}
       <section className="hero" id="top">
         <div className="heroGlow heroGlowOne" />
         <div className="heroGlow heroGlowTwo" />
+        <div className="shell heroInner">
+          <p className="eyebrow">YOU’RE PROBABLY HERE BECAUSE…</p>
+          <h1>
+            You keep getting interviews…
+            <span>but not offers.</span>
+          </h1>
 
-        <div className="shell heroGrid">
-          <div className="heroCopy">
-            <p className="eyebrow">THE MUTUAL ADVANTAGE METHOD™</p>
-
-            <h1>
-              You keep getting interviews.
-              <br />
-              <span>You keep not getting offers.</span>
-            </h1>
-
-            <div className="statStrip" aria-label="Chi-Chi's interview results">
-              <span>
-                <em>Then:</em> 34 interviews, 1 offer
-              </span>
-              <span className="statStripArrow">➔</span>
-              <span>
-                <em>Now:</em> <strong>8 of 10</strong> end in an offer
-              </span>
-            </div>
-
-            <p className="heroSub">
-              The best candidate doesn’t always win.
-              <br />
-              <span className="heroSubAccent">
-                The one who communicates their value most clearly does.
-              </span>
-            </p>
-
-            <p className="heroLead">
-              You’ve spent years learning to <strong>create</strong> value—and
-              almost no time learning to <strong>communicate</strong> it.
-              <br />
-              Let’s find out what’s getting lost—free.
-            </p>
-
-            <div className="heroActions">
-              <a className="primaryButton" href="#strategy-call">
-                Book a free strategy call <ArrowIcon />
-              </a>
-              <a className="textLink" href="#why">
-                First: why most interview advice doesn’t work
-              </a>
-            </div>
-
-            <div className="credibilityRow" aria-label="Experience highlights">
-              <span>10+ years in a Fortune 1 environment</span>
-              <span>HR + recruiting experience</span>
-              <span>Hiring-panel perspective</span>
-            </div>
-          </div>
-
-          <aside className="heroCard" aria-label="Core philosophy">
-            <div className="statBadge" aria-label="Chi-Chi's interview results">
-              <span className="statBadgeTop">Then: 34 interviews, 1 offer</span>
-              <span className="statBadgeNow">Now</span>
-              <span className="statBadgeBig">8 of 10</span>
-              <span className="statBadgeBottom">end in an offer</span>
-            </div>
-
-            <div className="quoteIcon">
-              <QuoteIcon />
-            </div>
-            <p>Interviews aren’t tests.</p>
+          <div className="heroTruths">
             <p>
-              They’re mutual business conversations where both sides are
-              deciding whether working together creates value.
+              People tell you that you “interviewed well,” yet nothing happens afterward.
             </p>
             <p>
-              The best interviews don’t feel like performances. They feel like
-              two professionals exploring whether there’s a genuine{" "}
-              <em>mutual advantage</em>.
+              You know you’re qualified. You just don’t know how to communicate it.
             </p>
-            <div className="cardLabel">
-              The philosophy behind the Mutual Advantage Method™
-            </div>
-          </aside>
-        </div>
-      </section>
-
-      <section
-        className="section"
-        id="probably-here"
-        style={{ background: "#fff" }}
-      >
-        <div className="shell narrow">
-          <p className="eyebrow dark">YOU’RE PROBABLY HERE BECAUSE…</p>
-
-          <h2>
-            You’re doing everything people told you to do…
-            <br />
-            but you’re still not getting the offer.
-          </h2>
-
-          <div className="deliverableGrid">
-            <article className="deliverable">
-              <div className="deliverableCheck">
-                <CheckIcon />
-              </div>
-              <div>
-                <h3>You keep getting interviews.</h3>
-                <p>
-                  Which means your résumé is working. Something changes once
-                  the conversation starts.
-                </p>
-              </div>
-            </article>
-
-            <article className="deliverable">
-              <div className="deliverableCheck">
-                <CheckIcon />
-              </div>
-              <div>
-                <h3>You leave interviews feeling… “I thought that went well.”</h3>
-                <p>Then another rejection arrives.</p>
-              </div>
-            </article>
-
-            <article className="deliverable">
-              <div className="deliverableCheck">
-                <CheckIcon />
-              </div>
-              <div>
-                <h3>You’ve watched YouTube…</h3>
-                <p>
-                  Used ChatGPT. Practiced STAR. Read articles. Yet nothing
-                  seems to change.
-                </p>
-              </div>
-            </article>
-
-            <article className="deliverable">
-              <div className="deliverableCheck">
-                <CheckIcon />
-              </div>
-              <div>
-                <h3>You’re beginning to question yourself.</h3>
-                <p>Even though deep down… you know you’re qualified.</p>
-              </div>
-            </article>
+            <p>
+              You’ve watched YouTube videos. Memorized STAR. Practiced with ChatGPT.
+            </p>
           </div>
 
-          <p
-            style={{
-              marginTop: 40,
-              textAlign: "center",
-              fontWeight: 700,
-              fontSize: "1.3rem",
-            }}
-          >
-            If that sounds familiar… you’re exactly who I built this for.
+          <p className="heroTurn">Yet interviews still feel unpredictable.</p>
+          <p className="heroClose">
+            If that’s you, you’re exactly who I built this for.
+          </p>
+
+          <div className="heroActions">
+            <a className="primaryButton" href="#book">
+              Book a free 30-minute conversation <ArrowIcon />
+            </a>
+            <a className="heroSecondaryButton" href="#why">
+              See why the usual advice fails <span aria-hidden="true">↓</span>
+            </a>
+          </div>
+          <p className="heroMicrocopy">
+            Walk away understanding what may be costing you offers—and what to change before your next interview.
           </p>
         </div>
       </section>
 
-      <section className="problem section" id="why">
+      {/* WHY */}
+      <section className="section why" id="why">
         <div className="shell narrow">
-          <p className="eyebrow dark">
-            WHY MOST INTERVIEW ADVICE DOESN’T WORK
+          <p className="eyebrow dark">WHY MOST INTERVIEW ADVICE DOESN’T WORK</p>
+          <h2>The best candidate doesn’t always get the offer.</h2>
+          <p className="lead centered">
+            The candidate who communicates their value most clearly usually does.
+            The Mutual Advantage Method™ helps you become that candidate.
           </p>
-          <h2>Most coaching starts with your answers. That’s backwards.</h2>
 
-          <div className="problemGrid">
-            <div className="problemCard muted">
-              <p className="problemLabel">Interview coaching usually teaches</p>
-              <div className="flowChain mutedChain">
-                <span>✔ Better answers</span>
-                <span>✔ Better stories</span>
-                <span>✔ Better confidence</span>
-                <span className="flowArrow">↓</span>
-                <span className="flowResult">Hope for better results</span>
+          <div className="comparisonGrid">
+            <article className="comparisonCard mutedCard">
+              <p className="comparisonLabel">Traditional interview coaching</p>
+              <div className="comparisonFlow">
+                <strong>Better answers</strong><span>↓</span>
+                <strong>Better stories</strong><span>↓</span>
+                <strong>Better confidence</strong><span>↓</span>
+                <strong>Hope for better results</strong>
               </div>
-            </div>
-
-            <div className="problemCard accent">
-              <p className="problemLabel">
-                The Mutual Advantage Method teaches
+              <p>
+                It starts with the question and teaches you how to produce a more polished response.
               </p>
-              <div className="flowChain">
-                <span>Employer Needs</span>
-                <span className="flowArrow">↓</span>
-                <span>Hiring Decisions</span>
-                <span className="flowArrow">↓</span>
-                <span>Interview Questions</span>
-                <span className="flowArrow">↓</span>
-                <span>Professional Identity</span>
-                <span className="flowArrow">↓</span>
-                <span className="flowResult">Your Answers</span>
+            </article>
+
+            <article className="comparisonCard featuredCard">
+              <p className="comparisonLabel">The Mutual Advantage Method™</p>
+              <div className="comparisonFlow">
+                <strong>Employer needs</strong><span>↓</span>
+                <strong>Hiring decisions</strong><span>↓</span>
+                <strong>Interview questions</strong><span>↓</span>
+                <strong>Your professional value</strong><span>↓</span>
+                <strong>Your answers</strong>
               </div>
-            </div>
+              <p>
+                It starts with the business decision beneath the question—so your answers become relevant, credible, and easier to act on.
+              </p>
+            </article>
           </div>
 
-          <p className="centerStatement">
-            When you understand what interviewers are actually trying to
-            learn, your answers naturally become{" "}
-            <strong>more relevant, more strategic, and more convincing.</strong>
+          <div className="outcomeStrip">
+            <p>Instead of leaving the call replaying every answer and wondering what you should have said…</p>
+            <strong>
+              You leave interviews knowing you made your value unmistakable, asked the questions that matter, and gave yourself a real chance to be chosen.
+            </strong>
+          </div>
+        </div>
+      </section>
+
+      {/* COMMON CONVERSATIONS */}
+      <section className="section conversations">
+        <div className="shell narrow">
+          <p className="eyebrow light">CONVERSATIONS I HEAR ALL THE TIME</p>
+          <h2>Qualified professionals often describe the same frustration.</h2>
+
+          <div className="messageStack" aria-label="Common interview frustrations">
+            <article className="messageBubble left">
+              <span>Unknown sender · 9:41 AM</span>
+              <p>“I don’t understand it… I keep getting interviews, but never the offer.”</p>
+            </article>
+            <article className="messageBubble right">
+              <span>Unknown sender · 2:18 PM</span>
+              <p>“Everyone tells me I interview well… so why am I still getting rejected?”</p>
+            </article>
+            <article className="messageBubble left">
+              <span>Unknown sender · 6:07 PM</span>
+              <p>“I know I’m qualified. I just don’t know how to communicate it.”</p>
+            </article>
+          </div>
+
+          <p className="conversationNote">
+            These aren’t testimonials. They’re versions of conversations I’ve had with professionals before they changed how they approached interviews.
           </p>
         </div>
       </section>
 
-      <section className="about section">
+      {/* METHOD */}
+      <section className="section method" id="method">
+        <div className="shell">
+          <div className="sectionIntro">
+            <div>
+              <p className="eyebrow dark">THE MUTUAL ADVANTAGE METHOD™</p>
+              <h2>Interviews aren’t tests.</h2>
+            </div>
+            <div>
+              <p className="lead">
+                They’re mutual business conversations where two parties are deciding whether working together creates value.
+              </p>
+              <p>
+                The employer is asking whether you can solve problems worth paying for. You are asking whether this is an environment where your strengths can create meaningful value. The strongest interviews answer both questions.
+              </p>
+            </div>
+          </div>
+
+          <div className="pillarGrid">
+            <article className="pillar">
+              <span>01</span>
+              <h3>Professional Identity</h3>
+              <p>Define the strengths, patterns, judgment, and character behind the results on your résumé.</p>
+            </article>
+            <article className="pillar">
+              <span>02</span>
+              <h3>Evidence of Value</h3>
+              <p>Turn achievements into credible proof of how you think, operate, and consistently create outcomes.</p>
+            </article>
+            <article className="pillar">
+              <span>03</span>
+              <h3>Employer Perspective</h3>
+              <p>Understand what each question is designed to assess and what uncertainty the interviewer needs resolved.</p>
+            </article>
+            <article className="pillar">
+              <span>04</span>
+              <h3>Strategic Positioning</h3>
+              <p>Connect who you are, what you’ve done, and why it matters for this role—without sounding rehearsed.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      {/* TACTICAL EXAMPLE */}
+      <section className="section identity">
+        <div className="shell identityGrid">
+          <div>
+            <p className="eyebrow light">THE QUESTION BEHIND THE QUESTION</p>
+            <h2>“Tell me about yourself” is not asking for your biography.</h2>
+          </div>
+          <div className="identityCopy">
+            <p>
+              Your interviewer already has your résumé. What they’re really trying to understand is the professional identity behind it.
+            </p>
+            <ul className="checkList">
+              <li><CheckIcon /> What qualities repeatedly show up in the way you work?</li>
+              <li><CheckIcon /> What abilities produced the successes on your résumé?</li>
+              <li><CheckIcon /> Which parts of your experience matter most for this role?</li>
+              <li><CheckIcon /> Can they trust you to recreate that value on their team?</li>
+            </ul>
+            <p className="identityClosing">
+              The Method helps you answer that question with a clear professional narrative—not a chronological résumé recap.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* TRANSFORMATION */}
+      <section className="section transformation">
+        <div className="shell narrow centered">
+          <p className="eyebrow dark">WHAT CHANGES</p>
+          <h2>You stop treating every interview like a verdict on your worth.</h2>
+          <p className="lead centered">
+            You walk in knowing what you bring, how to prove it, and what you need to learn before deciding whether the opportunity is right for you.
+          </p>
+          <div className="changeGrid">
+            <article><strong>Before</strong><p>Trying to impress them</p></article>
+            <article><strong>After</strong><p>Walking in as an equal business partner</p></article>
+            <article><strong>Before</strong><p>Rambling through your history</p></article>
+            <article><strong>After</strong><p>Telling a clear story they remember after you leave</p></article>
+            <article><strong>Before</strong><p>Guessing what they want to hear</p></article>
+            <article><strong>After</strong><p>Knowing exactly what each answer needs to prove</p></article>
+          </div>
+          <div className="futurePace">
+            <p>Picture your next interview.</p>
+            <h3>You are calm. You know the value you bring. You can explain it without overtalking, underselling yourself, or performing for approval.</h3>
+            <p>When the conversation ends, you are not obsessing over every word. You know you showed them who you are, how you create value, and why that value matters in their organization.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* WAYS TO WORK TOGETHER */}
+      <section className="section offers" id="work-together">
+        <div className="shell">
+          <div className="sectionIntro">
+            <div>
+              <p className="eyebrow dark">TWO WAYS TO WORK TOGETHER</p>
+              <h2>The right level of support depends on what you need.</h2>
+            </div>
+            <p>
+              The free conversation is where we diagnose what is getting in the way and determine which path—if either—makes sense for you.
+            </p>
+          </div>
+
+          <div className="offerGrid">
+            <article className="offerCard premium">
+              <div className="offerBadge">Most comprehensive</div>
+              <p className="offerKicker">4-WEEK PRIVATE PROGRAM</p>
+              <h3>The Mutual Advantage Program™</h3>
+              <div className="price">$3,500</div>
+              <p className="offerLead">
+                For professionals who want a complete interview-positioning system, guided practice, and support across an active search.
+              </p>
+              <ul className="checkList compact">
+                <li><CheckIcon /> Four weeks of private strategy and coaching</li>
+                <li><CheckIcon /> Résumé and target-role analysis</li>
+                <li><CheckIcon /> Professional identity and positioning</li>
+                <li><CheckIcon /> “Tell me about yourself” narrative</li>
+                <li><CheckIcon /> Evidence-based story bank</li>
+                <li><CheckIcon /> Live practice, feedback, and refinement</li>
+                <li><CheckIcon /> Between-session support</li>
+              </ul>
+              <a className="primaryButton full" href="#book">
+                Explore the 4-week program <ArrowIcon />
+              </a>
+            </article>
+
+            <article className="offerCard">
+              <p className="offerKicker">PRIVATE 90-MINUTE SESSION</p>
+              <h3>The Mutual Advantage Intensive™</h3>
+              <div className="price">$750</div>
+              <p className="offerLead">
+                For someone who wants focused help solving the most important interview challenge in front of them right now.
+              </p>
+              <ul className="checkList compact">
+                <li><CheckIcon /> Pre-session résumé and role review</li>
+                <li><CheckIcon /> One 90-minute private strategy session</li>
+                <li><CheckIcon /> Focus on your highest-priority gap</li>
+                <li><CheckIcon /> Personalized frameworks and notes</li>
+                <li><CheckIcon /> Clear post-session action plan</li>
+              </ul>
+              <a className="secondaryButton full" href="#book">
+                Explore the Intensive <ArrowIcon />
+              </a>
+            </article>
+          </div>
+          <div className="offerCallout">
+            <div>
+              <strong>Not sure which level of support you need?</strong>
+              <p>You do not need to decide before we speak. We will identify the real gap and recommend the smallest level of support that can genuinely help.</p>
+            </div>
+            <a className="primaryButton" href="#book">
+              Book the free strategy call <ArrowIcon />
+            </a>
+          </div>
+          <p className="offerNote">
+            Pricing is shown so you can make an informed decision before booking. The call is free, private, and pressure-free.
+          </p>
+        </div>
+      </section>
+
+      {/* ABOUT */}
+      <section className="section about">
         <div className="shell aboutGrid">
-          <div className="portraitWrap">
+          <div className="aboutImageWrap">
             <img
               src="/images/chichi-headshot.jpg"
               alt="Chi-Chi, creator of the Mutual Advantage Method"
-              className="portrait"
+              className="aboutImage"
             />
+            <div className="aboutExperience"><strong>10+</strong><span>years across HR, recruiting, hiring panels, and leadership</span></div>
           </div>
-
-          <div className="aboutCopy">
-            <p className="eyebrow dark">MEET CHI-CHI</p>
-            <h2>I have seen interviews from both sides of the table.</h2>
-            <p>
-              My perspective comes from experience across HR, recruiting, hiring
-              panels, and program leadership inside a Fortune 1 environment.
-            </p>
-            <p>
-              I also know what it feels like to be a qualified candidate who
-              keeps approaching interviews as a performance—because I was one.
-            </p>
-            <p>
-              Early in my career, I went through{" "}
-              <strong>34 interviews before landing a single role</strong>.
-            </p>
-            <p>
-              Then I stopped treating interviews like tests and started
-              treating them like mutual business conversations. Everything
-              about how I prepared changed—and so did my results:{" "}
-              <strong>
-                an 80% interview success rate, meaning 8 of the last 10 roles
-                I’ve interviewed for ended in an offer.
-              </strong>
-            </p>
-            <p>
-              I created the Mutual Advantage Method™ to help experienced
-              professionals understand what interviewers are actually trying to
-              learn and communicate their value with greater clarity,
-              confidence, and credibility.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="voices section">
-        <div className="shell narrow">
-          <p className="eyebrow dark">WHAT PEOPLE TELL ME AFTERWARD</p>
-          <h2>The shift is real—and it shows up in the very next interview.</h2>
-
-          <div className="voiceGrid">
-            <figure className="voiceCard">
-              <blockquote>
-                “I realized halfway through my interview that I wasn’t trying
-                to win them over anymore. I was showing them how I solve
-                problems and seeing if it was a good fit for both of us. That
-                shift changed everything—best interview I’ve had in years.”
-              </blockquote>
-              <figcaption>Ashley W.</figcaption>
-            </figure>
-
-            <figure className="voiceCard">
-              <blockquote>
-                “The framework for ‘tell me about yourself’ was a game changer.
-                I didn’t ramble. The interviewer even said, ‘I appreciate how
-                you connected your experience directly to what we’re looking
-                for.’ I’d never heard that before.”
-              </blockquote>
-              <figcaption>James M.</figcaption>
-            </figure>
-
-            <figure className="voiceCard">
-              <blockquote>
-                “I finally have a clear understanding of what I bring to the
-                table and how to communicate it. I walked into my interview
-                feeling calm, confident, and focused instead of anxious and
-                trying to prove myself.”
-              </blockquote>
-              <figcaption>Michael J.</figcaption>
-            </figure>
-
-            <figure className="voiceCard">
-              <blockquote>
-                “I always walked in feeling like I had to impress them.
-                Realizing it’s actually a conversation about whether we’re the
-                right fit completely changed my perspective. I’m genuinely
-                excited for my next interview now.”
-              </blockquote>
-              <figcaption>Sarah M.</figcaption>
-            </figure>
-          </div>
-
-          <p className="voicesNote">
-            Real feedback from professionals I’ve coached through real
-            interviews, shared with their permission. Names shortened for
-            privacy.
-          </p>
-        </div>
-      </section>
-
-      <section className="investment section" id="strategy-call">
-        <div className="shell investmentGrid">
           <div>
-            <p className="eyebrow light">THE INTERVIEW STRATEGY CALL</p>
-            <h2>
-              Let’s find out what’s getting lost between your experience and
-              their decision.
-            </h2>
-            <p className="investmentLead">
-              A free, private 30-minute conversation about your specific
-              situation—the roles you’re pursuing, what’s happening in your
-              interviews, and where the disconnect is.
+            <p className="eyebrow dark">MEET CHI-CHI</p>
+            <h2>I’ve seen interviews from both sides of the table.</h2>
+            <p>
+              My perspective comes from more than a decade across HR, recruiting, hiring panels, and program leadership inside a Fortune 1 environment.
             </p>
-
-            <ul className="checkList compact">
-              <li>
-                <CheckIcon /> You’ll leave with at least one concrete
-                adjustment for your very next interview—whether or not we ever
-                work together
-              </li>
-              <li>
-                <CheckIcon /> If your situation is a fit, I’ll explain exactly
-                how working together looks—from a focused 90-minute intensive
-                ($750) to the four-week Mutual Advantage Program™ ($3,500)
-              </li>
-              <li>
-                <CheckIcon /> If it’s not a fit, I’ll tell you that too. I
-                only work with people I’m confident I can help
-              </li>
-            </ul>
-
-            <p className="callGuardrail">
-              I hold a small number of these calls each week, so booking
-              includes a few short questions about your situation. They help
-              me come prepared—and keep the time for people who are serious
-              about fixing this. This call isn’t for you if you want someone
-              to script answers for you, or if you’re not interviewing now or
-              soon.
+            <p>
+              I created the Mutual Advantage Method™ to help experienced professionals stop performing for approval, understand the decision beneath the questions, and communicate their value with clarity, confidence, and credibility.
             </p>
-          </div>
-
-          <div className="priceCard">
-            <p className="priceStatement">
-              Your next interview could determine the next several years of
-              your career.
+            <p className="aboutPromise">
+              My goal is not to make you sound polished for one interview. It is to help you become the person who can walk into any interview knowing what you offer, why it matters, and how to make that value easy to recognize.
             </p>
-            <p className="priceSubStatement">
-              Let’s make sure it tells the right story.
-            </p>
-
-            <p className="priceListHeading">The Interview Strategy Call</p>
-            <ul className="checkList compact priceChecklist">
-              <li>
-                <CheckIcon /> Free · 30 minutes · private, 1:1
-              </li>
-              <li>
-                <CheckIcon /> You bring: your target role and what’s been
-                happening in your interviews
-              </li>
-              <li>
-                <CheckIcon /> You leave with: at least one specific change to
-                make before your next interview
-              </li>
-              <li>
-                <CheckIcon /> No pressure, no scripts—just an honest look at
-                what’s getting lost
-              </li>
-            </ul>
-
-            <a
-              className="primaryButton full"
-              href={STRATEGY_CALL_URL}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Book my free strategy call <ArrowIcon />
-            </a>
-
-            <p className="microcopy">
-              Scheduling is completed through Calendly. A few short questions
-              are part of booking.
-            </p>
+            <div className="credibilityRow darkRow">
+              <span>HR + recruiting</span>
+              <span>Hiring-panel perspective</span>
+              <span>Fortune 1 leadership experience</span>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="faq section">
-        <div className="shell narrow">
-          <p className="eyebrow dark">FREQUENTLY ASKED QUESTIONS</p>
-          <h2>Before you book</h2>
+      {/* FREE CALL */}
+      <section className="section booking" id="book">
+        <div className="shell bookingGrid">
+          <div>
+            <p className="eyebrow light">A FREE 30-MINUTE CONVERSATION</p>
+            <h2>Let’s figure out what your interviews have been missing.</h2>
+            <p className="bookingLead">
+              This is not a generic discovery call. We’ll look at what has been happening in your interviews, identify the most likely gap, and determine the right next step.
+            </p>
+            <ul className="checkList lightList">
+              <li><CheckIcon /> Clarify where your interview process is breaking down</li>
+              <li><CheckIcon /> Identify what interviewers may not be understanding about you</li>
+              <li><CheckIcon /> Decide whether the Program, the Intensive, or neither is the right fit</li>
+            </ul>
+            <p className="microcopy lightMicrocopy">
+              No pressure. No promise of a job offer. Just an honest conversation about what would make the biggest difference.
+            </p>
+          </div>
 
-          <div className="faqList">
-            <details>
-              <summary>Is the strategy call really free?</summary>
-              <p>
-                Yes. It’s 30 minutes, it costs nothing, and you’ll leave with
-                at least one concrete adjustment you can use in your next
-                interview. If your situation is a fit for working together,
-                I’ll explain how that looks—and if it’s not, I’ll say so.
-                Either way, the call is useful on its own.
-              </p>
-            </details>
-
-            <details>
-              <summary>What does working together cost?</summary>
-              <p>
-                Full transparency: a focused 90-minute intensive is $750, and
-                the four-week Mutual Advantage Program™—four private sessions
-                plus support between them while you’re interviewing—is $3,500.
-                I only recommend either one on the call if I genuinely believe
-                it will change your results.
-              </p>
-            </details>
-
-            <details>
-              <summary>Can you guarantee I will get the job?</summary>
-              <p>
-                No. No ethical interview professional can control or guarantee
-                a company’s hiring decision. What I can do is help you build a
-                clearer, stronger, evidence-based case for why you are the
-                right hire—so the decision is made on your real value, not on
-                how well you performed under pressure.
-              </p>
-            </details>
-
-            <details>
-              <summary>What if I don’t have an interview scheduled yet?</summary>
-              <p>
-                If you’re actively applying and interviews are likely soon,
-                book the call—preparing before an opportunity becomes urgent is
-                the best position to be in. If a job search is more of a
-                someday idea, hold off until you’re in motion; the work lands
-                hardest when it’s applied to real interviews.
-              </p>
-            </details>
-
-            <details>
-              <summary>Why do you ask questions before the call?</summary>
-              <p>
-                Two reasons. They let me come prepared, so we spend our 25
-                minutes on your situation instead of background. And because I
-                hold a limited number of calls each week, they help me keep
-                that time for people who are serious about changing how they
-                interview.
-              </p>
-            </details>
+          <div className="calendarCard">
+            <div className="calendarHeader">
+              <strong>Book your free conversation</strong>
+              <span>30 minutes · Private · No obligation</span>
+            </div>
+            <iframe
+              title="Schedule a free 30-minute interview strategy conversation"
+              src={CALENDLY_URL}
+              width="100%"
+              height="720"
+              frameBorder="0"
+            />
+            <a className="primaryButton full fallbackButton" href={CALENDLY_URL} target="_blank" rel="noreferrer">
+              Open Calendly in a new tab <ArrowIcon />
+            </a>
           </div>
         </div>
       </section>
@@ -527,16 +389,11 @@ export default function MutualAdvantagePage() {
       <section className="finalCta">
         <div className="shell finalCtaInner">
           <div>
-            <p className="eyebrow light">YOU DON’T NEED BETTER ANSWERS.</p>
+            <p className="eyebrow light">YOU DON’T NEED BETTER-SOUNDING ANSWERS.</p>
             <h2>You need a better way to communicate your value.</h2>
           </div>
-          <a
-            className="primaryButton lightButton"
-            href={STRATEGY_CALL_URL}
-            target="_blank"
-            rel="noreferrer"
-          >
-            Book my free strategy call <ArrowIcon />
+          <a className="primaryButton" href="#book">
+            Book the free conversation <ArrowIcon />
           </a>
         </div>
       </section>
@@ -545,1161 +402,29 @@ export default function MutualAdvantagePage() {
         <div className="shell footerInner">
           <span>© {new Date().getFullYear()} Ideal Clarity Solutions</span>
           <span>
-            The Mutual Advantage Method™ is an independent career-development
-            framework. It is not affiliated with or endorsed by any employer.
+            The Mutual Advantage Method™ is an independent career-development framework. Coaching cannot guarantee a hiring decision or job offer.
           </span>
         </div>
       </footer>
 
+      <a className="floatingCta" href="#book" aria-label="Book a free 30-minute interview strategy call">
+        <span>Free 30-minute strategy call</span>
+        <strong>Book now →</strong>
+      </a>
+
       <div className="mobileBar">
         <div>
-          <strong>Interview Strategy Call</strong>
-          <span>Free · 30 minutes · 1:1</span>
+          <strong>Free interview strategy call</strong>
+          <span>30 minutes · No obligation</span>
         </div>
-        <a href="#strategy-call">Book free call</a>
+        <a href="#book">Book now</a>
       </div>
 
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-            (function () {
-              if (location.hash) {
-                history.replaceState(null, "", location.pathname + location.search);
-                window.scrollTo(0, 0);
-              }
-              document.addEventListener("click", function (e) {
-                var a = e.target && e.target.closest ? e.target.closest('a[href^="#"]') : null;
-                if (!a) return;
-                var target = document.querySelector(a.getAttribute("href"));
-                if (!target) return;
-                e.preventDefault();
-                target.scrollIntoView({ behavior: "smooth", block: "start" });
-              });
-            })();
-          `,
-        }}
-      />
-
       <style>{`
-        :root {
-          --ink: #102844;
-          --ink-deep: #081a2f;
-          --orange: #f28c28;
-          --orange-dark: #cf6f15;
-          --cream: #fff8ef;
-          --sand: #f3eadf;
-          --paper: #ffffff;
-          --muted: #607086;
-          --line: #dfe6ee;
-          --success: #227a5b;
-          --shadow: 0 24px 70px rgba(16, 40, 68, 0.12);
-        }
-
-        * {
-          box-sizing: border-box;
-        }
-
-        html {
-          scroll-behavior: auto;
-        }
-
-        body {
-          margin: 0;
-          color: var(--ink);
-          background: var(--paper);
-          font-family:
-            Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-            "Segoe UI", sans-serif;
-          line-height: 1.6;
-        }
-
-        a {
-          color: inherit;
-          text-decoration: none;
-        }
-
-        button,
-        a {
-          -webkit-tap-highlight-color: transparent;
-        }
-
-        h1,
-        h2,
-        h3,
-        p {
-          margin-top: 0;
-        }
-
-        h1,
-        h2,
-        h3 {
-          line-height: 1.08;
-          letter-spacing: -0.035em;
-        }
-
-        h1 {
-          margin-bottom: 22px;
-          font-size: clamp(2.7rem, 6.2vw, 5.6rem);
-          max-width: 980px;
-        }
-
-        h1 span {
-          color: var(--orange);
-        }
-
-        h2 {
-          margin-bottom: 24px;
-          font-size: clamp(2.25rem, 4.5vw, 4.4rem);
-        }
-
-        h3 {
-          margin-bottom: 12px;
-          font-size: 1.35rem;
-        }
-
-        p {
-          font-size: 1.06rem;
-        }
-
-        .shell {
-          width: min(1180px, calc(100% - 40px));
-          margin: 0 auto;
-        }
-
-        .narrow {
-          width: min(900px, calc(100% - 40px));
-        }
-
-        .section {
-          padding: 110px 0;
-        }
-
-        .nav {
-          position: relative;
-          z-index: 20;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          min-height: 82px;
-          padding: 0 max(24px, calc((100vw - 1180px) / 2));
-          border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-          color: #fff;
-          background: var(--ink-deep);
-        }
-
-        .brand {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-        }
-
-        .brandLogo {
-          display: block;
-          height: 48px;
-          width: auto;
-          padding: 5px 12px;
-          border-radius: 12px;
-          background: #fff;
-        }
-
-        .navCta {
-          padding: 10px 16px;
-          border: 1px solid rgba(255, 255, 255, 0.25);
-          border-radius: 999px;
-          font-size: 0.92rem;
-          font-weight: 750;
-        }
-
-        .hero {
-          position: relative;
-          overflow: hidden;
-          padding: 110px 0 125px;
-          color: #fff;
-          background:
-            linear-gradient(125deg, rgba(8, 26, 47, 0.98), rgba(16, 40, 68, 0.96)),
-            var(--ink-deep);
-        }
-
-        .heroGlow {
-          position: absolute;
-          border-radius: 999px;
-          filter: blur(8px);
-          pointer-events: none;
-        }
-
-        .heroGlowOne {
-          top: -220px;
-          right: -120px;
-          width: 520px;
-          height: 520px;
-          background: rgba(242, 140, 40, 0.18);
-        }
-
-        .heroGlowTwo {
-          bottom: -280px;
-          left: -160px;
-          width: 600px;
-          height: 600px;
-          background: rgba(51, 125, 171, 0.16);
-        }
-
-        .heroGrid {
-          position: relative;
-          z-index: 2;
-          display: grid;
-          grid-template-columns: minmax(0, 1.5fr) minmax(300px, 0.72fr);
-          gap: 72px;
-          align-items: start;
-        }
-
-        .eyebrow {
-          margin-bottom: 18px;
-          color: #ffc789;
-          font-size: 0.78rem;
-          font-weight: 850;
-          letter-spacing: 0.17em;
-        }
-
-        .eyebrow.dark {
-          color: var(--orange-dark);
-        }
-
-        .eyebrow.light {
-          color: #ffd3a6;
-        }
-
-        .heroSub {
-          margin-bottom: 14px;
-          color: #fff;
-          font-size: clamp(1.28rem, 2.4vw, 1.7rem);
-          font-weight: 800;
-          letter-spacing: -0.015em;
-          line-height: 1.3;
-        }
-
-        .heroLead {
-          max-width: 780px;
-          margin-bottom: 34px;
-          color: rgba(255, 255, 255, 0.84);
-          font-size: clamp(1.14rem, 2vw, 1.42rem);
-        }
-
-        .heroLead strong {
-          color: #fff;
-        }
-
-        .heroActions {
-          display: flex;
-          flex-wrap: wrap;
-          align-items: center;
-          gap: 20px;
-          margin-bottom: 36px;
-        }
-
-        .primaryButton {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          gap: 10px;
-          min-height: 56px;
-          padding: 15px 22px;
-          border-radius: 12px;
-          color: #fff;
-          background: linear-gradient(135deg, var(--orange), var(--orange-dark));
-          box-shadow: 0 14px 30px rgba(242, 140, 40, 0.24);
-          font-weight: 850;
-          transition:
-            transform 0.2s ease,
-            box-shadow 0.2s ease;
-        }
-
-        .primaryButton:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 18px 34px rgba(242, 140, 40, 0.3);
-        }
-
-        .textLink {
-          color: rgba(255, 255, 255, 0.8);
-          font-weight: 750;
-          text-decoration: underline;
-          text-underline-offset: 5px;
-        }
-
-        .credibilityRow {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 10px;
-        }
-
-        .credibilityRow span {
-          padding: 8px 11px;
-          border: 1px solid rgba(255, 255, 255, 0.14);
-          border-radius: 999px;
-          color: rgba(255, 255, 255, 0.74);
-          font-size: 0.82rem;
-        }
-
-        .heroSubAccent {
-          color: var(--orange);
-        }
-
-        .heroCard {
-          position: relative;
-          margin-top: clamp(72px, 9.5vw, 138px);
-          padding: 34px;
-          border: 1px solid rgba(255, 255, 255, 0.16);
-          border-radius: 24px;
-          background: rgba(255, 255, 255, 0.07);
-          backdrop-filter: blur(16px);
-          box-shadow: 0 28px 80px rgba(0, 0, 0, 0.24);
-        }
-
-        .statBadge {
-          position: absolute;
-          top: -46px;
-          right: -30px;
-          z-index: 5;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          width: 164px;
-          height: 164px;
-          padding: 20px;
-          border-radius: 50%;
-          transform: rotate(7deg);
-          color: var(--ink-deep);
-          background: var(--orange);
-          box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
-          text-align: center;
-          line-height: 1.15;
-        }
-
-        .statBadgeTop {
-          font-size: 0.6rem;
-          font-weight: 800;
-          text-transform: uppercase;
-          letter-spacing: 0.03em;
-          opacity: 0.85;
-        }
-
-        .statBadgeBig {
-          margin: 3px 0 1px;
-          font-size: 2.5rem;
-          font-weight: 900;
-          letter-spacing: -0.04em;
-          line-height: 1;
-        }
-
-        .statBadgeBottom {
-          font-size: 0.6rem;
-          font-weight: 800;
-          text-transform: uppercase;
-          letter-spacing: 0.03em;
-          opacity: 0.85;
-        }
-
-        .statStrip {
-          display: none;
-          align-items: center;
-          gap: 10px;
-          width: fit-content;
-          margin: -4px 0 22px;
-          padding: 10px 16px;
-          border-radius: 999px;
-          color: var(--ink-deep);
-          background: var(--orange);
-          font-size: 0.86rem;
-          font-weight: 750;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
-        }
-
-        .statStrip strong {
-          font-weight: 900;
-          font-size: 1.05rem;
-        }
-
-        .statStripArrow {
-          opacity: 0.7;
-        }
-
-        .quoteIcon {
-          color: var(--orange);
-        }
-
-        .heroCard p {
-          margin-bottom: 14px;
-          font-size: 1.24rem;
-          line-height: 1.48;
-        }
-
-        .heroCard em {
-          color: #ffc789;
-          font-style: normal;
-          font-weight: 850;
-        }
-
-        .cardLabel {
-          margin-top: 24px;
-          padding-top: 20px;
-          border-top: 1px solid rgba(255, 255, 255, 0.13);
-          color: rgba(255, 255, 255, 0.58);
-          font-size: 0.78rem;
-          text-transform: uppercase;
-          letter-spacing: 0.1em;
-        }
-
-        .problem {
-          background: var(--cream);
-        }
-
-        .problem h2,
-        .centerStatement {
-          text-align: center;
-        }
-
-        .problemGrid {
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 24px;
-          margin: 54px 0;
-        }
-
-        .problemCard {
-          padding: 34px;
-          border-radius: 20px;
-        }
-
-        .problemCard.muted {
-          border: 1px solid #eadfce;
-          background: rgba(255, 255, 255, 0.52);
-        }
-
-        .problemCard.accent {
-          border: 1px solid #efc392;
-          background: #fff;
-          box-shadow: var(--shadow);
-        }
-
-        .problemLabel {
-          margin-bottom: 20px;
-          font-weight: 850;
-        }
-
-        .problemCard ul {
-          margin: 0;
-          padding-left: 20px;
-        }
-
-        .problemCard li {
-          margin: 12px 0;
-        }
-
-        .centerStatement {
-          font-size: clamp(1.3rem, 2.6vw, 1.9rem);
-        }
-
-        .sectionIntro {
-          display: grid;
-          grid-template-columns: 1.08fr 0.92fr;
-          gap: 80px;
-          align-items: end;
-          margin-bottom: 56px;
-        }
-
-        .sectionIntro p:last-child {
-          color: var(--muted);
-          font-size: 1.18rem;
-        }
-
-        .pillarGrid {
-          display: grid;
-          grid-template-columns: repeat(4, minmax(0, 1fr));
-          gap: 18px;
-        }
-
-        .pillar {
-          min-height: 290px;
-          padding: 28px;
-          border: 1px solid var(--line);
-          border-radius: 18px;
-          background: #fff;
-        }
-
-        .pillarNumber {
-          display: block;
-          margin-bottom: 62px;
-          color: var(--orange-dark);
-          font-size: 0.78rem;
-          font-weight: 900;
-          letter-spacing: 0.13em;
-        }
-
-        .pillar p,
-        .deliverable p,
-        .about p {
-          color: var(--muted);
-        }
-
-        .identity {
-          color: #fff;
-          background: var(--ink);
-        }
-
-        .identityGrid {
-          display: grid;
-          grid-template-columns: 0.9fr 1.1fr;
-          gap: 90px;
-          align-items: start;
-        }
-
-        .identityCopy > p {
-          color: rgba(255, 255, 255, 0.75);
-          font-size: 1.14rem;
-        }
-
-        .flowChain {
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-          margin-top: 6px;
-          font-size: 1.02rem;
-          font-weight: 650;
-        }
-
-        .mutedChain {
-          color: var(--muted);
-        }
-
-        .flowArrow {
-          opacity: 0.55;
-          font-size: 1.1rem;
-          font-weight: 400;
-          line-height: 1;
-        }
-
-        .flowResult {
-          font-weight: 850;
-        }
-
-        .problemCard.accent .flowResult {
-          color: var(--orange);
-        }
-
-        .convo {
-          color: #fff;
-          background:
-            radial-gradient(circle at 80% 10%, rgba(242, 140, 40, 0.1), transparent 40%),
-            var(--ink-deep);
-        }
-
-        .convoBubbles {
-          display: flex;
-          flex-direction: column;
-          gap: 22px;
-          max-width: 560px;
-          margin-top: 44px;
-        }
-
-        .bubble {
-          position: relative;
-          align-self: flex-start;
-          max-width: 88%;
-          padding: 16px 20px;
-          border-radius: 22px;
-          border-bottom-left-radius: 6px;
-          background: rgba(255, 255, 255, 0.12);
-          border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .bubble:nth-child(2) {
-          align-self: flex-end;
-          border-bottom-left-radius: 22px;
-          border-bottom-right-radius: 6px;
-          background: rgba(242, 140, 40, 0.22);
-        }
-
-        .bubble p {
-          margin: 0;
-          font-size: 1.04rem;
-          line-height: 1.5;
-        }
-
-        .bubble p + p {
-          margin-top: 4px;
-        }
-
-        .convoDisclaimer {
-          max-width: 640px;
-          margin-top: 44px;
-          color: rgba(255, 255, 255, 0.55);
-          font-size: 0.86rem;
-        }
-
-        .priceStatement {
-          margin-bottom: 6px;
-          font-size: 1.14rem;
-          font-weight: 800;
-          line-height: 1.4;
-          letter-spacing: -0.01em;
-        }
-
-        .priceSubStatement {
-          margin-bottom: 14px;
-          color: rgba(255, 255, 255, 0.72);
-          font-size: 0.98rem;
-        }
-
-        .priceListHeading {
-          margin: 22px 0 14px;
-          font-size: 0.82rem;
-          font-weight: 800;
-          text-transform: uppercase;
-          letter-spacing: 0.08em;
-          color: var(--orange);
-        }
-
-        .priceDivider {
-          height: 1px;
-          margin: 22px 0;
-          background: rgba(255, 255, 255, 0.14);
-        }
-
-        .priceChecklist {
-          margin: 0;
-        }
-
-        .priceChecklist:last-of-type {
-          margin-bottom: 28px;
-        }
-
-        .priceChecklist li {
-          color: #fff;
-          font-size: 1.04rem;
-          font-weight: 600;
-        }
-
-        .priceLine {
-          margin: 0 0 14px;
-          text-align: center;
-          color: rgba(255, 255, 255, 0.72);
-          font-size: 1rem;
-        }
-
-        .priceAmount {
-          color: #fff;
-          font-size: 1.35rem;
-          font-weight: 850;
-          letter-spacing: -0.02em;
-        }
-
-        .priceChecklist li {
-          font-size: 0.98rem;
-        }
-
-        .checkList {
-          display: grid;
-          gap: 14px;
-          margin: 28px 0;
-          padding: 0;
-          list-style: none;
-        }
-
-        .checkList li {
-          display: flex;
-          gap: 12px;
-          align-items: flex-start;
-        }
-
-        .checkList svg {
-          flex: 0 0 auto;
-          margin-top: 2px;
-          color: var(--orange);
-        }
-
-        .identityClosing {
-          padding-left: 18px;
-          border-left: 3px solid var(--orange);
-          color: #fff !important;
-          font-weight: 750;
-        }
-
-        .deliverableGrid {
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 20px;
-        }
-
-        .deliverable {
-          display: flex;
-          gap: 18px;
-          padding: 28px;
-          border: 1px solid var(--line);
-          border-radius: 18px;
-        }
-
-        .deliverableCheck {
-          display: grid;
-          flex: 0 0 38px;
-          width: 38px;
-          height: 38px;
-          place-items: center;
-          border-radius: 50%;
-          color: #fff;
-          background: var(--success);
-        }
-
-        .notIncluded {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 12px;
-          align-items: center;
-          margin-top: 28px;
-          padding: 20px 24px;
-          border-radius: 14px;
-          background: var(--cream);
-        }
-
-        .notIncluded span {
-          padding: 6px 10px;
-          border: 1px solid #eadfce;
-          border-radius: 999px;
-          color: var(--muted);
-          background: #fff;
-          font-size: 0.85rem;
-        }
-
-        .aboutCopy p:not(.eyebrow) {
-          margin-bottom: 18px;
-          line-height: 1.65;
-        }
-
-        .aboutGrid {
-          display: grid;
-          grid-template-columns: 0.74fr 1.26fr;
-          gap: 80px;
-          align-items: center;
-        }
-
-        .portraitWrap {
-          position: relative;
-        }
-
-        .portrait {
-          display: block;
-          width: 100%;
-          aspect-ratio: 4 / 5;
-          object-fit: cover;
-          border-radius: 26px;
-          background: var(--sand);
-          box-shadow: var(--shadow);
-        }
-
-        .portraitNote {
-          position: absolute;
-          right: 18px;
-          bottom: 18px;
-          padding: 12px 14px;
-          border-radius: 10px;
-          color: #fff;
-          background: rgba(8, 26, 47, 0.84);
-          font-size: 0.72rem;
-        }
-
-        .portraitNote code {
-          color: #ffd3a6;
-        }
-
-        .investment {
-          color: #fff;
-          background:
-            radial-gradient(circle at 20% 20%, rgba(242, 140, 40, 0.12), transparent 30%),
-            var(--ink-deep);
-        }
-
-        .investmentGrid {
-          display: grid;
-          grid-template-columns: 1.12fr 0.88fr;
-          gap: 80px;
-          align-items: center;
-        }
-
-        .investmentLead {
-          max-width: 680px;
-          color: rgba(255, 255, 255, 0.76);
-          font-size: 1.18rem;
-        }
-
-        .compact {
-          margin-bottom: 0;
-        }
-
-        .priceCard {
-          padding: 38px;
-          border: 1px solid rgba(255, 255, 255, 0.16);
-          border-radius: 24px;
-          background: rgba(255, 255, 255, 0.08);
-          backdrop-filter: blur(14px);
-        }
-
-        .priceLabel {
-          margin-bottom: 0;
-          color: rgba(255, 255, 255, 0.65);
-          font-size: 0.88rem;
-          text-transform: uppercase;
-          letter-spacing: 0.12em;
-        }
-
-        .statStrip em {
-          font-style: normal;
-          font-weight: 900;
-          text-transform: uppercase;
-          font-size: 0.72rem;
-          letter-spacing: 0.05em;
-          opacity: 0.75;
-        }
-
-        .statBadgeNow {
-          margin-top: 5px;
-          font-size: 0.58rem;
-          font-weight: 900;
-          text-transform: uppercase;
-          letter-spacing: 0.14em;
-          opacity: 0.7;
-        }
-
-        .voices {
-          background: var(--sand);
-        }
-
-        .voiceGrid {
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 22px;
-          margin-top: 44px;
-        }
-
-        .voiceCard {
-          margin: 0;
-          padding: 30px 32px;
-          border-radius: 20px;
-          background: var(--paper);
-          border: 1px solid rgba(16, 40, 68, 0.08);
-          box-shadow: 0 14px 40px rgba(16, 40, 68, 0.07);
-        }
-
-        .voiceCard blockquote {
-          margin: 0 0 16px;
-          font-size: 1.02rem;
-          line-height: 1.65;
-        }
-
-        .voiceCard figcaption {
-          font-weight: 800;
-          color: var(--orange-dark);
-        }
-
-        .voicesNote {
-          margin-top: 28px;
-          color: rgba(16, 40, 68, 0.62);
-          font-size: 0.88rem;
-        }
-
-        .callGuardrail {
-          margin-top: 26px;
-          padding: 18px 20px;
-          border-left: 3px solid var(--orange);
-          background: rgba(255, 255, 255, 0.06);
-          border-radius: 0 14px 14px 0;
-          color: rgba(255, 255, 255, 0.78);
-          font-size: 0.95rem;
-          line-height: 1.6;
-        }
-
-        .full {
-          width: 100%;
-        }
-
-        .microcopy {
-          margin: 16px 0 0;
-          color: rgba(255, 255, 255, 0.55);
-          font-size: 0.76rem;
-          text-align: center;
-        }
-
-        .faq {
-          background: var(--cream);
-        }
-
-        .faqList {
-          margin-top: 38px;
-        }
-
-        details {
-          border-bottom: 1px solid #ded5ca;
-        }
-
-        summary {
-          cursor: pointer;
-          padding: 24px 0;
-          font-size: 1.08rem;
-          font-weight: 850;
-        }
-
-        details p {
-          max-width: 760px;
-          padding: 0 0 24px;
-          color: var(--muted);
-        }
-
-        .finalCta {
-          padding: 76px 0;
-          color: #fff;
-          background: var(--orange-dark);
-        }
-
-        .finalCtaInner {
-          display: flex;
-          gap: 40px;
-          align-items: center;
-          justify-content: space-between;
-        }
-
-        .finalCta h2 {
-          max-width: 760px;
-          margin-bottom: 0;
-        }
-
-        .lightButton {
-          flex: 0 0 auto;
-          color: var(--ink);
-          background: #fff;
-          box-shadow: none;
-        }
-
-        footer {
-          padding: 34px 0 100px;
-          color: rgba(255, 255, 255, 0.58);
-          background: var(--ink-deep);
-        }
-
-        .footerInner {
-          display: flex;
-          gap: 20px;
-          justify-content: space-between;
-          font-size: 0.74rem;
-        }
-
-        .footerInner span:last-child {
-          max-width: 660px;
-          text-align: right;
-        }
-
-        .mobileBar {
-          display: none;
-        }
-
-        @media (max-width: 960px) {
-          .heroGrid,
-          .sectionIntro,
-          .identityGrid,
-          .aboutGrid,
-          .investmentGrid {
-            grid-template-columns: 1fr;
-            gap: 44px;
-          }
-
-          .pillarGrid {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-          }
-
-          .heroCard {
-            max-width: 640px;
-            margin-top: 0;
-          }
-
-          .statBadge {
-            display: none;
-          }
-
-          .statStrip {
-            display: inline-flex;
-          }
-
-          .portraitWrap {
-            max-width: 480px;
-          }
-
-          .sectionIntro {
-            margin-bottom: 40px;
-          }
-        }
-
-        @media (max-width: 700px) {
-          h1 {
-            font-size: clamp(2.3rem, 11vw, 3.6rem);
-          }
-
-          h2 {
-            font-size: clamp(2.1rem, 10vw, 3.4rem);
-          }
-
-          .shell,
-          .narrow {
-            width: min(100% - 28px, 1180px);
-          }
-
-          .section {
-            padding: 78px 0;
-          }
-
-          .brandLogo {
-            height: 40px;
-            padding: 4px 9px;
-          }
-
-          .statStrip {
-            gap: 8px;
-            padding: 9px 13px;
-            font-size: 0.78rem;
-          }
-
-          .statStrip strong {
-            font-size: 0.95rem;
-          }
-
-          .nav {
-            min-height: 72px;
-            padding: 0 16px;
-          }
-
-          .navCta {
-            display: none;
-          }
-
-          .brand small {
-            display: none;
-          }
-
-          .hero {
-            padding: 78px 0 90px;
-          }
-
-          .heroGrid {
-            gap: 36px;
-          }
-
-          .heroActions {
-            align-items: stretch;
-            flex-direction: column;
-          }
-
-          .primaryButton {
-            width: 100%;
-          }
-
-          .textLink {
-            text-align: center;
-          }
-
-          .problemGrid,
-          .deliverableGrid,
-          .pillarGrid,
-          .voiceGrid {
-            grid-template-columns: 1fr;
-          }
-
-          .problemCard,
-          .priceCard,
-          .heroCard {
-            padding: 26px;
-            margin-top: 0;
-          }
-
-          .bubble {
-            max-width: 100%;
-          }
-
-          .pillar {
-            min-height: auto;
-          }
-
-          .pillarNumber {
-            margin-bottom: 32px;
-          }
-
-          .notIncluded {
-            align-items: flex-start;
-            flex-direction: column;
-          }
-
-          .finalCtaInner,
-          .footerInner {
-            align-items: stretch;
-            flex-direction: column;
-          }
-
-          .footerInner span:last-child {
-            text-align: left;
-          }
-
-          footer {
-            padding-bottom: 120px;
-          }
-
-          .mobileBar {
-            position: fixed;
-            z-index: 50;
-            right: 10px;
-            bottom: 10px;
-            left: 10px;
-            display: flex;
-            gap: 14px;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 12px 12px 15px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 16px;
-            color: #fff;
-            background: rgba(8, 26, 47, 0.96);
-            box-shadow: 0 18px 50px rgba(8, 26, 47, 0.25);
-            backdrop-filter: blur(14px);
-          }
-
-          .mobileBar strong,
-          .mobileBar span {
-            display: block;
-          }
-
-          .mobileBar strong {
-            font-size: 0.78rem;
-          }
-
-          .mobileBar span {
-            color: rgba(255, 255, 255, 0.62);
-            font-size: 0.67rem;
-          }
-
-          .mobileBar a {
-            flex: 0 0 auto;
-            padding: 10px 12px;
-            border-radius: 9px;
-            color: #fff;
-            background: var(--orange-dark);
-            font-size: 0.75rem;
-            font-weight: 850;
-          }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          html {
-            scroll-behavior: auto;
-          }
-
-          .primaryButton {
-            transition: none;
-          }
-        }
+        :root{--ink:#102844;--deep:#081a2f;--orange:#f28c28;--orange-dark:#cf6f15;--cream:#fff8ef;--paper:#fff;--muted:#607086;--line:#dfe6ee;--shadow:0 24px 70px rgba(16,40,68,.12)}
+        *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:var(--paper);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.6}a{color:inherit;text-decoration:none}h1,h2,h3,p{margin-top:0}h1,h2,h3{line-height:1.08;letter-spacing:-.035em}h1{max-width:980px;margin-bottom:30px;font-size:clamp(3.1rem,7.5vw,7rem)}h1 span{display:block;color:var(--orange)}h2{margin-bottom:24px;font-size:clamp(2.25rem,4.6vw,4.5rem)}h3{margin-bottom:12px;font-size:1.5rem}p{font-size:1.06rem}.shell{width:min(1180px,calc(100% - 40px));margin:0 auto}.narrow{width:min(900px,calc(100% - 40px))}.section{padding:110px 0}.centered{text-align:center}.nav{position:relative;z-index:20;display:flex;align-items:center;justify-content:space-between;min-height:82px;padding:0 max(24px,calc((100vw - 1180px)/2));border-bottom:1px solid rgba(255,255,255,.12);color:#fff;background:var(--deep)}.brand{display:flex;align-items:center;gap:12px}.brandMark{display:grid;width:42px;height:42px;place-items:center;border-radius:50%;color:#fff;background:var(--orange);font-weight:850}.brand strong,.brand small{display:block}.brand small{opacity:.7;font-size:.74rem}.navCta{padding:10px 16px;border:1px solid rgba(255,255,255,.25);border-radius:999px;font-size:.92rem;font-weight:750}.hero{position:relative;overflow:hidden;padding:105px 0 120px;color:#fff;background:linear-gradient(125deg,rgba(8,26,47,.99),rgba(16,40,68,.96)),var(--deep)}.heroGlow{position:absolute;border-radius:999px;filter:blur(8px);pointer-events:none}.heroGlowOne{top:-240px;right:-120px;width:540px;height:540px;background:rgba(242,140,40,.2)}.heroGlowTwo{bottom:-320px;left:-180px;width:650px;height:650px;background:rgba(51,125,171,.17)}.heroInner{position:relative;z-index:2;max-width:1000px}.eyebrow{margin-bottom:18px;color:#ffc789;font-size:.78rem;font-weight:850;letter-spacing:.17em}.eyebrow.dark{color:var(--orange-dark)}.eyebrow.light{color:#ffd3a6}.heroTruths{display:grid;gap:12px;max-width:830px;margin:0 0 28px}.heroTruths p{margin:0;padding:14px 18px;border-left:3px solid var(--orange);background:rgba(255,255,255,.06);font-size:clamp(1.08rem,2vw,1.3rem)}.heroTurn{margin:32px 0 4px;color:rgba(255,255,255,.68);font-size:clamp(1.15rem,2vw,1.4rem)}.heroClose{margin-bottom:34px;font-size:clamp(1.45rem,2.6vw,2.05rem);font-weight:850}.heroActions{display:flex;flex-wrap:wrap;align-items:center;gap:20px}.primaryButton,.secondaryButton{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:56px;padding:15px 22px;border-radius:12px;font-weight:850;transition:.2s ease}.primaryButton{color:#fff;background:linear-gradient(135deg,var(--orange),var(--orange-dark));box-shadow:0 14px 30px rgba(242,140,40,.24)}.secondaryButton{color:var(--ink);border:2px solid var(--ink);background:#fff}.primaryButton:hover,.secondaryButton:hover{transform:translateY(-2px)}.heroSecondaryButton{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:56px;padding:14px 21px;border:1.5px solid rgba(255,255,255,.48);border-radius:12px;color:#fff;background:rgba(255,255,255,.04);font-weight:800;transition:.2s ease}.heroSecondaryButton:hover{transform:translateY(-2px);border-color:#fff;background:rgba(255,255,255,.09)}.heroMicrocopy{max-width:650px;margin:17px 0 0;color:rgba(255,255,255,.63);font-size:.88rem}.full{width:100%}.lead{color:var(--muted);font-size:clamp(1.14rem,2vw,1.38rem)}.lead.centered{max-width:760px;margin:-5px auto 48px;text-align:center}.why{background:var(--cream)}.why>.shell>h2,.why>.shell>.eyebrow{text-align:center}.comparisonGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}.comparisonCard{padding:34px;border-radius:22px}.mutedCard{border:1px solid #eadfce;background:rgba(255,255,255,.58)}.featuredCard{border:1px solid #efc392;background:#fff;box-shadow:var(--shadow)}.comparisonLabel{margin-bottom:24px;color:var(--orange-dark);font-size:.8rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase}.comparisonFlow{display:grid;gap:8px;margin-bottom:24px;text-align:center}.comparisonFlow strong{padding:13px 15px;border:1px solid var(--line);border-radius:10px;background:#fff}.comparisonFlow span{color:var(--orange-dark);font-weight:900}.comparisonCard>p:last-child{margin-bottom:0;color:var(--muted)}.outcomeStrip{margin-top:28px;padding:30px;border-radius:18px;color:#fff;background:var(--ink);text-align:center}.outcomeStrip p{margin-bottom:10px;color:#cbd5e1}.outcomeStrip strong{font-size:clamp(1.18rem,2vw,1.5rem)}.conversations{color:#fff;background:var(--deep)}.conversations h2{max-width:780px;margin-bottom:46px}.messageStack{display:grid;gap:20px}.messageBubble{width:min(640px,88%);padding:22px 24px;border-radius:22px;box-shadow:0 18px 48px rgba(0,0,0,.18)}.messageBubble.left{justify-self:start;border-bottom-left-radius:7px;color:var(--ink);background:#fff}.messageBubble.right{justify-self:end;border-bottom-right-radius:7px;color:#fff;background:var(--orange-dark)}.messageBubble span{display:block;margin-bottom:8px;opacity:.6;font-size:.76rem}.messageBubble p{margin:0;font-size:1.22rem;line-height:1.45}.conversationNote{max-width:720px;margin:35px auto 0;color:rgba(255,255,255,.58);font-size:.9rem;text-align:center}.method{background:#fff}.sectionIntro{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:end;margin-bottom:48px}.sectionIntro p:last-child{color:var(--muted)}.pillarGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}.pillar{padding:28px;border:1px solid var(--line);border-radius:18px;background:#fff;box-shadow:0 14px 42px rgba(16,40,68,.06)}.pillar>span{display:block;margin-bottom:40px;color:var(--orange-dark);font-weight:900;letter-spacing:.12em}.pillar p{margin:0;color:var(--muted)}.identity{color:#fff;background:var(--ink)}.identityGrid{display:grid;grid-template-columns:.9fr 1.1fr;gap:70px;align-items:start}.identityCopy>p{color:#d3dce6}.checkList{display:grid;gap:13px;margin:26px 0;padding:0;list-style:none}.checkList li{display:flex;gap:11px;align-items:flex-start}.checkList svg{flex:0 0 auto;margin-top:3px;color:var(--orange)}.identityClosing{padding:20px;border-left:3px solid var(--orange);background:rgba(255,255,255,.06);font-weight:750}.transformation{background:#fff}.changeGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:46px;text-align:left}.changeGrid article{padding:22px;border:1px solid var(--line);border-radius:16px}.changeGrid article:nth-child(even){border-color:#efc392;background:var(--cream)}.changeGrid strong{display:block;margin-bottom:6px;color:var(--orange-dark);font-size:.76rem;letter-spacing:.12em;text-transform:uppercase}.changeGrid p{margin:0;font-weight:750}.futurePace{max-width:860px;margin:42px auto 0;padding:34px;border:1px solid #efc392;border-radius:22px;background:var(--cream);text-align:left;box-shadow:0 16px 48px rgba(16,40,68,.07)}.futurePace>p:first-child{margin-bottom:10px;color:var(--orange-dark);font-size:.78rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase}.futurePace h3{margin-bottom:16px;font-size:clamp(1.55rem,3vw,2.35rem)}.futurePace>p:last-child{margin:0;color:var(--muted)}.offers{background:var(--cream)}.offerGrid{display:grid;grid-template-columns:1.08fr .92fr;gap:24px}.offerCard{position:relative;padding:38px;border:1px solid var(--line);border-radius:24px;background:#fff;box-shadow:0 18px 54px rgba(16,40,68,.08)}.offerCard.premium{border:2px solid var(--orange);box-shadow:var(--shadow)}.offerBadge{position:absolute;top:-14px;right:24px;padding:7px 12px;border-radius:999px;color:#fff;background:var(--orange-dark);font-size:.75rem;font-weight:850}.offerKicker{margin-bottom:12px;color:var(--orange-dark);font-size:.78rem;font-weight:900;letter-spacing:.12em}.price{margin:18px 0 10px;font-size:3rem;font-weight:900;letter-spacing:-.05em}.offerLead{color:var(--muted)}.compact{margin-bottom:30px}.offerCallout{display:flex;align-items:center;justify-content:space-between;gap:28px;margin-top:28px;padding:28px;border-radius:20px;color:#fff;background:var(--ink)}.offerCallout strong{display:block;margin-bottom:5px;font-size:1.18rem}.offerCallout p{max-width:670px;margin:0;color:#cbd5e1}.offerCallout .primaryButton{flex:0 0 auto}.offerNote{max-width:820px;margin:20px auto 0;color:var(--muted);font-size:.9rem;text-align:center}.about{background:#fff}.aboutGrid{display:grid;grid-template-columns:260px 1fr;gap:70px;align-items:center}.aboutImageWrap{position:relative}.aboutImage{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;object-position:center top;border-radius:26px;box-shadow:var(--shadow)}.aboutExperience{position:absolute;right:-20px;bottom:24px;max-width:210px;padding:16px 18px;border-radius:16px;color:#fff;background:var(--ink);box-shadow:0 18px 45px rgba(16,40,68,.22)}.aboutExperience strong,.aboutExperience span{display:block}.aboutExperience strong{color:var(--orange);font-size:2rem;line-height:1}.aboutExperience span{margin-top:5px;font-size:.76rem;line-height:1.35}.aboutPromise{padding:18px 20px;border-left:3px solid var(--orange);background:var(--cream);font-weight:700}.darkRow{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}.darkRow span{padding:8px 12px;border:1px solid var(--line);border-radius:999px;font-size:.82rem;font-weight:750}.booking{color:#fff;background:var(--deep)}.bookingGrid{display:grid;grid-template-columns:.85fr 1.15fr;gap:60px;align-items:start}.bookingLead{color:#d6deea;font-size:1.2rem}.lightList li{color:#eef3f8}.lightMicrocopy{color:#9eabba}.calendarCard{overflow:hidden;padding:12px;border:1px solid rgba(255,255,255,.16);border-radius:22px;background:#fff;box-shadow:0 28px 80px rgba(0,0,0,.28)}.calendarHeader{display:flex;justify-content:space-between;gap:14px;padding:16px;color:var(--ink)}.calendarHeader strong,.calendarHeader span{display:block}.calendarHeader span{color:var(--muted);font-size:.86rem}.calendarCard iframe{display:block;border-radius:12px}.fallbackButton{margin-top:10px}.finalCta{padding:78px 0;color:#fff;background:var(--ink)}.finalCtaInner{display:flex;align-items:center;justify-content:space-between;gap:38px}.finalCta h2{max-width:760px;margin:0}footer{padding:42px 0 110px;color:#8da0b4;background:var(--deep)}.footerInner{display:flex;justify-content:space-between;gap:30px;font-size:.82rem}.footerInner span:last-child{max-width:700px;text-align:right}.floatingCta{position:fixed;z-index:45;right:24px;bottom:24px;display:flex;align-items:center;gap:14px;padding:13px 17px;border:1px solid rgba(255,255,255,.22);border-radius:16px;color:#fff;background:rgba(8,26,47,.96);box-shadow:0 18px 45px rgba(0,0,0,.28);backdrop-filter:blur(12px)}.floatingCta span,.floatingCta strong{display:block}.floatingCta span{font-size:.78rem;color:#cbd5e1}.floatingCta strong{color:#ffc789;font-size:.9rem}.mobileBar{display:none}
+        @media(max-width:900px){.heroInner{max-width:800px}.comparisonGrid,.sectionIntro,.identityGrid,.offerGrid,.aboutGrid,.bookingGrid{grid-template-columns:1fr}.offerCallout{align-items:flex-start;flex-direction:column}.aboutImageWrap{width:min(440px,100%)}.aboutExperience{right:-10px}.pillarGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.calendarHeader{flex-direction:column}.finalCtaInner{align-items:flex-start;flex-direction:column}.footerInner{flex-direction:column}.footerInner span:last-child{text-align:left}}
+        @media(max-width:650px){.shell,.narrow{width:min(100% - 28px,1180px)}.section{padding:78px 0}.nav{min-height:70px;padding:0 14px}.brand small{display:none}.navCta{padding:9px 12px;font-size:.78rem}.hero{padding:72px 0 90px}.heroTruths p{padding:12px 14px}.heroActions{align-items:stretch;flex-direction:column}.primaryButton,.secondaryButton,.heroSecondaryButton{width:100%}.comparisonGrid,.pillarGrid,.changeGrid{grid-template-columns:1fr}.comparisonCard,.offerCard{padding:26px 22px}.messageBubble{width:94%;padding:18px}.messageBubble p{font-size:1.06rem}.aboutExperience{right:10px;bottom:12px}.floatingCta{display:none}.calendarCard{padding:7px}.calendarCard iframe{height:660px}.finalCta{padding-bottom:120px}footer{padding-bottom:140px}.mobileBar{position:fixed;z-index:50;right:0;bottom:0;left:0;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 14px;border-top:1px solid rgba(255,255,255,.16);color:#fff;background:rgba(8,26,47,.98);backdrop-filter:blur(12px)}.mobileBar strong,.mobileBar span{display:block}.mobileBar strong{font-size:.88rem}.mobileBar span{color:#aeb9c6;font-size:.72rem}.mobileBar a{padding:11px 14px;border-radius:9px;background:var(--orange);font-size:.82rem;font-weight:850;white-space:nowrap}}
       `}</style>
     </main>
   );
