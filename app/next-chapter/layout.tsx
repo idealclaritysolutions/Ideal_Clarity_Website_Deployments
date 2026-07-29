@@ -13,6 +13,14 @@ export const metadata: Metadata = {
     url: "https://idealclarity.com/next-chapter",
     siteName: "Ideal Clarity",
     type: "website",
+    images: [
+      {
+        url: "https://idealclarity.com/images/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Chi-Chi of Ideal Clarity — Build the life you keep imagining. A 30-minute conversation that could change everything.",
+      },
+    ],
   },
 
   twitter: {
@@ -20,6 +28,7 @@ export const metadata: Metadata = {
     title: "Build the Life You Keep Imagining | Ideal Clarity",
     description:
       "Stop second-guessing yourself, discover what's really been keeping you stuck, and take the first meaningful step toward the life you've been imagining.",
+    images: ["https://idealclarity.com/images/og-image.jpg"],
   },
 
   robots: {
@@ -38,6 +47,9 @@ export default function NextChapterLayout({
 }) {
   return (
     <>
+      {/* Wistia player preconnect */}
+      <link rel="preconnect" href="https://fast.wistia.com" />
+
       {/* Google Analytics */}
       <Script
         src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
