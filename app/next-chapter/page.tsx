@@ -5,8 +5,13 @@ import { useEffect, useRef } from "react";
 const CAL_URL =
   "https://calendly.com/idealclaritysolutions/next-chapter";
 
-const VIDEO_URL =
-  "https://xfdsht8l8xkamp7u.public.blob.vercel-storage.com/next-chapter.mp4";
+const WISTIA_MEDIA_ID = "d9blju2tmz";
+
+// Renders the <wistia-player> custom element from TSX without type errors
+const WistiaPlayer =
+  "wistia-player" as unknown as React.FC<
+    Record<string, unknown>
+  >;
 
 declare global {
   interface Window {
@@ -73,15 +78,41 @@ function useCalendly() {
   }, []);
 }
 
-function useVideoTracking(
-  videoRef: React.RefObject<HTMLVideoElement | null>
+function useWistia() {
+  useEffect(() => {
+    if (!document.getElementById("wistia-player-script")) {
+      const playerScript = document.createElement("script");
+      playerScript.id = "wistia-player-script";
+      playerScript.src = "https://fast.wistia.com/player.js";
+      playerScript.async = true;
+      document.body.appendChild(playerScript);
+    }
+
+    if (!document.getElementById("wistia-media-script")) {
+      const mediaScript = document.createElement("script");
+      mediaScript.id = "wistia-media-script";
+      mediaScript.src = `https://fast.wistia.com/embed/${WISTIA_MEDIA_ID}.js`;
+      mediaScript.async = true;
+      mediaScript.type = "module";
+      document.body.appendChild(mediaScript);
+    }
+  }, []);
+}
+
+function useWistiaTracking(
+  playerRef: React.RefObject<HTMLElement | null>
 ) {
   const fired = useRef<Set<string>>(new Set());
 
   useEffect(() => {
-    const video = videoRef.current;
+    const player = playerRef.current as
+      | (HTMLElement & {
+          currentTime?: number;
+          duration?: number;
+        })
+      | null;
 
-    if (!video) return;
+    if (!player) return;
 
     const fireOnce = (eventName: string) => {
       if (fired.current.has(eventName)) return;
@@ -97,20 +128,19 @@ function useVideoTracking(
     const onPlay = () => fireOnce("video_start");
     const onEnded = () => fireOnce("video_complete");
 
-    const onError = () => {
-      track("video_error", {
-        event_category: "VSL",
-        event_label: "Next Chapter VSL",
-      });
-    };
-
     const onTimeUpdate = () => {
-      if (!video.duration || !Number.isFinite(video.duration)) {
+      const duration = player.duration;
+      const currentTime = player.currentTime;
+
+      if (
+        !duration ||
+        !Number.isFinite(duration) ||
+        typeof currentTime !== "number"
+      ) {
         return;
       }
 
-      const percentage =
-        (video.currentTime / video.duration) * 100;
+      const percentage = (currentTime / duration) * 100;
 
       if (percentage >= 25) fireOnce("video_25");
       if (percentage >= 50) fireOnce("video_50");
@@ -118,18 +148,16 @@ function useVideoTracking(
       if (percentage >= 95) fireOnce("video_complete");
     };
 
-    video.addEventListener("play", onPlay);
-    video.addEventListener("ended", onEnded);
-    video.addEventListener("error", onError);
-    video.addEventListener("timeupdate", onTimeUpdate);
+    player.addEventListener("play", onPlay);
+    player.addEventListener("ended", onEnded);
+    player.addEventListener("timeupdate", onTimeUpdate);
 
     return () => {
-      video.removeEventListener("play", onPlay);
-      video.removeEventListener("ended", onEnded);
-      video.removeEventListener("error", onError);
-      video.removeEventListener("timeupdate", onTimeUpdate);
+      player.removeEventListener("play", onPlay);
+      player.removeEventListener("ended", onEnded);
+      player.removeEventListener("timeupdate", onTimeUpdate);
     };
-  }, [videoRef]);
+  }, [playerRef]);
 }
 
 function scrollToBooking(label: string) {
@@ -189,10 +217,11 @@ function CheckIcon() {
 export default function NextChapterPage() {
   useReveal();
   useCalendly();
+  useWistia();
 
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const playerRef = useRef<HTMLElement>(null);
 
-  useVideoTracking(videoRef);
+  useWistiaTracking(playerRef);
 
   return (
     <main className="nc-root">
@@ -238,20 +267,13 @@ export default function NextChapterPage() {
               Watch this before you talk yourself out of it again.
             </div>
 
-            <video
-              ref={videoRef}
-              className="nc-video"
-              poster="/images/next-chapter-thumbnail.jpg"
-              controls
-              playsInline
-              preload="metadata"
-              controlsList="nodownload"
-              disablePictureInPicture
-              aria-label="A message for accomplished professionals who are ready to take action toward their next chapter"
-            >
-              <source src={VIDEO_URL} type="video/mp4" />
-              Your browser does not support embedded video.
-            </video>
+            <div className="nc-video-embed">
+              <WistiaPlayer
+                ref={playerRef}
+                media-id={WISTIA_MEDIA_ID}
+                aspect="0.547112462006079"
+              />
+            </div>
           </div>
 
           <p className="nc-video-note" data-reveal>
@@ -745,13 +767,18 @@ const CSS = `
     font-weight: 800;
   }
 
-  .nc-video {
-    display: block;
+  .nc-video-embed {
     width: 100%;
-    height: auto;
-    max-height: 82vh;
-    background: #000;
-    object-fit: contain;
+    max-width: min(420px, 100%);
+    margin: 0 auto;
+  }
+
+  wistia-player[media-id='d9blju2tmz']:not(:defined) {
+    background: center / contain no-repeat
+      url('https://fast.wistia.com/embed/medias/d9blju2tmz/swatch');
+    display: block;
+    filter: blur(5px);
+    padding-top: 182.78%;
   }
 
   .nc-video-note {
