@@ -13,8 +13,6 @@ declare global {
     gtag?: (...args: unknown[]) => void;
   }
 }
-  }
-}
 
 function track(event: string, params?: Record<string, any>) {
   if (typeof window !== "undefined" && typeof window.gtag === "function") {
