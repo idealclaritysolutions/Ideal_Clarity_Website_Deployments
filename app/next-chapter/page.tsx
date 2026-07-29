@@ -6,7 +6,7 @@ const CAL_URL =
   "https://calendly.com/idealclaritysolutions/next-chapter";
 
 const VIDEO_URL =
-  "https://xfdsht8l8xkamp7u.public.blob.vercel-storage.com/the-conversation-vsl-final.mp4";
+  "https://xfdsht8l8xkamp7u.public.blob.vercel-storage.com/next-chapter.mp4";
 
 declare global {
   interface Window {
@@ -90,7 +90,7 @@ function useVideoTracking(
 
       track(eventName, {
         event_category: "VSL",
-        event_label: "Next Chapter",
+        event_label: "Next Chapter VSL",
       });
     };
 
@@ -100,7 +100,7 @@ function useVideoTracking(
     const onError = () => {
       track("video_error", {
         event_category: "VSL",
-        event_label: "Next Chapter",
+        event_label: "Next Chapter VSL",
       });
     };
 
@@ -137,10 +137,15 @@ function scrollToBooking(label: string) {
     event_category: "Landing Page",
     event_label: label,
   });
-
-  document.getElementById("book")?.scrollIntoView({
+  const calendly = document.getElementById("book");
+  if (!calendly) return;
+  const y =
+    calendly.getBoundingClientRect().top +
+    window.pageYOffset -
+    20;
+  window.scrollTo({
+    top: y,
     behavior: "smooth",
-    block: "start",
   });
 }
 
@@ -236,6 +241,7 @@ export default function NextChapterPage() {
             <video
               ref={videoRef}
               className="nc-video"
+              poster="/images/next-chapter-thumbnail.jpg"
               controls
               playsInline
               preload="metadata"
@@ -251,6 +257,23 @@ export default function NextChapterPage() {
           <p className="nc-video-note" data-reveal>
             No email required. No obligation. Just watch.
           </p>
+
+          <div className="nc-video-cta" data-reveal>
+            <button
+              type="button"
+              className="nc-button"
+              onClick={() =>
+                scrollToBooking("Video CTA")
+              }
+            >
+              Help Me Make My Next Move
+              <ArrowIcon />
+            </button>
+            <p>
+              Finished watching?
+              Book your complimentary conversation.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -301,6 +324,45 @@ export default function NextChapterPage() {
                 life that never seems to leave your head.
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* TESTIMONIALS */}
+      <section className="nc-testimonials-section">
+        <div className="nc-shell">
+          <div className="nc-section-heading nc-center" data-reveal>
+            <p className="nc-kicker">WHAT CHANGED AFTER WORKING WITH CHI-CHI</p>
+            <h2>Clarity is powerful when it finally leads to action.</h2>
+          </div>
+
+          <div className="nc-testimonials">
+            <blockquote data-reveal>
+              <p>
+                “Chi-Chi took the time to understand my goals, asked
+                thoughtful questions, and helped turn uncertainty
+                into a clear, actionable path forward.”
+              </p>
+              <cite>Peace</cite>
+            </blockquote>
+
+            <blockquote data-reveal>
+              <p>
+                “Her guidance reframed and clarified my next steps in
+                a valuable way.”
+              </p>
+              <cite>Hannah Bailey · Studio Northwood</cite>
+            </blockquote>
+
+            <blockquote data-reveal>
+              <p>
+                “With Chi-Chi, I found my area of genius and unlocked
+                the mental blocks that were holding me back.”
+              </p>
+              <cite>
+                Lola · Rapid Reinvent Hair Treatment
+              </cite>
+            </blockquote>
           </div>
         </div>
       </section>
@@ -359,47 +421,8 @@ export default function NextChapterPage() {
         </div>
       </section>
 
-      {/* TESTIMONIALS */}
-      <section className="nc-testimonials-section">
-        <div className="nc-shell">
-          <div className="nc-section-heading nc-center" data-reveal>
-            <p className="nc-kicker">WHAT CHANGED AFTER WORKING WITH CHI-CHI</p>
-            <h2>Clarity is powerful when it finally leads to action.</h2>
-          </div>
-
-          <div className="nc-testimonials">
-            <blockquote data-reveal>
-              <p>
-                “Chi-Chi took the time to understand my goals, asked
-                thoughtful questions, and helped turn uncertainty
-                into a clear, actionable path forward.”
-              </p>
-              <cite>Peace</cite>
-            </blockquote>
-
-            <blockquote data-reveal>
-              <p>
-                “Her guidance reframed and clarified my next steps in
-                a valuable way.”
-              </p>
-              <cite>Hannah Bailey · Studio Northwood</cite>
-            </blockquote>
-
-            <blockquote data-reveal>
-              <p>
-                “With Chi-Chi, I found my area of genius and unlocked
-                the mental blocks that were holding me back.”
-              </p>
-              <cite>
-                Lola · Rapid Reinvent Hair Treatment
-              </cite>
-            </blockquote>
-          </div>
-        </div>
-      </section>
-
       {/* CALENDLY */}
-      <section className="nc-booking" id="book">
+      <section className="nc-booking">
         <div className="nc-shell nc-booking-grid">
           <div className="nc-booking-copy" data-reveal>
             <p className="nc-kicker nc-kicker-light">
@@ -438,7 +461,11 @@ export default function NextChapterPage() {
             </div>
           </div>
 
-          <div className="nc-calendar" data-reveal>
+          <div
+            id="book"
+            className="nc-calendar"
+            data-reveal
+          >
             <div className="nc-calendar-heading">
               <strong>Choose your time</strong>
               <span>30 minutes · Private · Complimentary</span>
@@ -721,8 +748,10 @@ const CSS = `
   .nc-video {
     display: block;
     width: 100%;
-    max-height: 640px;
+    height: auto;
+    max-height: 82vh;
     background: #000;
+    object-fit: contain;
   }
 
   .nc-video-note {
@@ -730,6 +759,16 @@ const CSS = `
     color: #7b8794;
     text-align: center;
     font-size: 0.85rem;
+  }
+
+  .nc-video-cta {
+    margin-top: 26px;
+    text-align: center;
+  }
+  .nc-video-cta p {
+    margin-top: 14px;
+    color: var(--text-soft);
+    font-size: 0.95rem;
   }
 
   .nc-recognition {
