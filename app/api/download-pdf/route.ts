@@ -16,6 +16,7 @@ export async function GET(req: NextRequest) {
       "3-blocks": { filename: "3-blocks-keeping-you-stuck.pdf", requiresPayment: false },
       "10-questions": { filename: "10-questions-identify-block.pdf", requiresPayment: false },
       "employed-business": { filename: "running-business-while-employed.pdf", requiresPayment: true },
+      "program-guide": { filename: "from-idea-to-first-offer-combined-guide.pdf", requiresPayment: false },
     }
 
     const pdfInfo = pdfFiles[pdfType]

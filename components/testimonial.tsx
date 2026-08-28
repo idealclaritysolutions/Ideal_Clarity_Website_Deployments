@@ -16,6 +16,13 @@ const VerifiedBadge = () => (
 
 const testimonials = [
   {
+    initials: "P",
+    name: "Peace",
+    company: "Ideal Clarity Client",
+    quote:
+      "Before reaching out to Ideal Clarity, I felt overwhelmed by everything involved in starting and growing a business. There was so much information, so many decisions to make, and it was hard to know where to focus my time and energy. Ideal Clarity helped turn that uncertainty into a clear, actionable path forward. Chi-Chi took the time to understand my goals, asked thoughtful questions, and provided practical guidance tailored to my situation. If you are looking for clarity, accountability, and experienced guidance, I highly recommend Ideal Clarity.",
+  },
+  {
     initials: "LS",
     name: "Lola S.",
     company: "Rapid Reinvent Hair Treatment",
