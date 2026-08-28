@@ -10,8 +10,6 @@ import { createPortal } from "react-dom"
 const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
-  { href: "/how-it-works", label: "How It Works" },
-  { href: "/programs", label: "Programs" },
   { href: "/blog", label: "The Clarity Guide" },
   { href: "/contact", label: "Contact" },
 ]
