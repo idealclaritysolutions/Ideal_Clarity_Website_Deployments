@@ -11,7 +11,7 @@ export function PatternSection() {
   ]
 
   return (
-    <section className="py-16 sm:py-24 bg-muted/30">
+    <section id="sound-familiar" className="py-16 sm:py-24 bg-muted/30">
       <div className="container mx-auto px-6 sm:px-8 lg:px-12">
         <div className="max-w-4xl mx-auto text-center mb-12">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 text-balance">
