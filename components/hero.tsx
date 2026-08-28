@@ -48,16 +48,6 @@ export function Hero() {
                 Book Free Strategy Call
               </Link>
             </Button>
-            <Button
-              asChild
-              size="lg"
-              variant="secondary"
-              className="text-base sm:text-lg px-8 sm:px-12 py-5 sm:py-6 h-auto rounded-full shadow-lg hover:shadow-xl transition-all w-full sm:w-auto bg-white/10 hover:bg-white/20 text-white border-2 border-white/30"
-            >
-              <Link href="#how-it-works">
-                See How It Works
-              </Link>
-            </Button>
           </div>
         </div>
       </div>
