@@ -3,8 +3,6 @@ import { Hero } from "@/components/hero"
 import { PatternSection } from "@/components/pattern-section"
 import { ProblemsSection } from "@/components/problems-section"
 import { SolutionSection } from "@/components/solution-section"
-import { OfferSection } from "@/components/offer-section"
-import { ForYouSection } from "@/components/for-you-section"
 import { Testimonial } from "@/components/testimonial"
 import { AboutSection } from "@/components/about-section"
 import { FinalCTA } from "@/components/final-cta"
@@ -20,8 +18,6 @@ export default function Home() {
         <PatternSection />
         <ProblemsSection />
         <SolutionSection />
-        <OfferSection />
-        <ForYouSection />
         <Testimonial />
         <AboutSection />
         <FinalCTA />
