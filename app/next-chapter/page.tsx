@@ -884,7 +884,7 @@ export default function NextChapterPage() {
               <summary>What happens after the call?</summary>
               <p>
                 You leave with one clear next step. If we&apos;re both
-                convinced the 8-week Dream Accelerator™ is your right
+                convinced the 8-week Dream Accelerator™: From Stuck to Launched program is your right
                 next move, I&apos;ll tell you about it. If not, you
                 keep the clarity.
               </p>
