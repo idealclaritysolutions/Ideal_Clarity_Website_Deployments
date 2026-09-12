@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "The Conversation | Ideal Clarity",
   description:
     "Gain clarity on the purpose, calling, or business that's been pulling at you. Watch the short video to discover why you've struggled to act—and how to finally move forward.",
+  robots: { index: false, follow: false },
 };
 
 const GA_MEASUREMENT_ID = "G-GZ9D8L91V0";
