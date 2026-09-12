@@ -1,4 +1,9 @@
+import type { Metadata } from "next";
 import Script from "next/script";
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 
 export default function MutualAdvantageIntensiveLayout({
   children,
