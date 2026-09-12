@@ -26,7 +26,7 @@ const META_PIXEL_ID = "1615708303297888"
 export const metadata: Metadata = {
   title: "Ideal Clarity Solutions LLC - You Know What To Do. You Just Can't Seem To Make Yourself Do It.",
   description:
-    "You've been planning to start your business for 6+ months. There's a block. Let's remove it. From Idea to First Offer: 4 weeks, $3,500, from stuck in planning to 10 offers made.",
+    "Mindset & Momentum coaching for high achievers who keep postponing the business, book, podcast, or idea they can't shake. Uncover what's really keeping you stuck and take the first real step. Start with a free 30-minute conversation.",
   generator: "v0.app",
   icons: {
     icon: [
