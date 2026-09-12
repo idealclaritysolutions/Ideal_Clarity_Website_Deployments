@@ -1,11 +1,15 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 
 const CAL_URL =
   "https://calendly.com/idealclaritysolutions/next-chapter";
 
 const WISTIA_MEDIA_ID = "d9blju2tmz";
+
+// One label for every CTA on the page (hero, video, method, fit, outcomes, sticky)
+const CTA_LABEL = "Book Your Next Chapter Conversation";
 
 // Renders the <wistia-player> custom element from TSX without type errors
 const WistiaPlayer =
@@ -214,6 +218,190 @@ function CheckIcon() {
   );
 }
 
+function XIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      width="22"
+      height="22"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.7"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M18 6 6 18" />
+      <path d="m6 6 12 12" />
+    </svg>
+  );
+}
+
+function CtaButton({ label }: { label: string }) {
+  return (
+    <button
+      type="button"
+      className="nc-button"
+      onClick={() => scrollToBooking(label)}
+      data-reveal
+    >
+      {CTA_LABEL}
+      <ArrowIcon />
+    </button>
+  );
+}
+
+const METHOD_STEPS = [
+  {
+    n: 1,
+    name: "Define",
+    color: "#4A6B9C",
+    text: "Name the thing you've been circling, in plain words.",
+  },
+  {
+    n: 2,
+    name: "Diagnose",
+    color: "#3E5C8A",
+    text: "Find the real block: facts, or fear?",
+  },
+  {
+    n: 3,
+    name: "Decode",
+    color: "#334E78",
+    text: "Expose the excuse pattern running the loop.",
+  },
+  {
+    n: 4,
+    name: "Rebuild",
+    color: "#2A4166",
+    text: "Rewire your mindset and identity around who you're becoming — not who you've been.",
+  },
+  {
+    n: 5,
+    name: "Design",
+    color: "#223655",
+    text: "Map the first moves that fit your real life.",
+  },
+  {
+    n: 6,
+    name: "Do",
+    color: "#1B2B46",
+    text: "Move scared. Imperfect action, on repeat.",
+  },
+];
+
+function MethodWheel() {
+  return (
+    <svg
+      className="icm-wheel"
+      viewBox="0 0 600 600"
+      role="img"
+      aria-label="Flywheel showing the six steps of the Ideal Clarity Method: Define, Diagnose, Decode, Rebuild, Design, Do."
+    >
+      <path
+        d="M 307.6 10.1 A 290 290 0 0 1 547.3 148.5 L 457.7 203.3 A 185 185 0 0 0 304.8 115.1 Z"
+        fill="#4A6B9C"
+      />
+      <path
+        d="M 554.9 161.6 A 290 290 0 0 1 554.9 438.4 L 462.6 388.3 A 185 185 0 0 0 462.6 211.7 Z"
+        fill="#3E5C8A"
+      />
+      <path
+        d="M 547.3 451.5 A 290 290 0 0 1 307.6 589.9 L 304.8 484.9 A 185 185 0 0 0 457.7 396.7 Z"
+        fill="#334E78"
+      />
+      <path
+        d="M 292.4 589.9 A 290 290 0 0 1 52.7 451.5 L 142.3 396.7 A 185 185 0 0 0 295.2 484.9 Z"
+        fill="#2A4166"
+      />
+      <path
+        d="M 45.1 438.4 A 290 290 0 0 1 45.1 161.6 L 137.4 211.7 A 185 185 0 0 0 137.4 388.3 Z"
+        fill="#223655"
+      />
+      <path
+        d="M 52.7 148.5 A 290 290 0 0 1 292.4 10.1 L 295.2 115.1 A 185 185 0 0 0 142.3 203.3 Z"
+        fill="#1B2B46"
+      />
+      <path
+        d="M 509.9 189.0 L 488.8 173.7 L 505.9 163.3 Z"
+        fill="#D9B25F"
+        opacity="0.95"
+      />
+      <path
+        d="M 501.1 426.3 L 503.8 400.4 L 521.4 409.9 Z"
+        fill="#D9B25F"
+        opacity="0.95"
+      />
+      <path
+        d="M 291.2 537.3 L 314.9 526.7 L 315.5 546.7 Z"
+        fill="#D9B25F"
+        opacity="0.95"
+      />
+      <path
+        d="M 90.1 411.0 L 111.2 426.3 L 94.1 436.7 Z"
+        fill="#D9B25F"
+        opacity="0.95"
+      />
+      <path
+        d="M 98.9 173.7 L 96.2 199.6 L 78.6 190.1 Z"
+        fill="#D9B25F"
+        opacity="0.95"
+      />
+      <path
+        d="M 308.8 62.7 L 285.1 73.3 L 284.5 53.3 Z"
+        fill="#D9B25F"
+        opacity="0.95"
+      />
+      <circle cx="300" cy="300" r="158" fill="#CDA44E" />
+      <text x="300" y="294" textAnchor="middle" className="icm-hub-title">
+        The Ideal
+      </text>
+      <text x="300" y="322" textAnchor="middle" className="icm-hub-title">
+        Clarity Method™
+      </text>
+      <text x="300" y="350" textAnchor="middle" className="icm-hub-sub">
+        Mindset → Momentum
+      </text>
+      <text x="418.5" y="86.8" textAnchor="middle" className="icm-num">
+        1
+      </text>
+      <text x="418.5" y="112.8" textAnchor="middle" className="icm-name">
+        Define
+      </text>
+      <text x="537.0" y="292.0" textAnchor="middle" className="icm-num">
+        2
+      </text>
+      <text x="537.0" y="318.0" textAnchor="middle" className="icm-name">
+        Diagnose
+      </text>
+      <text x="418.5" y="497.2" textAnchor="middle" className="icm-num">
+        3
+      </text>
+      <text x="418.5" y="523.2" textAnchor="middle" className="icm-name">
+        Decode
+      </text>
+      <text x="181.5" y="497.2" textAnchor="middle" className="icm-num">
+        4
+      </text>
+      <text x="181.5" y="523.2" textAnchor="middle" className="icm-name">
+        Rebuild
+      </text>
+      <text x="63.0" y="292.0" textAnchor="middle" className="icm-num">
+        5
+      </text>
+      <text x="63.0" y="318.0" textAnchor="middle" className="icm-name">
+        Design
+      </text>
+      <text x="181.5" y="86.8" textAnchor="middle" className="icm-num">
+        6
+      </text>
+      <text x="181.5" y="112.8" textAnchor="middle" className="icm-name">
+        Do
+      </text>
+    </svg>
+  );
+}
+
 export default function NextChapterPage() {
   useReveal();
   useCalendly();
@@ -235,27 +423,13 @@ export default function NextChapterPage() {
           </h1>
 
           <p className="nc-hero-sub" data-reveal>
-            Stop second-guessing yourself, uncover what has really
-            been keeping you stuck, and feel empowered to take
-            meaningful action toward the ideas and dreams you have
-            been postponing.
+            Stop second-guessing yourself. In one free 30-minute
+            conversation, uncover what&apos;s really been keeping you
+            stuck — and leave with one clear next step. Not a sales
+            pitch.
           </p>
 
-          <button
-            type="button"
-            className="nc-button"
-            onClick={() =>
-              scrollToBooking("Hero — Help me make my next move")
-            }
-            data-reveal
-          >
-            Help Me Make My Next Move
-            <ArrowIcon />
-          </button>
-
-          <p className="nc-cta-note" data-reveal>
-            Start with a complimentary 30-minute conversation.
-          </p>
+          <CtaButton label="Hero — Book your next chapter conversation" />
         </div>
       </section>
 
@@ -264,7 +438,14 @@ export default function NextChapterPage() {
         <div className="nc-shell">
           <div className="nc-video-wrap" data-reveal>
             <div className="nc-video-label">
-              Watch this before you talk yourself out of it again.
+              <span className="nc-live-dot" aria-hidden="true" />
+              <div>
+                <strong>
+                  Watch this before you talk yourself out of it
+                  again.
+                </strong>
+                <span>No email required. No obligation. Just watch.</span>
+              </div>
             </div>
 
             <div className="nc-video-embed">
@@ -276,24 +457,10 @@ export default function NextChapterPage() {
             </div>
           </div>
 
-          <p className="nc-video-note" data-reveal>
-            No email required. No obligation. Just watch.
-          </p>
-
-          <div className="nc-video-cta" data-reveal>
-            <button
-              type="button"
-              className="nc-button"
-              onClick={() =>
-                scrollToBooking("Video CTA")
-              }
-            >
-              Help Me Make My Next Move
-              <ArrowIcon />
-            </button>
-            <p>
-              Finished watching?
-              Book your complimentary conversation.
+          <div className="nc-video-cta">
+            <CtaButton label="Video CTA" />
+            <p data-reveal>
+              Finished watching? Book your complimentary conversation.
             </p>
           </div>
         </div>
@@ -350,6 +517,45 @@ export default function NextChapterPage() {
         </div>
       </section>
 
+      {/* METHOD — Ideal Clarity Method™ flywheel */}
+      <section
+        id="icm-method"
+        className="nc-method"
+        aria-label="The Ideal Clarity Method"
+      >
+        <div className="nc-narrow nc-center">
+          <p className="nc-kicker" data-reveal>
+            HOW IT WORKS
+          </p>
+          <h2 data-reveal>The Ideal Clarity Method™</h2>
+          <p className="nc-method-sub" data-reveal>
+            Six steps. One flywheel. Momentum that compounds.
+          </p>
+
+          <div data-reveal>
+            <MethodWheel />
+          </div>
+
+          <div className="icm-legend" data-reveal>
+            {METHOD_STEPS.map((step) => (
+              <div className="icm-legend-item" key={step.n}>
+                <span
+                  className="icm-chip"
+                  style={{ background: step.color }}
+                >
+                  {step.n}
+                </span>
+                <div>
+                  <strong>{step.name}.</strong> {step.text}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <CtaButton label="Method — Book your next chapter conversation" />
+        </div>
+      </section>
+
       {/* TESTIMONIALS */}
       <section className="nc-testimonials-section">
         <div className="nc-shell">
@@ -361,30 +567,238 @@ export default function NextChapterPage() {
           <div className="nc-testimonials">
             <blockquote data-reveal>
               <p>
-                “Chi-Chi took the time to understand my goals, asked
-                thoughtful questions, and helped turn uncertainty
-                into a clear, actionable path forward.”
+                “Before reaching out, I felt overwhelmed by everything
+                involved in starting and growing a business — it was
+                hard to know where to focus my time and energy. Ideal
+                Clarity turned that uncertainty into a clear,
+                actionable path forward, with guidance tailored to my
+                situation. If you&apos;re looking for clarity,
+                accountability, and experienced guidance, I highly
+                recommend Chi-Chi.”
               </p>
               <cite>Peace</cite>
             </blockquote>
 
             <blockquote data-reveal>
               <p>
-                “Her guidance reframed and clarified my next steps in
-                a valuable way.”
+                “Chi-Chi helped me identify decision-making tools and
+                exercises to clarify my values as I weighed some big
+                decisions. Her guidance reframed and clarified my next
+                steps in a valuable way. If you have a business
+                decision to make, Ideal Clarity can help you find your
+                way.”
               </p>
               <cite>Hannah Bailey · Studio Northwood</cite>
             </blockquote>
 
             <blockquote data-reveal>
               <p>
-                “With Chi-Chi, I found my area of genius and unlocked
-                the mental blocks that were holding me back.”
+                “I&apos;ve started 3 businesses in the last 3 years,
+                and the hardest part was always finding the path most
+                authentic to me. With Chi-Chi, I found my area of
+                genius and unlocked the mental blocks that were
+                holding me back from fully monetizing my business.
+                I&apos;ve 300x&apos;d my revenue so far.”
               </p>
-              <cite>
-                Lola · Rapid Reinvent Hair Treatment
-              </cite>
+              <cite>Lola · Rapid Reinvent Hair Treatment</cite>
             </blockquote>
+          </div>
+        </div>
+      </section>
+
+      {/* FIT — for you / not for you */}
+      <section className="nc-fit">
+        <div className="nc-shell">
+          <div className="nc-section-heading nc-center" data-reveal>
+            <p className="nc-kicker">IS THIS THE RIGHT CONVERSATION FOR YOU?</p>
+            <h2>Let&apos;s be honest about fit.</h2>
+          </div>
+
+          <div className="nc-fit-grid">
+            <div className="nc-fit-card nc-fit-yes" data-reveal>
+              <h3>This is for you if:</h3>
+              <ul>
+                <li>
+                  <CheckIcon />
+                  <span>
+                    You&apos;re a high achiever with something
+                    you&apos;ve been circling for months — or years: a
+                    business, a book, a podcast, a nonprofit, or the
+                    idea you can&apos;t shake.
+                  </span>
+                </li>
+                <li>
+                  <CheckIcon />
+                  <span>
+                    You&apos;re done with more planning, more courses,
+                    more &ldquo;someday.&rdquo;
+                  </span>
+                </li>
+                <li>
+                  <CheckIcon />
+                  <span>
+                    You&apos;re willing to be honest about what&apos;s
+                    actually stopping you.
+                  </span>
+                </li>
+                <li>
+                  <CheckIcon />
+                  <span>
+                    You want to start the thing — whether it stays a
+                    side hustle or becomes your full next chapter.
+                  </span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="nc-fit-card nc-fit-no" data-reveal>
+              <h3>This is not for you if:</h3>
+              <ul>
+                <li>
+                  <XIcon />
+                  <span>
+                    You&apos;re looking for motivation, hype, or a
+                    cheerleader.
+                  </span>
+                </li>
+                <li>
+                  <XIcon />
+                  <span>
+                    You want business plans and marketing tactics —
+                    that&apos;s the 10%. We work on the 90%.
+                  </span>
+                </li>
+                <li>
+                  <XIcon />
+                  <span>
+                    You&apos;re not willing to look at the real reason
+                    you&apos;ve been stuck.
+                  </span>
+                </li>
+                <li>
+                  <XIcon />
+                  <span>
+                    You want a guarantee without doing the work.
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="nc-center">
+            <CtaButton label="Fit — Book your next chapter conversation" />
+          </div>
+        </div>
+      </section>
+
+      {/* BIO */}
+      <section className="nc-bio">
+        <div className="nc-shell nc-bio-grid">
+          <div className="nc-bio-photo" data-reveal>
+            <Image
+              src="/chichi.png"
+              alt="Chi-Chi Jones, Mindset & Momentum Coach and founder of Ideal Clarity Solutions"
+              fill
+              sizes="(max-width: 900px) 100vw, 400px"
+              priority={false}
+            />
+          </div>
+
+          <div className="nc-bio-copy">
+            <p className="nc-kicker" data-reveal>
+              WHO YOU&apos;LL MEET
+            </p>
+            <h2 data-reveal>
+              You&apos;ll be talking to someone who&apos;s been exactly
+              where you are.
+            </h2>
+
+            <div className="nc-bio-text">
+              <p data-reveal>
+                I&apos;m Chi-Chi Jones, a Mindset &amp; Momentum Coach
+                and founder of Ideal Clarity Solutions.
+              </p>
+
+              <p data-reveal>
+                My background is fifteen-plus years of corporate
+                leadership, including nearly a decade at a Fortune 1
+                company. It&apos;s also where I discovered, almost by
+                accident, that people wanted my coaching before I ever
+                offered it: colleagues, friends, friends of friends
+                would sit down overwhelmed and confused, and feel
+                comfortable telling me the truth: the fears, the
+                doubts, the dreams they were too scared to chase.
+              </p>
+
+              <p data-reveal>
+                And for over a decade, I was one of them. I knew I was
+                being called to coaching. I just knew. But I was too
+                afraid to embrace it — it didn&apos;t feel like a
+                &ldquo;real career,&rdquo; I didn&apos;t feel good
+                enough, I didn&apos;t know how to position myself. So
+                I stalled. I played it safe. I even started and grew
+                multiple other businesses while the calling kept
+                chasing me.
+              </p>
+
+              <p data-reveal>
+                The people who keep coming to me aren&apos;t randomly
+                stuck. They have a specific problem: they know what
+                they want — a business, a book, a podcast, a
+                nonprofit, or the idea they can&apos;t shake — but
+                fear, disguised as logic, keeps them from doing it.
+              </p>
+
+              <p className="nc-bio-emphasis" data-reveal>
+                Just like me.
+              </p>
+
+              <p data-reveal>
+                Then I came across a quote that changed everything:
+              </p>
+
+              <blockquote className="nc-bio-quote" data-reveal>
+                <p>
+                  &ldquo;The graveyard is the richest place on earth,
+                  because it is here that you will find all the hopes
+                  and dreams that were never fulfilled — the books
+                  that were never written, the songs that were never
+                  sung — all because someone was too afraid to take
+                  that first step.&rdquo;
+                </p>
+                <cite>— Les Brown</cite>
+              </blockquote>
+
+              <p data-reveal>That hit me like a freight train.</p>
+
+              <p data-reveal>
+                I realized my purpose isn&apos;t helping people figure
+                out what they want. Most people already know. My
+                purpose is helping them overcome the fear and excuses
+                that keep them from doing what they already know they
+                want to do.
+              </p>
+
+              <p data-reveal>
+                Not because I read about it in a book. Because I lived
+                it. I broke through it, and I did it without blowing
+                up my career to do it. I built Ideal Clarity alongside
+                my corporate role, the same way I show my clients how
+                to start: strategically, not recklessly.
+              </p>
+
+              <p data-reveal>
+                Now I help others do the same — through the same
+                methods that worked for me.
+              </p>
+
+              <p className="nc-bio-close" data-reveal>
+                If you&apos;ve been &ldquo;planning&rdquo; to start
+                something for more than six months and you&apos;re
+                still in the same place, that&apos;s exactly who
+                I&apos;m here for.
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -393,7 +807,7 @@ export default function NextChapterPage() {
       <section className="nc-outcomes">
         <div className="nc-narrow nc-center">
           <p className="nc-kicker" data-reveal>
-            YOUR NEXT CHAPTER CONVERSATION
+            WHAT HAPPENS ON THE CALL
           </p>
 
           <h2 data-reveal>Walk away ready to move.</h2>
@@ -413,7 +827,7 @@ export default function NextChapterPage() {
               <span>02</span>
               <h3>Separate facts from fear</h3>
               <p>
-                See which concerns deserve a practical response—and
+                See which concerns deserve a practical response — and
                 which ones are quietly protecting you from being seen
                 trying.
               </p>
@@ -429,17 +843,53 @@ export default function NextChapterPage() {
             </article>
           </div>
 
-          <button
-            type="button"
-            className="nc-button"
-            onClick={() =>
-              scrollToBooking("Outcomes — I am ready to make my move")
-            }
-            data-reveal
-          >
-            I Am Ready to Make My Move
-            <ArrowIcon />
-          </button>
+          <CtaButton label="Outcomes — Book your next chapter conversation" />
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="nc-faq">
+        <div className="nc-narrow">
+          <div className="nc-section-heading nc-center" data-reveal>
+            <p className="nc-kicker">BEFORE YOU BOOK</p>
+            <h2>Quick answers before you book.</h2>
+          </div>
+
+          <div className="nc-faq-list">
+            <details data-reveal open>
+              <summary>Is this a sales call?</summary>
+              <p>
+                No. It&apos;s a focused 30-minute conversation: we name
+                what&apos;s keeping you stuck, separate facts from
+                fear, and you leave with one clear next step. If it
+                becomes clear that deeper support would help,
+                I&apos;ll tell you what working together could look
+                like. No pressure, no obligation.
+              </p>
+            </details>
+
+            <details data-reveal>
+              <summary>
+                What if I don&apos;t know exactly what my idea is yet?
+              </summary>
+              <p>
+                That&apos;s fine. Some people arrive with one clear
+                idea; others just know something is calling.
+                Clarifying that is part of what the conversation is
+                for.
+              </p>
+            </details>
+
+            <details data-reveal>
+              <summary>What happens after the call?</summary>
+              <p>
+                You leave with one clear next step. If we&apos;re both
+                convinced the 8-week Dream Accelerator™ is your right
+                next move, I&apos;ll tell you about it. If not, you
+                keep the clarity.
+              </p>
+            </details>
+          </div>
         </div>
       </section>
 
@@ -494,12 +944,8 @@ export default function NextChapterPage() {
             </div>
 
             <div
-              className="calendly-inline-widget"
+              className="calendly-inline-widget nc-calendar-embed"
               data-url={CAL_URL}
-              style={{
-                minWidth: "320px",
-                height: "720px",
-              }}
             />
 
             <a
@@ -514,7 +960,7 @@ export default function NextChapterPage() {
                 })
               }
             >
-              Open the calendar in a new tab
+              Calendar not loading? Open it in a new tab
               <ArrowIcon />
             </a>
           </div>
@@ -559,11 +1005,11 @@ export default function NextChapterPage() {
         type="button"
         className="nc-sticky"
         onClick={() =>
-          scrollToBooking("Sticky — Help me make my next move")
+          scrollToBooking("Sticky — Book your next chapter conversation")
         }
       >
         <span>Ready to stop postponing it?</span>
-        <strong>Help Me Make My Next Move →</strong>
+        <strong>{CTA_LABEL} →</strong>
       </button>
     </main>
   );
@@ -575,10 +1021,12 @@ const CSS = `
     --deep: #07182b;
     --orange: #f28c28;
     --orange-dark: #ca6c12;
+    --alert: #e5432b;
     --white: #ffffff;
     --soft: #f6f8fa;
     --text-soft: #5e6c7a;
     --line: #dfe5eb;
+    --gold: #CDA44E;
   }
 
   * {
@@ -670,6 +1118,18 @@ const CSS = `
     color: #ffc484;
   }
 
+  .nc-section-heading {
+    max-width: 790px;
+    margin: 0 auto 44px;
+  }
+
+  .nc-section-heading h2 {
+    margin-bottom: 0;
+    font-size: clamp(2.4rem, 4.8vw, 4.4rem);
+  }
+
+  /* ---------- HERO ---------- */
+
   .nc-hero {
     position: relative;
     padding: 92px 0 48px;
@@ -729,6 +1189,7 @@ const CSS = `
     );
     box-shadow: 0 16px 38px rgba(202, 108, 18, 0.25);
     font-weight: 900;
+    text-align: center;
     transition:
       transform 0.2s ease,
       box-shadow 0.2s ease;
@@ -739,11 +1200,7 @@ const CSS = `
     box-shadow: 0 20px 44px rgba(202, 108, 18, 0.3);
   }
 
-  .nc-cta-note {
-    margin: 13px 0 0;
-    color: #7b8794;
-    font-size: 0.86rem;
-  }
+  /* ---------- VIDEO ---------- */
 
   .nc-video-section {
     padding: 34px 0 94px;
@@ -759,12 +1216,64 @@ const CSS = `
   }
 
   .nc-video-label {
-    padding: 12px 18px;
-    color: #e2e8ef;
-    background: var(--deep);
-    text-align: center;
-    font-size: 0.84rem;
-    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 16px 20px;
+    color: var(--white);
+    background: linear-gradient(135deg, var(--alert), #c22e1a);
+    text-align: left;
+    animation: nc-glow 2s ease-in-out infinite;
+  }
+
+  .nc-video-label > div {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .nc-video-label strong {
+    font-size: clamp(1rem, 2.2vw, 1.18rem);
+    font-weight: 900;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+
+  .nc-video-label span {
+    color: #ffd9d3;
+    font-size: 0.82rem;
+    font-weight: 600;
+  }
+
+  .nc-live-dot {
+    position: relative;
+    flex: 0 0 auto;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--white);
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+    animation: nc-pulse 1.6s ease-out infinite;
+  }
+
+  @keyframes nc-pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+    }
+    100% {
+      box-shadow: 0 0 0 12px rgba(255, 255, 255, 0);
+    }
+  }
+
+  @keyframes nc-glow {
+    0%,
+    100% {
+      box-shadow: inset 0 0 0 0 rgba(255, 255, 255, 0);
+    }
+    50% {
+      box-shadow: inset 0 0 0 200px rgba(255, 255, 255, 0.08);
+    }
   }
 
   .nc-video-embed {
@@ -781,13 +1290,6 @@ const CSS = `
     padding-top: 182.78%;
   }
 
-  .nc-video-note {
-    margin: 15px 0 0;
-    color: #7b8794;
-    text-align: center;
-    font-size: 0.85rem;
-  }
-
   .nc-video-cta {
     margin-top: 26px;
     text-align: center;
@@ -797,6 +1299,8 @@ const CSS = `
     color: var(--text-soft);
     font-size: 0.95rem;
   }
+
+  /* ---------- RECOGNITION ---------- */
 
   .nc-recognition {
     padding: 100px 0;
@@ -835,6 +1339,283 @@ const CSS = `
     color: #edf2f7;
     font-size: clamp(1rem, 2vw, 1.18rem);
   }
+
+  /* ---------- METHOD (flywheel) ---------- */
+
+  .nc-method {
+    padding: 100px 0;
+    background: var(--white);
+  }
+
+  .nc-method h2 {
+    margin-bottom: 12px;
+    font-size: clamp(2.4rem, 4.8vw, 4.4rem);
+  }
+
+  .nc-method-sub {
+    margin: 0 0 36px;
+    color: var(--text-soft);
+    font-size: 1.08rem;
+  }
+
+  .icm-wheel {
+    display: block;
+    width: 100%;
+    max-width: 520px;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  .icm-num {
+    font-size: 34px;
+    font-weight: 800;
+    fill: #f7f3ea;
+  }
+
+  .icm-name {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    fill: #f7f3ea;
+  }
+
+  .icm-hub-title {
+    font-size: 21px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    fill: #1b2b46;
+  }
+
+  .icm-hub-sub {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    fill: #5a4a22;
+  }
+
+  .icm-legend {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 28px;
+    max-width: 680px;
+    margin: 36px auto 40px;
+    text-align: left;
+  }
+
+  .icm-legend-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--navy);
+  }
+
+  .icm-chip {
+    display: flex;
+    flex: 0 0 28px;
+    width: 28px;
+    height: 28px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: var(--white);
+    font-size: 0.85rem;
+    font-weight: 800;
+  }
+
+  .icm-legend-item strong {
+    font-weight: 800;
+  }
+
+  /* ---------- TESTIMONIALS ---------- */
+
+  .nc-testimonials-section {
+    padding: 100px 0;
+    background: var(--soft);
+  }
+
+  .nc-testimonials {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  .nc-testimonials blockquote {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 0;
+    padding: 29px;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: var(--white);
+    box-shadow: 0 14px 38px rgba(16, 40, 68, 0.06);
+  }
+
+  .nc-testimonials p {
+    margin-bottom: 28px;
+    font-size: 1.02rem;
+    line-height: 1.65;
+  }
+
+  .nc-testimonials cite {
+    color: var(--orange-dark);
+    font-size: 0.78rem;
+    font-style: normal;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* ---------- FIT ---------- */
+
+  .nc-fit {
+    padding: 100px 0;
+    background: var(--white);
+  }
+
+  .nc-fit-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+
+  .nc-fit-card {
+    padding: 32px;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: var(--white);
+    box-shadow: 0 14px 40px rgba(16, 40, 68, 0.07);
+  }
+
+  .nc-fit-card h3 {
+    margin-bottom: 22px;
+    font-size: 1.5rem;
+  }
+
+  .nc-fit-card ul {
+    display: grid;
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .nc-fit-card li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    color: var(--navy);
+    line-height: 1.55;
+  }
+
+  .nc-fit-card li svg {
+    flex: 0 0 auto;
+    margin-top: 2px;
+  }
+
+  .nc-fit-yes {
+    border-top: 4px solid var(--orange);
+  }
+
+  .nc-fit-yes li svg {
+    color: var(--orange-dark);
+  }
+
+  .nc-fit-no {
+    border-top: 4px solid var(--navy);
+    background: var(--soft);
+  }
+
+  .nc-fit-no li svg {
+    color: #8a96a3;
+  }
+
+  /* ---------- BIO ---------- */
+
+  .nc-bio {
+    padding: 100px 0;
+    background: var(--soft);
+  }
+
+  .nc-bio-grid {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 56px;
+    align-items: start;
+  }
+
+  .nc-bio-photo {
+    position: sticky;
+    top: 24px;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: 22px;
+    background: var(--line);
+    box-shadow: 0 24px 60px rgba(16, 40, 68, 0.14);
+  }
+
+  .nc-bio-photo img {
+    object-fit: cover;
+    object-position: center top;
+  }
+
+  .nc-bio-copy h2 {
+    margin-bottom: 30px;
+    font-size: clamp(2.2rem, 4vw, 3.6rem);
+  }
+
+  .nc-bio-text p {
+    margin-bottom: 20px;
+    color: #2f3f50;
+    font-size: 1.06rem;
+    line-height: 1.7;
+  }
+
+  .nc-bio-emphasis {
+    font-weight: 900;
+    color: var(--navy) !important;
+    font-size: 1.3rem !important;
+  }
+
+  .nc-bio-quote {
+    margin: 4px 0 24px;
+    padding: 22px 24px;
+    border-left: 4px solid var(--gold);
+    background: var(--white);
+    border-radius: 0 14px 14px 0;
+  }
+
+  .nc-bio-quote p {
+    margin-bottom: 12px;
+    color: var(--navy);
+    font-style: italic;
+    font-size: 1.08rem;
+  }
+
+  .nc-bio-quote cite {
+    color: var(--orange-dark);
+    font-size: 0.78rem;
+    font-style: normal;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .nc-bio-close {
+    padding: 18px 20px;
+    border-left: 3px solid var(--orange);
+    background: var(--white);
+    font-weight: 700;
+    color: var(--navy) !important;
+  }
+
+  /* ---------- OUTCOMES ---------- */
 
   .nc-outcomes {
     padding: 105px 0;
@@ -881,54 +1662,69 @@ const CSS = `
     color: var(--text-soft);
   }
 
-  .nc-testimonials-section {
+  /* ---------- FAQ ---------- */
+
+  .nc-faq {
     padding: 100px 0;
     background: var(--soft);
   }
 
-  .nc-section-heading {
-    max-width: 790px;
-    margin: 0 auto 44px;
-  }
-
-  .nc-section-heading h2 {
-    margin-bottom: 0;
-    font-size: clamp(2.4rem, 4.8vw, 4.4rem);
-  }
-
-  .nc-testimonials {
+  .nc-faq-list {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 20px;
+    gap: 12px;
   }
 
-  .nc-testimonials blockquote {
-    display: flex;
-    min-height: 260px;
-    flex-direction: column;
-    justify-content: space-between;
-    margin: 0;
-    padding: 29px;
+  .nc-faq-list details {
     border: 1px solid var(--line);
-    border-radius: 18px;
+    border-radius: 14px;
     background: var(--white);
-    box-shadow: 0 14px 38px rgba(16, 40, 68, 0.06);
+    box-shadow: 0 10px 30px rgba(16, 40, 68, 0.05);
   }
 
-  .nc-testimonials p {
-    margin-bottom: 28px;
-    font-size: 1.08rem;
+  .nc-faq-list summary {
+    position: relative;
+    padding: 20px 56px 20px 24px;
+    cursor: pointer;
+    list-style: none;
+    font-size: 1.1rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+
+  .nc-faq-list summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .nc-faq-list summary::after {
+    position: absolute;
+    top: 50%;
+    right: 22px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    color: var(--white);
+    background: var(--orange);
+    content: "+";
+    font-size: 1.1rem;
+    font-weight: 900;
+    line-height: 26px;
+    text-align: center;
+    transform: translateY(-50%);
+    transition: transform 0.2s ease;
+  }
+
+  .nc-faq-list details[open] summary::after {
+    content: "–";
+  }
+
+  .nc-faq-list details p {
+    margin: 0;
+    padding: 0 24px 22px;
+    color: #2f3f50;
     line-height: 1.65;
   }
 
-  .nc-testimonials cite {
-    color: var(--orange-dark);
-    font-size: 0.78rem;
-    font-style: normal;
-    font-weight: 900;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
+  /* ---------- BOOKING ---------- */
 
   .nc-booking {
     padding: 105px 0;
@@ -1009,19 +1805,29 @@ const CSS = `
     font-size: 0.82rem;
   }
 
+  /* Calendly needs generous height or its inner iframe gets clipped
+     and the visitor sees a scrollbar inside the card. */
+  .nc-calendar-embed {
+    min-width: 320px;
+    height: 780px;
+  }
+
   .nc-calendar-link {
     display: flex;
     width: 100%;
-    min-height: 52px;
+    min-height: 54px;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    margin-top: 8px;
+    margin-top: 10px;
     border-radius: 10px;
     color: var(--white) !important;
     background: var(--navy);
     font-weight: 850;
+    text-align: center;
   }
+
+  /* ---------- FOOTER ---------- */
 
   .nc-footer {
     padding: 50px 0 105px;
@@ -1048,6 +1854,8 @@ const CSS = `
     font-size: 0.76rem;
   }
 
+  /* ---------- STICKY CTA ---------- */
+
   .nc-sticky {
     position: fixed;
     z-index: 50;
@@ -1063,6 +1871,7 @@ const CSS = `
     background: rgba(7, 24, 43, 0.96);
     box-shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
     backdrop-filter: blur(12px);
+    text-align: left;
   }
 
   .nc-sticky span,
@@ -1080,15 +1889,29 @@ const CSS = `
     font-size: 0.84rem;
   }
 
+  /* ---------- RESPONSIVE ---------- */
+
   @media (max-width: 900px) {
     .nc-outcome-grid,
     .nc-testimonials,
-    .nc-booking-grid {
+    .nc-booking-grid,
+    .nc-fit-grid,
+    .nc-bio-grid {
       grid-template-columns: 1fr;
     }
 
     .nc-booking-grid {
       gap: 42px;
+    }
+
+    .nc-bio-grid {
+      gap: 36px;
+    }
+
+    .nc-bio-photo {
+      position: static;
+      max-width: 360px;
+      margin: 0 auto;
     }
 
     .nc-testimonials blockquote {
@@ -1115,8 +1938,12 @@ const CSS = `
     }
 
     .nc-recognition,
+    .nc-method,
     .nc-outcomes,
     .nc-testimonials-section,
+    .nc-fit,
+    .nc-bio,
+    .nc-faq,
     .nc-booking {
       padding: 76px 0;
     }
@@ -1130,11 +1957,29 @@ const CSS = `
     }
 
     .nc-video-label {
-      padding: 10px 12px;
+      align-items: flex-start;
+      padding: 14px 14px;
+    }
+
+    .nc-live-dot {
+      margin-top: 4px;
+    }
+
+    .icm-legend {
+      grid-template-columns: 1fr;
+    }
+
+    .icm-num {
+      font-size: 30px;
+    }
+
+    .icm-name {
+      font-size: 13px;
     }
 
     .nc-outcome-grid article,
-    .nc-testimonials blockquote {
+    .nc-testimonials blockquote,
+    .nc-fit-card {
       padding: 24px;
     }
 
@@ -1145,6 +1990,12 @@ const CSS = `
     .nc-calendar-heading {
       align-items: flex-start;
       flex-direction: column;
+    }
+
+    /* Calendly's mobile layout stacks the calendar and time list
+       vertically, so it needs much more height than desktop. */
+    .nc-calendar-embed {
+      height: 1060px;
     }
 
     .nc-footer {
@@ -1160,6 +2011,10 @@ const CSS = `
       border-bottom: 0;
       border-left: 0;
       border-radius: 0;
+    }
+
+    .nc-sticky strong {
+      font-size: 0.8rem;
     }
   }
 
