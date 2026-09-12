@@ -1,5 +1,6 @@
 import type React from "react"
 import type { Metadata } from "next"
+import Script from "next/script"
 
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
@@ -19,6 +20,8 @@ const _merriweather = V0_Font_Merriweather({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800", "900"],
 })
+
+const META_PIXEL_ID = "1615708303297888"
 
 export const metadata: Metadata = {
   title: "Ideal Clarity Solutions LLC - You Know What To Do. You Just Can't Seem To Make Yourself Do It.",
@@ -45,6 +48,31 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`font-sans antialiased`}>
+        {/* Meta Pixel — site-wide */}
+        <Script id="meta-pixel" strategy="afterInteractive">
+          {`
+            !function(f,b,e,v,n,t,s)
+            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+            fbq('init', '${META_PIXEL_ID}');
+            fbq('track', 'PageView');
+          `}
+        </Script>
+        <noscript>
+          <img
+            height="1"
+            width="1"
+            style={{ display: "none" }}
+            src={`https://www.facebook.com/tr?id=${META_PIXEL_ID}&ev=PageView&noscript=1`}
+            alt=""
+          />
+        </noscript>
+
         {children}
         <Analytics />
       </body>
