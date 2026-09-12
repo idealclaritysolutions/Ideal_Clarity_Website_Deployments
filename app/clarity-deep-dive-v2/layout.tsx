@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "The Clarity Intensive | Ideal Clarity",
   description:
     "You've built the successful career. So what's really stopping you from building what's next? One conversation to see what's actually been keeping you stuck.",
+  robots: { index: false, follow: false },
 };
 
 export default function ClarityDeepDiveV2Layout({
