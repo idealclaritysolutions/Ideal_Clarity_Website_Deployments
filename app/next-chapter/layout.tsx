@@ -1,34 +1,36 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 
+const PAGE_TITLE = "Go From Circling to Launched in 8 Weeks | Ideal Clarity";
+const PAGE_DESCRIPTION =
+  "The Dream Accelerator™ for high-achieving professionals. Uncover what's really been keeping you stuck and go from circling your idea to launched in 8 weeks — or Chi-Chi keeps coaching you, free, until you do. Start with a free 30-minute Next Chapter Conversation.";
+const OG_IMAGE = "https://idealclarity.com/images/og-image.jpg";
+
 export const metadata: Metadata = {
-  title: "Build the Life You Keep Imagining | Ideal Clarity",
-  description:
-    "Stop second-guessing yourself, discover what's really been keeping you stuck, and take the first meaningful step toward the life you've been imagining.",
+  title: PAGE_TITLE,
+  description: PAGE_DESCRIPTION,
 
   openGraph: {
-    title: "Build the Life You Keep Imagining | Ideal Clarity",
-    description:
-      "Stop second-guessing yourself, discover what's really been keeping you stuck, and take the first meaningful step toward the life you've been imagining.",
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
     url: "https://idealclarity.com/next-chapter",
     siteName: "Ideal Clarity",
     type: "website",
     images: [
       {
-        url: "https://idealclarity.com/images/og-image.jpg",
+        url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Chi-Chi of Ideal Clarity — Build the life you keep imagining. A 30-minute conversation that could change everything.",
+        alt: "Chi-Chi of Ideal Clarity — Go from circling your idea to launched in 8 weeks. Start with a free 30-minute conversation.",
       },
     ],
   },
 
   twitter: {
     card: "summary_large_image",
-    title: "Build the Life You Keep Imagining | Ideal Clarity",
-    description:
-      "Stop second-guessing yourself, discover what's really been keeping you stuck, and take the first meaningful step toward the life you've been imagining.",
-    images: ["https://idealclarity.com/images/og-image.jpg"],
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
+    images: [OG_IMAGE],
   },
 
   robots: {
