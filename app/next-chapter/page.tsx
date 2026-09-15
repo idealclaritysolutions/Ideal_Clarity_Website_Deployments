@@ -9,7 +9,7 @@ const CAL_URL =
 const WISTIA_MEDIA_ID = "d9blju2tmz";
 
 // One label for every CTA on the page (hero, video, method, fit, outcomes, sticky)
-const CTA_LABEL = "Book Your Next Chapter Conversation";
+const CTA_LABEL = "Book Your FREE Next Chapter Conversation";
 
 // Renders the <wistia-player> custom element from TSX without type errors
 const WistiaPlayer =
@@ -428,9 +428,9 @@ export default function NextChapterPage() {
 
           <p className="nc-hero-sub" data-reveal>
             The Dream Accelerator™ for high-achieving professionals —
-            watch the video, book your free Next Chapter Conversation,
-            and discover the 6-step method that takes you from stuck
-            to launched.
+            watch the video, book your <strong>free</strong> Next
+            Chapter Conversation, and discover the 6-step method that
+            takes you from stuck to launched.
           </p>
 
           <CtaButton label="Hero — Book your next chapter conversation" />
@@ -1203,6 +1203,13 @@ const CSS = `
     color: var(--text-soft);
     font-size: clamp(1.08rem, 2vw, 1.35rem);
     line-height: 1.65;
+  }
+
+  .nc-hero-sub strong {
+    color: var(--navy);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
   }
 
   .nc-button {
