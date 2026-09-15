@@ -419,14 +419,18 @@ export default function NextChapterPage() {
       <section className="nc-hero">
         <div className="nc-shell nc-center">
           <h1 data-reveal>
-            Build the Life You Keep Imagining.
+            Go From Circling Your Idea to Launched in 8 Weeks.
           </h1>
 
+          <p className="nc-hero-guarantee" data-reveal>
+            Or I keep coaching you, free, until you do.
+          </p>
+
           <p className="nc-hero-sub" data-reveal>
-            Stop second-guessing yourself. In one free 30-minute
-            conversation, uncover what&apos;s really been keeping you
-            stuck — and leave with one clear next step. Not a sales
-            pitch.
+            The Dream Accelerator™ for high-achieving professionals —
+            watch the video, book your free Next Chapter Conversation,
+            and discover the 6-step method that takes you from stuck
+            to launched.
           </p>
 
           <CtaButton label="Hero — Book your next chapter conversation" />
@@ -884,9 +888,21 @@ export default function NextChapterPage() {
               <summary>What happens after the call?</summary>
               <p>
                 You leave with one clear next step. If we&apos;re both
-                convinced the 8-week Dream Accelerator™: From Stuck to Launched program is your right
+                convinced the 8-week Dream Accelerator™ is your right
                 next move, I&apos;ll tell you about it. If not, you
                 keep the clarity.
+              </p>
+            </details>
+
+            <details data-reveal>
+              <summary>What counts as &ldquo;launched&rdquo;?</summary>
+              <p>
+                Your thing exists in the world and is open for business
+                — a business taking its first paying clients, a book
+                published, a podcast with episodes live, a nonprofit
+                accepting donations. We agree on your specific finish
+                line in week one, and that&apos;s the line the
+                guarantee is measured against.
               </p>
             </details>
           </div>
@@ -938,6 +954,13 @@ export default function NextChapterPage() {
             className="nc-calendar"
             data-reveal
           >
+            <div className="nc-guarantee-strip">
+              <strong>My launch guarantee:</strong> show up, do the
+              work, complete every step — and if you haven&apos;t
+              launched by the end of the 8 weeks, I keep coaching you,
+              free, until you do.
+            </div>
+
             <div className="nc-calendar-heading">
               <strong>Choose your time</strong>
               <span>30 minutes · Private · Complimentary</span>
@@ -1162,6 +1185,16 @@ const CSS = `
     max-width: 920px;
     margin: 0 auto 24px;
     font-size: clamp(3.25rem, 7vw, 6.8rem);
+  }
+
+  .nc-hero-guarantee {
+    max-width: 800px;
+    margin: -6px auto 22px;
+    color: var(--orange-dark);
+    font-size: clamp(1.15rem, 2.4vw, 1.6rem);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
   }
 
   .nc-hero-sub {
@@ -1787,6 +1820,22 @@ const CSS = `
     box-shadow: 0 28px 80px rgba(0, 0, 0, 0.28);
   }
 
+  .nc-guarantee-strip {
+    margin: 0 0 6px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border-left: 4px solid var(--orange);
+    color: var(--navy);
+    background: #fff4e8;
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+
+  .nc-guarantee-strip strong {
+    color: var(--orange-dark);
+    font-weight: 900;
+  }
+
   .nc-calendar-heading {
     display: flex;
     align-items: center;
@@ -1930,7 +1979,11 @@ const CSS = `
     }
 
     .nc-hero h1 {
-      font-size: clamp(2.8rem, 13vw, 4.3rem);
+      font-size: clamp(2.6rem, 11.5vw, 4.3rem);
+    }
+
+    .nc-hero-guarantee {
+      font-size: 1.15rem;
     }
 
     .nc-video-section {
