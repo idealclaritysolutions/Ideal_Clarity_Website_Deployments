@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 const CAL_URL =
@@ -402,6 +402,328 @@ function MethodWheel() {
   );
 }
 
+// Qualification-first booking: step 1 collects name/email + the four
+// qualifying questions and emails them to Chi-Chi; step 2 reveals the
+// Calendly calendar with name/email prefilled. Every CTA on the page
+// scrolls to #book, so all of them land on the qualification form.
+const QUAL_SUBMIT_URL =
+  "https://formsubmit.co/ajax/idealclaritysolutions@gmail.com";
+
+const HOW_LONG_OPTIONS = [
+  "Under a year",
+  "1–2 years",
+  "2–5 years",
+  "5+ years",
+];
+
+type QualForm = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  idea: string;
+  howLong: string;
+  blocker: string;
+  disappointment: string;
+};
+
+const EMPTY_QUAL: QualForm = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  idea: "",
+  howLong: "",
+  blocker: "",
+  disappointment: "",
+};
+
+function BookingSteps() {
+  const [step, setStep] = useState(1);
+  const [form, setForm] = useState<QualForm>(EMPTY_QUAL);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
+  const calRef = useRef<HTMLDivElement>(null);
+
+  const set = (key: keyof QualForm) => (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setForm((f) => ({ ...f, [key]: e.target.value }));
+  };
+
+  const prefillUrl =
+    `${CAL_URL}?name=${encodeURIComponent(
+      `${form.firstName} ${form.lastName}`.trim()
+    )}&email=${encodeURIComponent(form.email.trim())}`;
+
+  // Mount the Calendly inline widget once step 2 is shown.
+  useEffect(() => {
+    if (step !== 2 || !calRef.current) return;
+    let attempts = 0;
+    const timer = setInterval(() => {
+      attempts += 1;
+      const w = (
+        window as unknown as {
+          Calendly?: {
+            initInlineWidget: (opts: {
+              url: string;
+              parentElement: HTMLElement;
+            }) => void;
+          };
+        }
+      ).Calendly;
+      if (w && calRef.current) {
+        clearInterval(timer);
+        w.initInlineWidget({
+          url: prefillUrl,
+          parentElement: calRef.current,
+        });
+      } else if (attempts > 40) {
+        clearInterval(timer);
+      }
+    }, 250);
+    return () => clearInterval(timer);
+  }, [step, prefillUrl]);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (submitting) return;
+
+    const missing =
+      !form.firstName.trim() ||
+      !form.lastName.trim() ||
+      !form.email.trim() ||
+      !form.idea.trim() ||
+      !form.howLong ||
+      !form.blocker.trim() ||
+      !form.disappointment.trim();
+
+    if (missing) {
+      setError(
+        "Please answer every question — it only takes about a minute."
+      );
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
+      setError(
+        "That email doesn't look quite right — mind double-checking it?"
+      );
+      return;
+    }
+
+    setError("");
+    setSubmitting(true);
+    track("qual_form_submit", {
+      event_category: "Landing Page",
+      event_label: "Qualification form submitted",
+    });
+
+    const payload = {
+      "First name": form.firstName.trim(),
+      "Last name": form.lastName.trim(),
+      Email: form.email.trim(),
+      "What's the idea you've been circling?": form.idea.trim(),
+      "How long has it been on your mind?": form.howLong,
+      "What's the one thing that's kept you from starting?":
+        form.blocker.trim(),
+      "If nothing changed over the next three years, what would disappoint you the most?":
+        form.disappointment.trim(),
+      _subject: `New Next Chapter lead: ${form.firstName.trim()} ${form.lastName.trim()}`,
+    };
+
+    try {
+      await fetch(QUAL_SUBMIT_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+    } catch {
+      // Still reveal the calendar — the booking itself captures
+      // name/email/phone in Calendly.
+    }
+
+    setSubmitting(false);
+    setStep(2);
+    requestAnimationFrame(() => {
+      document
+        .getElementById("book")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+
+  return (
+    <>
+      <div className="nc-guarantee-strip">
+        <strong>My launch guarantee:</strong> show up, do the work,
+        complete every step — and if you haven&apos;t launched by the
+        end of the 8 weeks, I keep coaching you, free, until you do.
+      </div>
+
+      {step === 1 ? (
+        <form
+          className="nc-qual"
+          onSubmit={handleSubmit}
+          noValidate
+        >
+          <div className="nc-calendar-heading">
+            <div>
+              <p className="nc-kicker nc-qual-kicker">
+                LET&apos;S START HERE
+              </p>
+              <strong>Tell me what you&apos;ve been circling.</strong>
+            </div>
+            <span>About a minute · Then you pick your time</span>
+          </div>
+
+          <div className="nc-qual-grid">
+            <div className="nc-qual-field">
+              <label htmlFor="nc-first">First name</label>
+              <input
+                id="nc-first"
+                type="text"
+                autoComplete="given-name"
+                value={form.firstName}
+                onChange={set("firstName")}
+              />
+            </div>
+
+            <div className="nc-qual-field">
+              <label htmlFor="nc-last">Last name</label>
+              <input
+                id="nc-last"
+                type="text"
+                autoComplete="family-name"
+                value={form.lastName}
+                onChange={set("lastName")}
+              />
+            </div>
+          </div>
+
+          <div className="nc-qual-field">
+            <label htmlFor="nc-email">Email</label>
+            <input
+              id="nc-email"
+              type="email"
+              autoComplete="email"
+              value={form.email}
+              onChange={set("email")}
+            />
+          </div>
+
+          <div className="nc-qual-field">
+            <label htmlFor="nc-idea">
+              What&apos;s the idea you&apos;ve been circling?
+            </label>
+            <input
+              id="nc-idea"
+              type="text"
+              value={form.idea}
+              onChange={set("idea")}
+              placeholder="The business, book, podcast, nonprofit…"
+            />
+          </div>
+
+          <fieldset className="nc-qual-field">
+            <legend>How long has it been on your mind?</legend>
+            <div className="nc-qual-radios">
+              {HOW_LONG_OPTIONS.map((opt) => (
+                <label key={opt} className="nc-qual-radio">
+                  <input
+                    type="radio"
+                    name="nc-howlong"
+                    value={opt}
+                    checked={form.howLong === opt}
+                    onChange={set("howLong")}
+                  />
+                  {opt}
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          <div className="nc-qual-field">
+            <label htmlFor="nc-blocker">
+              What&apos;s the one thing that&apos;s kept you from
+              starting?
+            </label>
+            <input
+              id="nc-blocker"
+              type="text"
+              value={form.blocker}
+              onChange={set("blocker")}
+            />
+          </div>
+
+          <div className="nc-qual-field">
+            <label htmlFor="nc-disappoint">
+              If nothing changed over the next three years, what would
+              disappoint you the most?
+            </label>
+            <input
+              id="nc-disappoint"
+              type="text"
+              value={form.disappointment}
+              onChange={set("disappointment")}
+            />
+          </div>
+
+          {error ? (
+            <p className="nc-qual-error" role="alert">
+              {error}
+            </p>
+          ) : null}
+
+          <button
+            type="submit"
+            className="nc-button nc-button-block"
+            disabled={submitting}
+          >
+            {submitting ? "Sending…" : "Continue →"}
+            {!submitting && <ArrowIcon />}
+          </button>
+
+          <p className="nc-qual-note">
+            Your answers come straight to me — nothing is shared, and
+            there&apos;s zero pressure either way.
+          </p>
+        </form>
+      ) : (
+        <>
+          <div className="nc-calendar-heading">
+            <div>
+              <p className="nc-kicker nc-qual-kicker">
+                YOU&apos;RE IN — PICK YOUR TIME
+              </p>
+              <strong>Choose your time</strong>
+            </div>
+            <span>30 minutes · Private · Complimentary</span>
+          </div>
+
+          <div ref={calRef} className="nc-calendar-embed" />
+
+          <a
+            href={prefillUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="nc-calendar-link"
+            onClick={() =>
+              track("cta_click", {
+                event_category: "Landing Page",
+                event_label: "Calendly fallback link",
+              })
+            }
+          >
+            Calendar not loading? Open it in a new tab
+            <ArrowIcon />
+          </a>
+        </>
+      )}
+    </>
+  );
+}
+
 export default function NextChapterPage() {
   useReveal();
   useCalendly();
@@ -418,8 +740,14 @@ export default function NextChapterPage() {
       {/* HERO */}
       <section className="nc-hero">
         <div className="nc-shell nc-center">
+          <p className="nc-kicker" data-reveal>
+            FOR HIGH-ACHIEVING PROFESSIONALS CIRCLING THE IDEA THEY
+            CAN&apos;T SHAKE
+          </p>
+
           <h1 data-reveal>
-            Go From Circling Your Idea to Launched in 8 Weeks.
+            How to Go From Circling to Launched in 8 Weeks With the
+            Ideal Clarity Method™ — Guaranteed
           </h1>
 
           <p className="nc-hero-guarantee" data-reveal>
@@ -427,10 +755,10 @@ export default function NextChapterPage() {
           </p>
 
           <p className="nc-hero-sub" data-reveal>
-            The Dream Accelerator™ for high-achieving professionals —
-            watch the video, book your <strong>free</strong> Next
-            Chapter Conversation, and discover the 6-step method that
-            takes you from stuck to launched.
+            You don&apos;t have to quit your job. You don&apos;t need
+            another year of circling. Even if you&apos;ve been stuck
+            for years and every attempt has stalled — this is how you
+            get unstuck.
           </p>
 
           <CtaButton label="Hero — Book your next chapter conversation" />
@@ -954,38 +1282,7 @@ export default function NextChapterPage() {
             className="nc-calendar"
             data-reveal
           >
-            <div className="nc-guarantee-strip">
-              <strong>My launch guarantee:</strong> show up, do the
-              work, complete every step — and if you haven&apos;t
-              launched by the end of the 8 weeks, I keep coaching you,
-              free, until you do.
-            </div>
-
-            <div className="nc-calendar-heading">
-              <strong>Choose your time</strong>
-              <span>30 minutes · Private · Complimentary</span>
-            </div>
-
-            <div
-              className="calendly-inline-widget nc-calendar-embed"
-              data-url={CAL_URL}
-            />
-
-            <a
-              href={CAL_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="nc-calendar-link"
-              onClick={() =>
-                track("cta_click", {
-                  event_category: "Landing Page",
-                  event_label: "Calendly fallback link",
-                })
-              }
-            >
-              Calendar not loading? Open it in a new tab
-              <ArrowIcon />
-            </a>
+            <BookingSteps />
           </div>
         </div>
       </section>
@@ -1868,6 +2165,123 @@ const CSS = `
     height: 780px;
   }
 
+  /* ---------- QUALIFICATION FORM (step 1 of booking) ---------- */
+
+  .nc-qual {
+    padding: 6px 16px 20px;
+    text-align: left;
+  }
+
+  .nc-qual-kicker {
+    margin-bottom: 8px;
+  }
+
+  .nc-qual-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .nc-qual-field {
+    margin: 0 0 16px;
+    padding: 0;
+    border: 0;
+  }
+
+  .nc-qual-field label,
+  .nc-qual-field legend {
+    display: block;
+    margin-bottom: 8px;
+    padding: 0;
+    color: var(--navy);
+    font-size: 0.98rem;
+    font-weight: 800;
+    line-height: 1.45;
+  }
+
+  .nc-qual-field input[type="text"],
+  .nc-qual-field input[type="email"] {
+    width: 100%;
+    padding: 13px 15px;
+    border: 2px solid var(--line);
+    border-radius: 10px;
+    color: var(--navy);
+    background: var(--white);
+    font: inherit;
+    font-size: 1rem;
+  }
+
+  .nc-qual-field input::placeholder {
+    color: #9aa7b4;
+  }
+
+  .nc-qual-field input:focus {
+    outline: none;
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(242, 140, 40, 0.18);
+  }
+
+  .nc-qual-radios {
+    display: grid;
+    gap: 10px;
+  }
+
+  .nc-qual-radio {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 0;
+    padding: 12px 15px;
+    border: 2px solid var(--line);
+    border-radius: 10px;
+    color: var(--navy);
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .nc-qual-radio input {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    accent-color: var(--orange-dark);
+    flex: 0 0 auto;
+  }
+
+  .nc-qual-radio:has(input:checked) {
+    border-color: var(--orange);
+    background: rgba(242, 140, 40, 0.07);
+  }
+
+  .nc-qual-error {
+    margin: 0 0 14px;
+    color: var(--alert);
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+
+  .nc-button-block {
+    width: 100%;
+  }
+
+  .nc-button:disabled {
+    opacity: 0.7;
+    cursor: wait;
+  }
+
+  .nc-qual-note {
+    margin: 14px 0 0;
+    color: var(--text-soft);
+    font-size: 0.86rem;
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 560px) {
+    .nc-qual-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
   .nc-calendar-link {
     display: flex;
     width: 100%;
@@ -2088,3 +2502,4 @@ const CSS = `
     }
   }
 `;
+
