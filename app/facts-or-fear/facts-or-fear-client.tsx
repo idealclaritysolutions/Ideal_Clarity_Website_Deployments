@@ -1,371 +1,229 @@
 "use client"
 
-import type React from "react"
-
-import { useState, useMemo } from "react"
-import { Button } from "@/components/ui/button"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Brain, AlertCircle, CheckCircle, Clock, Lock, Lightbulb } from "lucide-react"
+import { useMemo, useState } from "react"
+import {
+  buildQuestions,
+  calculateResultType,
+  isFearPick,
+  type Question,
+  type ResultType,
+} from "./quiz-logic"
 
 type Step = "landing" | "intro" | "assessment" | "email" | "results"
 
-interface Question {
-  id: string | number
-  header: string
-  question: string
-  subtext?: string
-  sectionHeaders?: { fear?: string; constraint?: string }
-  options: string[]
-  encouragement?: string
+const CALENDLY_URL = "https://calendly.com/idealclaritysolutions/next-chapter"
+const BOOK_CTA = "Book Your FREE Next Chapter Conversation"
+
+const STYLES = `
+.fof{--navy:#0a1424;--navy2:#12233d;--gold:#b07c1e;--gold-lt:#e8a93d;--gold-pale:#f4c76a;--ivory:#fffdf6;--ivory-dk:#f3e9d2;--ink:#1a2433;--muted:#5b6b80;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:var(--ivory);color:var(--ink);line-height:1.6;min-height:100vh}
+.fof .serif{font-family:Georgia,"Times New Roman",serif}
+.fof .wrap{max-width:860px;margin:0 auto;padding:0 20px}
+.fof .hero{background:radial-gradient(1200px 700px at 80% -10%, #16345c 0%, var(--navy) 55%, #081627 100%);
+  color:#fff;text-align:center;padding:72px 20px 64px}
+.fof .eyebrow{display:inline-block;font-size:12px;letter-spacing:3px;color:var(--gold-pale);
+  border:1px solid rgba(232,169,61,.5);border-radius:999px;padding:8px 18px;margin-bottom:24px}
+.fof .hero h1{font-size:clamp(34px,6vw,58px);line-height:1.12;margin-bottom:18px;color:#fff}
+.fof .hero h1 .gold{color:var(--gold-pale)}
+.fof .hero p.lead{font-size:clamp(16px,2.4vw,21px);color:#dbe5f1;max-width:640px;margin:0 auto 14px}
+.fof .btn{display:inline-block;background:linear-gradient(135deg,var(--gold-lt),var(--gold));
+  color:#fff;font-weight:800;font-size:17px;letter-spacing:.5px;border:none;border-radius:12px;
+  padding:18px 42px;cursor:pointer;text-decoration:none;box-shadow:0 8px 24px rgba(176,124,30,.35);
+  transition:transform .15s;font-family:inherit}
+.fof .btn:hover{transform:translateY(-2px)}
+.fof .btn-ghost{background:transparent;border:2px solid var(--gold);color:var(--gold-pale);box-shadow:none}
+.fof .trust{display:flex;flex-wrap:wrap;gap:18px;justify-content:center;margin-top:26px;
+  font-size:13px;color:#9fb2c8}
+.fof section.block{padding:56px 0}
+.fof .split{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:28px}
+@media(max-width:640px){.fof .split{grid-template-columns:1fr}}
+.fof .card{background:#fff;border:1px solid #e8dfc9;border-radius:16px;padding:30px;
+  box-shadow:0 4px 18px rgba(10,20,36,.06)}
+.fof .card h3{font-size:22px;margin-bottom:14px}
+.fof .card.tell{border-top:5px solid var(--muted)}
+.fof .card.truth{border-top:5px solid var(--gold);background:linear-gradient(180deg,#fffdf6,#fdf6e3)}
+.fof .card ul{list-style:none}
+.fof .card li{padding:9px 0;border-bottom:1px dashed #eee2c4;font-size:16px}
+.fof .card li:last-child{border:none}
+.fof .check-list{list-style:none;margin-top:8px;padding:0}
+.fof .check-list li{display:flex;gap:12px;padding:10px 0;font-size:17px;align-items:flex-start}
+.fof .check-list .ck{color:var(--gold);font-weight:900;font-size:20px;line-height:1.3}
+.fof .x-list{list-style:none;padding:0}
+.fof .x-list li{display:flex;gap:12px;padding:8px 0;font-size:16px;color:var(--muted)}
+.fof .x-list .xx{color:#c0392b;font-weight:900}
+.fof h2.sec{font-size:clamp(26px,4vw,36px);text-align:center;margin-bottom:10px}
+.fof p.center{text-align:center;color:var(--muted)}
+.fof .quiz-shell{max-width:720px;margin:0 auto;padding:40px 20px 60px}
+.fof .progress{height:10px;background:#e8dfc9;border-radius:99px;overflow:hidden;margin:18px 0 30px}
+.fof .progress>div{height:100%;background:linear-gradient(90deg,var(--gold-lt),var(--gold));
+  border-radius:99px;transition:width .3s}
+.fof .q-meta{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:8px}
+.fof .q-card{background:#fff;border:1px solid #e8dfc9;border-radius:18px;padding:34px 30px;
+  box-shadow:0 6px 24px rgba(10,20,36,.07)}
+.fof .q-card h2{font-size:24px;margin-bottom:6px}
+.fof .q-card .sub{color:var(--muted);font-size:14px;margin-bottom:20px}
+.fof .opt{display:block;width:100%;text-align:left;background:var(--ivory);border:2px solid #e8dfc9;
+  border-radius:12px;padding:15px 18px;font-size:16px;margin-bottom:10px;cursor:pointer;transition:all .15s;
+  font-family:inherit;color:var(--ink)}
+.fof .opt:hover{border-color:var(--gold-lt)}
+.fof .opt.sel{border-color:var(--gold);background:#fdf6e3;box-shadow:0 0 0 3px rgba(232,169,61,.25)}
+.fof .opt-group-label{font-size:12px;letter-spacing:2px;color:var(--gold);font-weight:800;margin:16px 0 8px}
+.fof .q-nav{display:flex;justify-content:space-between;margin-top:22px;gap:12px}
+.fof .btn-sm{padding:13px 30px;font-size:15px}
+.fof .btn-back{background:transparent;border:2px solid #d8cba6;color:var(--navy);box-shadow:none}
+.fof .btn[disabled]{opacity:.4;cursor:not-allowed;transform:none}
+.fof .encourage{background:#fdf6e3;border:1px solid var(--gold-lt);border-radius:12px;
+  padding:16px 18px;margin-top:18px;font-size:14px}
+.fof .gate-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;
+  padding:40px 20px;background:radial-gradient(900px 500px at 50% 0%, #16345c 0%, var(--navy) 70%)}
+.fof .gate-card{background:#fff;border-radius:20px;padding:44px 40px;max-width:560px;width:100%;
+  box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.fof .gate-card h1{font-size:30px;margin-bottom:12px;text-align:center}
+.fof .gate-card p{color:var(--muted);margin-bottom:14px}
+.fof .field{margin-bottom:14px}
+.fof .field label{display:block;font-size:13px;font-weight:700;margin-bottom:6px}
+.fof .field input{width:100%;padding:14px 16px;border:2px solid #e8dfc9;border-radius:10px;font-size:16px;font-family:inherit}
+.fof .field input:focus{outline:none;border-color:var(--gold)}
+.fof .chk{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--muted);margin:6px 0 4px;cursor:pointer}
+.fof .chk input{margin-top:4px;accent-color:var(--gold)}
+.fof .privacy{background:var(--ivory);border-radius:10px;padding:14px 16px;font-size:13px;color:var(--muted);margin:14px 0}
+.fof .decode-note{font-size:12px;letter-spacing:1.5px;color:var(--gold);font-weight:800;text-align:center;margin-bottom:14px}
+.fof .form-error{background:#fdf0ef;border:2px solid #e5a49d;border-radius:12px;padding:16px 18px;margin:14px 0;font-size:14px;color:#8c2f26}
+.fof .form-error p{color:#8c2f26;margin-bottom:10px}
+.fof .form-error-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.fof .linklike{background:none;border:none;color:var(--gold);font-weight:700;font-size:14px;cursor:pointer;
+  text-decoration:underline;font-family:inherit;padding:13px 6px}
+.fof .verdict{background:radial-gradient(1000px 600px at 50% -10%, #16345c 0%, var(--navy) 60%, #081627 100%);
+  color:#fff;text-align:center;padding:70px 20px 60px}
+.fof .verdict .pill{display:inline-block;background:rgba(232,169,61,.15);border:1px solid var(--gold-lt);
+  color:var(--gold-pale);font-size:13px;letter-spacing:2.5px;border-radius:999px;
+  padding:9px 22px;margin-bottom:20px;font-weight:700}
+.fof .verdict h1{font-size:clamp(30px,5vw,46px);margin-bottom:14px;color:#fff}
+.fof .verdict h1 .gold{color:var(--gold-pale)}
+.fof .verdict p.lead{color:#dbe5f1;max-width:620px;margin:0 auto;font-size:18px}
+.fof .rsec{max-width:760px;margin:0 auto;padding:46px 20px}
+.fof .diag{background:#fff;border:1px solid #e8dfc9;border-left:6px solid var(--gold);border-radius:14px;
+  padding:28px;margin:26px 0}
+.fof .diag .lbl{font-size:12px;letter-spacing:2px;color:var(--gold);font-weight:800;margin-bottom:8px}
+.fof .diag .quote{font-size:20px;font-style:italic;color:var(--navy)}
+.fof .diag p{margin-bottom:0}
+.fof .loop{list-style:none;counter-reset:step;margin:18px 0;padding:0}
+.fof .loop li{display:flex;gap:16px;padding:12px 0;border-bottom:1px dashed #eee2c4;font-size:16px;align-items:center}
+.fof .loop li:last-child{border:none}
+.fof .loop .n{flex:0 0 34px;height:34px;border-radius:50%;background:var(--navy);color:var(--gold-pale);
+  display:flex;align-items:center;justify-content:center;font-weight:800}
+.fof .cost{background:#fff;border:2px solid #e5c07b;border-radius:16px;padding:30px;margin:26px 0}
+.fof .cost ul{list-style:none;padding:0;margin:0}
+.fof .cost li{display:flex;gap:12px;padding:9px 0;font-size:16px;list-style:none}
+.fof .cost .xx{color:#c0392b;font-weight:900;font-size:18px}
+.fof .goodnews{background:linear-gradient(180deg,#fffdf6,#fdf3da);border:2px solid var(--gold);
+  border-radius:16px;padding:32px;margin:26px 0}
+.fof .cta-band{background:var(--navy);border-radius:20px;padding:48px 32px;text-align:center;color:#fff;margin:30px 0}
+.fof .cta-band h2{font-size:clamp(26px,4vw,34px);margin-bottom:10px;color:#fff}
+.fof .cta-band h2 .gold{color:var(--gold-pale)}
+.fof .cta-band p{color:#dbe5f1;margin-bottom:22px;max-width:520px;margin-left:auto;margin-right:auto}
+.fof .cta-sub{font-size:13px;color:#9fb2c8;margin-top:12px}
+.fof .dl-card{background:#fff;border:2px dashed var(--gold);border-radius:16px;padding:30px;
+  text-align:center;margin:26px 0}
+.fof .dl-card h3{font-size:22px;margin-bottom:8px}
+.fof .site-footer{background:var(--navy);color:#9fb2c8;text-align:center;padding:26px;font-size:13px}
+@media(max-width:480px){
+  .fof .q-card{padding:24px 18px}
+  .fof .gate-card{padding:32px 22px}
+  .fof .cta-band{padding:36px 20px}
+  .fof .btn{padding:16px 28px;font-size:16px}
+}
+`
+
+function BookingCta({ heading, body }: { heading: React.ReactNode; body: string }) {
+  return (
+    <div className="cta-band">
+      <h2 className="serif">{heading}</h2>
+      <p>{body}</p>
+      <a className="btn" href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
+        {BOOK_CTA}
+      </a>
+      <p className="cta-sub">45 minutes · Private · Complimentary</p>
+    </div>
+  )
 }
 
-// Calculate result type based on answers
-function calculateResultType(answers: Record<string, string>): "fear" | "constraint" | "mixed" | "unclear" {
-  let fearSignals = 0
-  let constraintSignals = 0
-
-  // Q4: Check if they selected fear or constraint option
-  const q4Answer = answers["4"]
-  if (q4Answer?.includes("Fear of")) {
-    fearSignals += 2
-  } else if (q4Answer && !q4Answer.includes("Fear of")) {
-    constraintSignals += 2
-  }
-
-  // Q6: Guarantee question
-  const q6 = answers["6"]
-  if (q6?.includes("immediately")) fearSignals++
-  if (q6?.includes("real obstacles")) constraintSignals++
-
-  // Q7: Obstacle disappearing question
-  const q7 = answers["7"]
-  if (q7?.includes("immediately")) fearSignals++
-  if (q7?.includes("still hesitate") || q7?.includes("something else")) fearSignals++
-
-  // Q9A or Q9B answers
-  const q9A = answers["9A"]
-  const q9B = answers["9B"]
-  if (q9A) fearSignals += 2
-  if (q9B?.includes("immediately")) constraintSignals += 2
-  if (q9B?.includes("nervous") || q9B?.includes("something else")) {
-    fearSignals++
-    constraintSignals++
-  }
-
-  // Q10: Readiness question
-  const q10 = answers["10"]
-  if (q10?.includes("nervous") || q10?.includes("not sure")) fearSignals++
-
-  // Determine result type
-  if (fearSignals >= 3 && constraintSignals <= 1) return "fear"
-  if (constraintSignals >= 3 && fearSignals <= 1) return "constraint"
-  if (fearSignals >= 2 && constraintSignals >= 2) return "mixed"
-  return "unclear"
+function FrameworkDownload({ body }: { body: string }) {
+  return (
+    <div className="dl-card">
+      <h3 className="serif">📥 Download: The Constraint Solution Framework</h3>
+      <p style={{ color: "#5b6b80", marginBottom: 18 }}>{body}</p>
+      <a className="btn" href="/api/download-pdf?type=constraint-framework">
+        DOWNLOAD FREE FRAMEWORK
+      </a>
+      <p className="cta-sub" style={{ color: "#5b6b80" }}>
+        Free PDF · No extra signup needed
+      </p>
+    </div>
+  )
 }
-
-// All base questions
-const questions: Question[] = [
-  {
-    id: 1,
-    header: "Question 1 of 10 | ✓ Your answers are private | 💭 Take your time",
-    question: "What do you want to do but keep putting off?",
-    subtext: "(Select the one that resonates MOST)",
-    options: [
-      "Post content on social media (LinkedIn, Instagram, TikTok)",
-      "Start a business or side project",
-      "Step into leadership or a bigger role at work",
-      "Have a difficult conversation or advocate for myself",
-      "Make a career change or major life decision",
-      "Launch a creative project (podcast, YouTube, book, etc.)",
-    ],
-  },
-  {
-    id: 2,
-    header: "Question 2 of 10 | ✓ Your answers are private | 💭 Take your time",
-    question: "How long have you been stuck on this?",
-    options: ["1-3 months", "3-6 months", "6-12 months", "1-2 years", "2+ years", "I've lost track"],
-  },
-  {
-    id: 3,
-    header: "Question 3 of 10 | ✓ Your answers are private | 💭 Take your time",
-    question: "Which statement sounds MOST like you?",
-    options: [
-      "I'm not ready yet. I need more preparation first.",
-      "I don't have enough experience/credentials to be taken seriously.",
-      "What if people judge me or think I'm not good enough?",
-      "I don't have the time/money/resources right now.",
-      "I'm waiting for the right time or more clarity.",
-      "I don't think I can actually do this.",
-    ],
-  },
-  {
-    id: 4,
-    header: "Question 4 of 10 | ✓ Your answers are private | 💭 Take your time",
-    question: "When you think about actually DOING the thing, what's the PRIMARY thing stopping you?",
-    subtext: "(Choose the ONE that resonates MOST)",
-    sectionHeaders: {
-      fear: "FEAR-BASED OPTIONS:",
-      constraint: "CONSTRAINT-BASED OPTIONS:",
-    },
-    options: [
-      'Fear of failure ("What if it doesn\'t work?")',
-      'Fear of judgment ("What will people think of me?")',
-      'Fear of success ("What if it DOES work and my life changes?")',
-      'Fear of inadequacy ("I\'m not good enough for this")',
-      'Fear of regret ("What if I choose wrong?")',
-      "Money/financial constraint (Need to save money, can't afford to quit yet, need income first)",
-      "Legal/contractual restriction (Non-compete, contract obligation, visa/immigration, etc.)",
-      "Time/caregiving constraint (Young kids, eldercare, job demands, genuine bandwidth limit)",
-      "Skill/credential gap (Need certification, degree, training, experience I don't have yet)",
-      "Health/physical constraint (Personal health, family health situation, recovery, etc.)",
-      "Other genuine constraint (Something real I haven't named)",
-    ],
-  },
-  {
-    id: 5,
-    header: "Question 5 of 10 | ✓ Your answers are private | 💭 Take your time",
-    question: "What do you do INSTEAD of taking action?",
-    options: [
-      "Research and consume more content (courses, books, videos, podcasts)",
-      "Plan and strategize excessively (perfect the approach)",
-      'Work on "prerequisites" first (website, logo, certifications, skills)',
-      "Wait for conditions to improve (more time, money, clarity, confidence)",
-      "Distract myself with other tasks (busy but not progressing)",
-      'Tell myself "next week" or "next month" repeatedly',
-    ],
-  },
-  {
-    id: 6,
-    header: "Question 6 of 10 | ✓ Your answers are private | 💭 Take your time",
-    question: "If I could GUARANTEE you wouldn't fail, would you start tomorrow?",
-    options: [
-      "Yes, immediately - I'd start right now",
-      "Probably yes, but I'd still feel nervous",
-      "Maybe, but I'd want to prepare a bit more first",
-      "I don't know, I'd need to think about it",
-      "No, there are still real obstacles I need to solve first",
-    ],
-  },
-  {
-    id: 7,
-    header: "Question 7 of 10 | ✓ Your answers are private | 💭 Take your time",
-    question: "If your stated obstacle disappeared tomorrow, would you ACTUALLY move forward?",
-    subtext: 'For example: If you suddenly had "enough experience" or "enough money" or "the perfect timing"',
-    options: [
-      "Yes, I'd start immediately with no hesitation",
-      "Probably, but I might find another reason to wait",
-      "Honestly, I'd probably still hesitate",
-      "No, there's something else holding me back",
-      "I don't know",
-    ],
-  },
-  {
-    id: 8,
-    header: "Question 8 of 10 | ✓ Your answers are private | 💭 Take your time",
-    question: "Have your REASONS for not starting changed over time?",
-    options: [
-      "Yes, I keep finding NEW reasons to delay (the excuse evolves)",
-      "No, it's been the SAME reason the whole time",
-      "Sort of - the core fear feels the same but the excuse changes",
-      "I'm not sure",
-    ],
-  },
-  {
-    id: 9,
-    header: "Question 9 of 10 | ✓ Your answers are private | 💭 Take your time",
-    question: "Placeholder - This question is dynamically replaced based on your answers",
-    options: ["Placeholder option"],
-  },
-  {
-    id: 10,
-    header: "Question 10 of 10 | ✓ Your answers are private | 💭 Take your time",
-    question:
-      "Last question: Be honest about your readiness. If someone offered you the EXACT support you needed to overcome your obstacle, would you actually take it?",
-    subtext: "(Not what you think you should say - what would you ACTUALLY do?)",
-    options: [
-      "Yes, absolutely - I'd start immediately without hesitation",
-      "Yes, but I'd be very nervous and might second-guess myself",
-      "Maybe - I'd need to know more details and think about it first",
-      "Probably not - I don't think I'm truly ready yet",
-      "No - I'd likely find another reason to wait or delay",
-      "I'm honestly not sure - I want to, but I don't know if I'd follow through",
-    ],
-    encouragement:
-      "✓ You did it. You answered honestly. That's the hardest part. Now let's show you what your answers reveal.",
-  },
-]
 
 function FactsOrFearClient() {
   const [step, setStep] = useState<Step>("landing")
-  const [currentQuestion, setCurrentQuestion] = useState(0)
+  const [qIndex, setQIndex] = useState(0)
   const [answers, setAnswers] = useState<Record<string, string>>({})
-  const [selectedOption, setSelectedOption] = useState("")
+  const [selected, setSelected] = useState("")
   const [email, setEmail] = useState("")
   const [firstName, setFirstName] = useState("")
   const [subscribe, setSubscribe] = useState(true)
-  const [startTime] = useState(Date.now())
+  const [emailStatus, setEmailStatus] = useState<"idle" | "sending" | "error">("idle")
+  const [emailError, setEmailError] = useState("")
+  const [startTime] = useState(() => Date.now())
   const [tracked, setTracked] = useState(false)
 
-  // Determine if user selected fear or constraint in Q4
-  const isFearBased = answers["4"]?.includes("Fear of")
-  const isConstraintBased = answers["4"] && !answers["4"].includes("Fear of")
+  const questions = useMemo(() => buildQuestions(answers), [answers])
+  const total = questions.length
+  const current: Question = questions[Math.min(qIndex, total - 1)]
+  const progress = Math.round(((qIndex + 1) / total) * 100)
+  const resultType: ResultType = calculateResultType(answers)
 
-  // Build dynamic question list based on answers
-  const currentQuestions = useMemo((): Question[] => {
-    const baseQuestions = [
-      questions[0], // Q1
-      questions[1], // Q2
-      questions[2], // Q3
-      questions[3], // Q4
-    ]
+  const goTop = () => window.scrollTo(0, 0)
 
-    // Add Q4B if constraint selected
-    if (isConstraintBased && answers["4"]) {
-      baseQuestions.push({
-        id: "4B",
-        header: "Question 4B of 10 | ✓ Your answers are private | 💭 Take your time",
-        question: `You selected: "${answers["4"]}". Help me understand: Is this constraint...`,
-        options: [
-          'Solvable with a clear timeline (e.g., "Non-compete expires in 6 months" or "I need to save $10K")',
-          'Solvable but timeline unclear (e.g., "I need to save money but don\'t know how long")',
-          'Ongoing/long-term (e.g., "I have young kids for the next 5 years")',
-          "Honestly, I'm not sure if it's solvable or just an excuse",
-        ],
-      })
-    }
-
-    baseQuestions.push(
-      questions[4], // Q5
-      questions[5], // Q6
-      questions[6], // Q7
-      questions[7], // Q8
-    )
-
-    // Add Q9A for fear-based
-    if (isFearBased) {
-      baseQuestions.push({
-        id: "9A",
-        header: "Question 9 of 10 | ✓ Your answers are private | 💭 Take your time",
-        question:
-          "Take a deep breath. This is the most important question. If you're being COMPLETELY honest with yourself - no pretending, no 'should' - what's the REAL reason you haven't started?",
-        subtext: "(Choose the answer that feels most true in your gut, even if you've never admitted it out loud)",
-        options: [
-          "I'm terrified of failing publicly and everyone seeing it",
-          "I'm scared of being judged, criticized, or rejected by people I know",
-          "Deep down, I don't actually believe I'm good enough to succeed at this",
-          "I'm afraid of what happens if it WORKS (visibility, expectations, my life changing)",
-          "Wait - actually, I think I DO have a real constraint I haven't admitted",
-          "Honestly? I'm not actually sure. That's why I'm taking this assessment.",
-        ],
-        encouragement:
-          "💡 Remember: Whatever you choose is valid. There's no judgment here. This is about YOU seeing the truth clearly.",
-      })
-    }
-
-    // Add Q9B for constraint-based
-    if (isConstraintBased) {
-      baseQuestions.push({
-        id: "9B",
-        header: "Question 9 of 10 | ✓ Your answers are private | 💭 Take your time",
-        question:
-          "You said you have a real constraint. Let's go deeper. If your constraint was solved tomorrow, would you start immediately?",
-        subtext:
-          "(For example: If the non-compete expired, if you had the money saved, if you had childcare, if you completed the certification)",
-        options: [
-          "Yes, I'd start immediately with no hesitation",
-          "Probably yes, but I'd still feel nervous or find another reason",
-          "Maybe - I think there's something else holding me back too",
-          "No - there's another constraint I haven't named yet",
-          "Honestly, I'm not sure",
-        ],
-        encouragement:
-          "💡 Be honest. If you'd start immediately, your constraint is REAL. If you'd still hesitate, fear is also present.",
-      })
-    }
-
-    // Always add Q10
-    baseQuestions.push(questions[9])
-
-    return baseQuestions
-  }, [isFearBased, isConstraintBased, answers])
-
-  const handleAnswer = () => {
-    if (!selectedOption) return
-
-    const currentQ = currentQuestions[currentQuestion]
-    const newAnswers = { ...answers, [currentQ.id]: selectedOption }
-    setAnswers(newAnswers)
-    setSelectedOption("")
-
-    if (currentQuestion < currentQuestions.length - 1) {
-      setCurrentQuestion(currentQuestion + 1)
+  const handleNext = () => {
+    if (!selected) return
+    const qid = current.id
+    setAnswers((prev) => {
+      const next = { ...prev, [qid]: selected }
+      // If the Q4 pick flipped between fear/constraint, drop stale branch answers.
+      if (qid === "4") {
+        delete next["4B"]
+        delete next["9A"]
+        delete next["9B"]
+      }
+      return next
+    })
+    setSelected("")
+    if (qIndex < buildQuestions({ ...answers, [qid]: selected }).length - 1) {
+      setQIndex(qIndex + 1)
     } else {
       setStep("email")
     }
+    goTop()
   }
 
-  const handleEmailSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!email || !firstName) return
-
-    // Calculate deadline (7 days from now)
-    const deadline = new Date()
-    deadline.setDate(deadline.getDate() + 7)
-    const deadlineFormatted = deadline.toLocaleDateString("en-US", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    })
-
-    // Get Q3 answer
-    const q3Answer = answers["3"] || ""
-
-    try {
-      await fetch("/api/assessment-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email,
-          firstName,
-          q3Answer,
-          deadline: deadlineFormatted,
-          isFearBased,
-          answers: JSON.stringify(answers),
-        }),
-      })
-    } catch (error) {
-      // Continue to results even if email fails
-    }
-
-    setStep("results")
-
-    trackCompletion()
+  const handleBack = () => {
+    if (qIndex === 0) return
+    const prevQ = questions[qIndex - 1]
+    setSelected(answers[prevQ.id] || "")
+    setQIndex(qIndex - 1)
+    goTop()
   }
 
   const trackCompletion = async () => {
-    if (tracked) return // Prevent double-tracking
-
-    const timeToComplete = Math.floor((Date.now() - startTime) / 1000) // in seconds
-    const resultType = calculateResultType(answers)
-
-    // Detect device type
-    const getDeviceType = () => {
-      const ua = navigator.userAgent
-      if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) return "tablet"
-      if (
-        /Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)
-      )
-        return "mobile"
-      return "desktop"
-    }
-
-    const deviceType = getDeviceType()
-    const referrer = document.referrer || "direct"
-
+    if (tracked) return
+    const timeToComplete = Math.floor((Date.now() - startTime) / 1000)
+    const ua = navigator.userAgent
+    const deviceType = /(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)
+      ? "tablet"
+      : /Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)
+        ? "mobile"
+        : "desktop"
     try {
       await fetch("/api/track-assessment", {
         method: "POST",
@@ -377,857 +235,490 @@ function FactsOrFearClient() {
           answers,
           timeToComplete,
           deviceType,
-          referrer,
+          referrer: document.referrer || "direct",
         }),
       })
       setTracked(true)
-    } catch (error) {
-      console.error("Failed to track assessment:", error)
+    } catch {
+      // Analytics must never block results.
     }
   }
 
-  const currentQuestionData = currentQuestions[currentQuestion]
-  const progress = ((currentQuestion + 1) / currentQuestions.length) * 100
-  const resultType = calculateResultType(answers)
+  const continueToResults = () => {
+    trackCompletion()
+    setEmailStatus("idle")
+    setStep("results")
+    goTop()
+  }
 
-  // Show encouragement after Q3, Q6, Q8
-  const showEncouragement =
-    currentQuestion === 3 ||
-    currentQuestion === 6 ||
-    (currentQuestion === 8 && !currentQuestions[currentQuestion + 1]?.id.toString().startsWith("9"))
+  const submitGate = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!firstName.trim() || !email.trim()) return
 
-  const calendlyLink =
-    "https://calendly.com/idealclaritysolutions/30min?utm_source=ig&utm_medium=social&utm_content=link_in_bio"
+    // Consent NOT given: skip MailerLite entirely. Results are still shown.
+    if (!subscribe) {
+      continueToResults()
+      return
+    }
 
-  // LANDING PAGE
-  if (step === "landing") {
+    setEmailStatus("sending")
+    setEmailError("")
+    const deadline = new Date()
+    deadline.setDate(deadline.getDate() + 7)
+
+    try {
+      const res = await fetch("/api/assessment-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email.trim(),
+          firstName: firstName.trim(),
+          q3Answer: answers["3"] || "",
+          deadline: deadline.toLocaleDateString("en-US", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          }),
+          isFearBased: isFearPick(answers["4"]),
+          resultType,
+          consent: true,
+          answers: JSON.stringify(answers),
+        }),
+      })
+      let data: { success?: boolean; error?: string } = {}
+      try {
+        data = await res.json()
+      } catch {
+        data = {}
+      }
+      if (!res.ok || data.success === false) {
+        throw new Error(data.error || `Request failed (HTTP ${res.status})`)
+      }
+      continueToResults()
+    } catch (err) {
+      // Surface the failure visibly instead of silently proceeding.
+      setEmailStatus("error")
+      setEmailError(err instanceof Error ? err.message : "Something went wrong.")
+    }
+  }
+
+  const renderOptions = (q: Question) => {
+    const opt = (text: string, key: string) => (
+      <button
+        key={key}
+        type="button"
+        className={`opt${selected === text ? " sel" : ""}`}
+        onClick={() => setSelected(text)}
+      >
+        {text}
+      </button>
+    )
     return (
-      <div className="min-h-screen bg-background">
-        {/* Hero Section */}
-        <section className="container mx-auto px-4 py-12 md:py-20">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-6xl font-bold mb-4 text-balance">Are Your Reasons FACTS... or FEAR?</h1>
-            <p className="text-xl md:text-2xl text-muted-foreground mb-2 font-bold">
-              Take the 2-minute assessment and find out what's REALLY stopping you from:
-            </p>
-            <ul className="text-lg md:text-xl text-muted-foreground mb-2 space-y-1 max-w-2xl mx-auto text-left list-disc list-inside">
-              <li>Starting that business</li>
-              <li>Posting content and building visibility</li>
-              <li>Going after the role or promotion you want</li>
-              <li>Stepping into leadership</li>
-            </ul>
+      <>
+        {q.optionGroups
+          ? q.optionGroups.map((g) => (
+              <div key={g.label}>
+                <div className="opt-group-label">{g.label}</div>
+                {g.options.map((o, i) => opt(o, `${g.label}-${i}`))}
+              </div>
+            ))
+          : (q.options || []).map((o, i) => opt(o, `opt-${i}`))}
+      </>
+    )
+  }
 
-            <div className="space-y-2 mt-8 mb-4 text-lg">
-              <p className="text-muted-foreground">
-                You've been telling yourself you're "not ready yet." That you need more time, experience, or clarity.
+  return (
+    <div className="fof">
+      <style>{STYLES}</style>
+
+      {step === "landing" && (
+        <>
+          <div className="hero">
+            <div className="wrap">
+              <span className="eyebrow">THE 2-MINUTE HONESTY CHECK</span>
+              <h1 className="serif">
+                Are Your Reasons <span className="gold">FACTS</span>
+                <br />…or <span className="gold">FEAR?</span>
+              </h1>
+              <p className="lead">
+                You keep telling yourself the reasons are solid: the timing, the money, the other priorities. But deep
+                down, something isn&apos;t adding up.
               </p>
-              <p className="text-muted-foreground">But what if those aren't real obstacles?</p>
-              <p className="text-muted-foreground font-bold">What if they're just fear dressed up as logic?</p>
-            </div>
-
-            <div className="py-4">
-              <Button size="lg" onClick={() => setStep("intro")} className="text-lg px-8 py-6">
-                START FREE ASSESSMENT
-              </Button>
-              <p className="text-sm text-muted-foreground mt-2">Takes only 2 minutes</p>
-            </div>
-
-            <div className="flex flex-wrap justify-center gap-4 text-sm text-muted-foreground mt-4">
-              <span className="flex items-center gap-1">
-                <Lock className="h-4 w-4" /> 100% Private & Confidential
-              </span>
-              <span className="flex items-center gap-1">
-                <Clock className="h-4 w-4" /> No time limit
-              </span>
-              <span className="flex items-center gap-1">
-                <CheckCircle className="h-4 w-4" /> Free - no credit card required
-              </span>
-            </div>
-          </div>
-        </section>
-
-        {/* Visual Split Section */}
-        <section className="py-12 bg-muted/50">
-          <div className="container mx-auto px-4">
-            <div className="grid md:grid-cols-2 gap-6 max-w-6xl mx-auto">
-              {/* Left: What You Tell Yourself */}
-              <div className="relative overflow-hidden rounded-lg border-2 border-border bg-card shadow-md">
-                <div className="relative h-32">
-                  <img
-                    src="/person-thinking-with-question-marks-floating-aroun.jpg"
-                    alt="Person thinking"
-                    className="absolute inset-0 w-full h-full object-cover opacity-40"
-                  />
-                </div>
-                <div className="p-6 bg-card/95">
-                  <Brain className="h-12 w-12 text-muted-foreground mb-4 mx-auto" />
-                  <h3 className="text-2xl font-bold text-center mb-4">What You Tell Yourself</h3>
-                  <ul className="space-y-3 text-base text-foreground/80">
-                    <li className="flex items-start gap-2">
-                      <span className="text-muted-foreground">•</span>
-                      <span className="font-medium">I need more experience first</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-muted-foreground">•</span>
-                      <span className="font-medium">I'm not ready yet</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-muted-foreground">•</span>
-                      <span className="font-medium">I don't have the time right now</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              {/* Right: The Possible Truth */}
-              <div className="relative overflow-hidden rounded-lg border-2 border-primary bg-card shadow-lg">
-                <div className="relative h-32">
-                  <img
-                    src="/lightbulb-moment-clarity-breakthrough-understandin.jpg"
-                    alt="Lightbulb moment"
-                    className="absolute inset-0 w-full h-full object-cover opacity-40"
-                  />
-                </div>
-                <div className="p-6 bg-card/95">
-                  <AlertCircle className="h-12 w-12 text-primary mb-4 mx-auto" />
-                  <h3 className="text-2xl font-bold text-center mb-4">The Possible Truth</h3>
-                  <ul className="space-y-3 text-base">
-                    <li className="flex items-start gap-2 p-3 bg-muted/50 rounded-lg">
-                      <span className="text-primary font-bold">•</span>
-                      <span className="font-semibold">I'm scared of failing</span>
-                    </li>
-                    <li className="flex items-start gap-2 p-3 bg-muted/50 rounded-lg">
-                      <span className="text-primary font-bold">•</span>
-                      <span className="font-semibold">I'm terrified of being seen</span>
-                    </li>
-                    <li className="flex items-start gap-2 p-3 bg-muted/50 rounded-lg">
-                      <span className="text-primary font-bold">•</span>
-                      <span className="font-semibold">I'm afraid I'm not good enough</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <p className="text-center text-lg font-medium mt-6">This assessment reveals the truth</p>
-          </div>
-        </section>
-
-        {/* What You'll Discover */}
-        <section className="py-12 container mx-auto px-4">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-8">In 2 minutes, you'll discover:</h2>
-            <ul className="space-y-4 text-lg">
-              <li className="flex gap-3">
-                <CheckCircle className="h-6 w-6 text-primary flex-shrink-0 mt-0.5" />
-                <span>
-                  <strong>Your primary excuse pattern</strong> - The story you keep telling yourself
-                </span>
-              </li>
-              <li className="flex gap-3">
-                <CheckCircle className="h-6 w-6 text-primary flex-shrink-0 mt-0.5" />
-                <span>
-                  <strong>Whether it's FACT or FEAR</strong> - Real constraint vs. avoidance mechanism
-                </span>
-              </li>
-              <li className="flex gap-3">
-                <CheckCircle className="h-6 w-6 text-primary flex-shrink-0 mt-0.5" />
-                <span>
-                  <strong>What's ACTUALLY keeping you stuck</strong> - The hidden blocker you can't see on your own
-                </span>
-              </li>
-              <li className="flex gap-3">
-                <CheckCircle className="h-6 w-6 text-primary flex-shrink-0 mt-0.5" />
-                <span>
-                  <strong>Your exact next step</strong> - What you need to do to break free
-                </span>
-              </li>
-            </ul>
-            <p className="text-center mt-6 font-medium text-muted-foreground">No fluff. No theory. Just the truth.</p>
-
-            <div className="mt-8 text-center">
-              <Button size="lg" onClick={() => setStep("intro")} className="text-lg px-8 py-6">
-                START FREE ASSESSMENT
-              </Button>
-              <p className="text-sm text-muted-foreground mt-2">Takes only 2 minutes</p>
-            </div>
-          </div>
-        </section>
-
-        {/* Who This Is For */}
-        <section className="py-12 bg-muted/30">
-          <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto">
-              <h2 className="text-3xl font-bold text-center mb-8">This assessment is for you if:</h2>
-              <ul className="space-y-3 text-lg mb-8">
-                <li className="flex gap-3">
-                  <CheckCircle className="h-6 w-6 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span>You've been "about to start" for 3+ months</span>
-                </li>
-                <li className="flex gap-3">
-                  <CheckCircle className="h-6 w-6 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span>You know what you want but can't get yourself to do it</span>
-                </li>
-                <li className="flex gap-3">
-                  <CheckCircle className="h-6 w-6 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span>You're tired of your own excuses (but don't know how to break free)</span>
-                </li>
-                <li className="flex gap-3">
-                  <CheckCircle className="h-6 w-6 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span>You're ready to see the truth (even if it's uncomfortable)</span>
-                </li>
-              </ul>
-
-              <h3 className="text-2xl font-bold text-center mb-4">This is NOT for you if:</h3>
-              <ul className="space-y-3 text-lg">
-                <li className="flex gap-3">
-                  <span className="text-red-600 text-xl">✗</span>
-                  <span>You're still exploring options (you don't know what you want yet)</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-red-600 text-xl">✗</span>
-                  <span>You're not willing to be honest with yourself</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-red-600 text-xl">✗</span>
-                  <span>You just want someone to validate your excuses</span>
-                </li>
-              </ul>
-
-              <div className="mt-8 text-center">
-                <Button size="lg" onClick={() => setStep("intro")} className="text-lg px-8 py-6">
+              <p className="lead">
+                <strong style={{ color: "#fff" }}>
+                  This free assessment will show you whether your reasons are real — or if fear is running the show.
+                </strong>
+              </p>
+              <div style={{ marginTop: 30 }}>
+                <button className="btn" onClick={() => { setStep("intro"); goTop() }}>
                   START FREE ASSESSMENT
-                </Button>
-                <p className="text-sm text-muted-foreground mt-2">Takes only 2 minutes</p>
+                </button>
+                <div className="trust" style={{ marginTop: 16 }}>
+                  <span>🔒 100% Private &amp; Confidential</span>
+                  <span>⏱ 2 minutes</span>
+                  <span>✓ Free — no credit card</span>
+                </div>
               </div>
             </div>
           </div>
-        </section>
 
-        {/* Before You Start */}
-        <section className="py-12 container mx-auto px-4">
-          <div className="max-w-3xl mx-auto">
-            <div className="bg-amber-50 dark:bg-amber-950/20 border-2 border-amber-200 dark:border-amber-800 rounded-lg p-8">
-              <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                <Lightbulb className="h-6 w-6 text-amber-600" />A note about honesty:
+          <section className="block">
+            <div className="wrap">
+              <h2 className="sec serif">
+                The story you tell yourself <em>vs.</em> the truth
               </h2>
-              <div className="space-y-4 text-base">
-                <p>
-                  This assessment only works if you're brutally honest. Not the version of yourself you show on
-                  LinkedIn. Not the version you tell your friends. The version that exists at 2am when you can't sleep.
-                </p>
-                <p>There are no "right" answers. No one is judging you. This is just you and the truth.</p>
-                <p>
-                  Take your time. Read each question carefully. Sit with it if you need to. Choose the answer that feels
-                  MOST true (even if it's uncomfortable).
-                </p>
-                <p>Your results are completely private. Only you will see them (unless you choose to share).</p>
-                <p className="font-medium">
-                  The more honest you are, the more accurate your results will be. And the clearer your path forward
-                  becomes.
-                </p>
+              <p className="center">This assessment reveals which one is running your life.</p>
+              <div className="split">
+                <div className="card tell">
+                  <h3 className="serif">What You Tell Yourself</h3>
+                  <ul>
+                    <li>&quot;I need more experience first&quot;</li>
+                    <li>&quot;I&apos;m not ready yet&quot;</li>
+                    <li>&quot;I don&apos;t have the time right now&quot;</li>
+                  </ul>
+                </div>
+                <div className="card truth">
+                  <h3 className="serif">The Possible Truth</h3>
+                  <ul>
+                    <li><strong>&quot;I&apos;m scared of failing&quot;</strong></li>
+                    <li><strong>&quot;I&apos;m terrified of being seen&quot;</strong></li>
+                    <li><strong>&quot;I&apos;m afraid I&apos;m not good enough&quot;</strong></li>
+                  </ul>
+                </div>
               </div>
             </div>
+          </section>
 
-            <div className="mt-8 text-center">
-              <Button size="lg" onClick={() => setStep("intro")} className="text-lg px-8 py-6">
-                START FREE ASSESSMENT
-              </Button>
-              <p className="text-sm text-muted-foreground mt-2">Takes only 2 minutes</p>
-            </div>
-          </div>
-        </section>
-
-        {/* Social Proof */}
-        <section className="py-12 bg-muted/30">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center mb-8">What others have said:</h2>
-            <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-              <div className="bg-card p-6 rounded-lg border shadow-sm">
-                <p className="text-muted-foreground italic mb-4">
-                  "This assessment saw through my excuses better than I could. The results were uncomfortably accurate."
-                </p>
-                <p className="font-semibold">- Sarah M.</p>
-              </div>
-              <div className="bg-card p-6 rounded-lg border shadow-sm">
-                <p className="text-muted-foreground italic mb-4">
-                  "I felt safe being completely real. The results were exactly what I needed to hear."
-                </p>
-                <p className="font-semibold">- Marcus T.</p>
-              </div>
-              <div className="bg-card p-6 rounded-lg border shadow-sm">
-                <p className="text-muted-foreground italic mb-4">
-                  "I sat with some questions for a few minutes before answering. The results were spot-on."
-                </p>
-                <p className="font-semibold">- Olufunmi S.</p>
+          <section className="block" style={{ background: "#fff", borderTop: "1px solid #eee2c4", borderBottom: "1px solid #eee2c4" }}>
+            <div className="wrap" style={{ maxWidth: 700 }}>
+              <h2 className="sec serif">In 2 minutes, you&apos;ll discover</h2>
+              <ul className="check-list">
+                <li><span className="ck">✓</span><span><strong>Your primary excuse pattern</strong> — the story you keep telling yourself</span></li>
+                <li><span className="ck">✓</span><span><strong>Whether it&apos;s FACT or FEAR</strong> — real constraint vs. avoidance mechanism</span></li>
+                <li><span className="ck">✓</span><span><strong>What&apos;s ACTUALLY keeping you stuck</strong> — the hidden blocker you can&apos;t see on your own</span></li>
+                <li><span className="ck">✓</span><span><strong>Your exact next step</strong> — what to do to break free</span></li>
+              </ul>
+              <p className="center" style={{ margin: "18px 0 26px" }}>No fluff. No theory. Just the truth.</p>
+              <div style={{ textAlign: "center" }}>
+                <button className="btn" onClick={() => { setStep("intro"); goTop() }}>
+                  START FREE ASSESSMENT
+                </button>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        {/* Final CTA */}
-        <section className="py-16 container mx-auto px-4">
-          <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-4xl font-bold mb-4">Ready to see the truth?</h2>
-            <Button size="lg" onClick={() => setStep("intro")} className="text-xl px-10 py-7 mb-3">
-              START FREE ASSESSMENT
-            </Button>
-            <p className="text-sm text-muted-foreground mb-6">2 minutes. Completely private. Brutally honest.</p>
-            <div className="flex flex-wrap justify-center gap-4 text-sm text-muted-foreground">
-              <span className="flex items-center gap-1">
-                <Lock className="h-4 w-4" /> Private & Confidential
-              </span>
-              <span className="flex items-center gap-1">
-                <Clock className="h-4 w-4" /> No time limit
-              </span>
-              <span className="flex items-center gap-1">
-                <CheckCircle className="h-4 w-4" /> Free
-              </span>
+          <section className="block">
+            <div className="wrap" style={{ maxWidth: 700 }}>
+              <h2 className="sec serif">This is for you if…</h2>
+              <ul className="check-list">
+                <li><span className="ck">✓</span><span>You&apos;ve been &quot;about to start&quot; for 3+ months</span></li>
+                <li><span className="ck">✓</span><span>You know what you want but can&apos;t get yourself to do it</span></li>
+                <li><span className="ck">✓</span><span>You&apos;re tired of your own excuses (but don&apos;t know how to break free)</span></li>
+                <li><span className="ck">✓</span><span>You&apos;re ready to see the truth — even if it&apos;s uncomfortable</span></li>
+              </ul>
+              <h2 className="sec serif" style={{ marginTop: 36 }}>This is <em>not</em> for you if…</h2>
+              <ul className="x-list" style={{ maxWidth: 560, margin: "0 auto" }}>
+                <li><span className="xx">✕</span><span>You&apos;re still exploring options (you don&apos;t know what you want yet)</span></li>
+                <li><span className="xx">✕</span><span>You&apos;re not willing to be honest with yourself</span></li>
+                <li><span className="xx">✕</span><span>You&apos;d rather stay comfortable and blame your circumstances</span></li>
+              </ul>
+              <div style={{ textAlign: "center", marginTop: 34 }}>
+                <button className="btn" onClick={() => { setStep("intro"); goTop() }}>
+                  READY TO SEE THE TRUTH?
+                </button>
+                <p className="center" style={{ marginTop: 10, fontSize: 13 }}>Stop wondering. Start knowing.</p>
+              </div>
             </div>
-            <p className="text-xs text-muted-foreground mt-4">10 questions. No email required until the end.</p>
-          </div>
-        </section>
-      </div>
-    )
-  }
+          </section>
+          <footer className="site-footer">
+            Ideal Clarity &nbsp;|&nbsp; Chi-Chi &nbsp;|&nbsp; Mindset &amp; Momentum Coach
+          </footer>
+        </>
+      )}
 
-  // INTRO SCREEN
-  if (step === "intro") {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
-        <div className="max-w-2xl w-full bg-card border rounded-lg shadow-lg p-8">
-          <h1 className="text-3xl font-bold mb-6 text-center">10 Questions. Total Honesty.</h1>
-          <div className="space-y-4 text-base mb-6">
-            <p className="font-semibold">Here's how this works:</p>
-            <ul className="space-y-2 list-disc list-inside">
-              <li>Read each question carefully - Don't rush. Sit with it.</li>
-              <li>
-                Choose the answer that feels MOST true - Not what you think you "should" say. What's actually true.
-              </li>
-              <li>
-                Be honest even if it's uncomfortable - The discomfort is the signal you're getting close to the truth.
-              </li>
-              <li>There are no wrong answers - This is about YOU seeing clearly. Not being judged.</li>
+      {step === "intro" && (
+        <div className="gate-wrap">
+          <div className="gate-card" style={{ textAlign: "center" }}>
+            <span className="eyebrow" style={{ color: "#b07c1e", borderColor: "#b07c1e" }}>
+              THE 2-MINUTE HONESTY CHECK
+            </span>
+            <h1 className="serif">No fluff. No judgment.</h1>
+            <p style={{ textAlign: "center" }}>
+              Just straight answers to help you see your blind spots. Every answer stays private.
+            </p>
+            <ul className="check-list" style={{ textAlign: "left", maxWidth: 420, margin: "0 auto 26px" }}>
+              <li><span className="ck">✓</span><span>Choose the answer that feels MOST true</span></li>
+              <li><span className="ck">✓</span><span>Be honest even if it&apos;s uncomfortable</span></li>
+              <li><span className="ck">✓</span><span>There are no wrong answers</span></li>
             </ul>
-            <p className="font-semibold mt-6">Remember:</p>
-            <ul className="space-y-2">
-              <li className="flex items-start gap-2">
-                <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                <span>Your answers are completely private</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                <span>No one is grading you</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                <span>The goal is clarity, not perfection</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                <span>The more honest you are, the better your results</span>
-              </li>
-            </ul>
-            <p className="mt-6 text-muted-foreground">You can take as much time as you need. This is for YOU.</p>
+            <button className="btn" onClick={() => { setQIndex(0); setStep("assessment"); goTop() }}>
+              BEGIN →
+            </button>
           </div>
-          <Button size="lg" onClick={() => setStep("assessment")} className="w-full text-lg py-6">
-            START QUESTION 1
-          </Button>
         </div>
-      </div>
-    )
-  }
+      )}
 
-  // ASSESSMENT SCREEN
-  if (step === "assessment") {
-    return (
-      <div className="min-h-screen bg-background flex flex-col">
-        {/* Progress Bar */}
-        <div className="bg-card border-b">
-          <div className="container mx-auto px-4 py-3">
-            <div className="max-w-3xl mx-auto">
-              <div className="flex justify-between text-sm text-muted-foreground mb-2">
-                <span>
-                  Question {currentQuestion + 1} of {currentQuestions.length}
-                </span>
-                <span>{Math.round(progress)}% Complete</span>
-              </div>
-              <div className="w-full bg-muted rounded-full h-2">
-                <div className="bg-primary h-2 rounded-full transition-all" style={{ width: `${progress}%` }} />
-              </div>
+      {step === "assessment" && (
+        <div className="quiz-shell">
+          <div className="q-meta">
+            <span>Question {qIndex + 1} of {total}</span>
+            <span>🔒 Your answers are private</span>
+          </div>
+          <div className="progress"><div style={{ width: `${progress}%` }} /></div>
+          <div className="q-card">
+            <h2 className="serif">{current.question}</h2>
+            {current.subtext && <p className="sub">{current.subtext}</p>}
+            <div>{renderOptions(current)}</div>
+            {current.encouragement && <div className="encourage">{current.encouragement}</div>}
+            <div className="q-nav">
+              <button
+                className="btn btn-sm btn-back"
+                onClick={handleBack}
+                style={{ visibility: qIndex === 0 ? "hidden" : "visible" }}
+              >
+                ← BACK
+              </button>
+              <button className="btn btn-sm" onClick={handleNext} disabled={!selected}>
+                NEXT →
+              </button>
             </div>
           </div>
         </div>
+      )}
 
-        {/* Question Content */}
-        <div className="flex-1 container mx-auto px-4 py-8">
-          <div className="max-w-3xl mx-auto">
-            <div className="bg-card border rounded-lg shadow-md p-8 mb-6">
-              <p className="text-sm text-muted-foreground mb-4">{currentQuestionData.header}</p>
-              <h2 className="text-2xl font-bold mb-2">{currentQuestionData.question}</h2>
-              {currentQuestionData.subtext && (
-                <p className="text-muted-foreground mb-6">{currentQuestionData.subtext}</p>
-              )}
-
-              <RadioGroup value={selectedOption} onValueChange={setSelectedOption} className="space-y-3">
-                {currentQuestionData.sectionHeaders && (
-                  <>
-                    <p className="font-semibold text-sm mt-4 mb-2">{currentQuestionData.sectionHeaders.fear}</p>
-                    {currentQuestionData.options.slice(0, 5).map((option, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center space-x-2 p-3 rounded-lg border hover:bg-muted/50 cursor-pointer"
-                      >
-                        <RadioGroupItem value={option} id={`option-${index}`} />
-                        <Label htmlFor={`option-${index}`} className="flex-1 cursor-pointer">
-                          {option}
-                        </Label>
-                      </div>
-                    ))}
-                    <p className="font-semibold text-sm mt-6 mb-2">{currentQuestionData.sectionHeaders.constraint}</p>
-                    {currentQuestionData.options.slice(5).map((option, index) => (
-                      <div
-                        key={index + 5}
-                        className="flex items-center space-x-2 p-3 rounded-lg border hover:bg-muted/50 cursor-pointer"
-                      >
-                        <RadioGroupItem value={option} id={`option-${index + 5}`} />
-                        <Label htmlFor={`option-${index + 5}`} className="flex-1 cursor-pointer">
-                          {option}
-                        </Label>
-                      </div>
-                    ))}
-                  </>
-                )}
-
-                {!currentQuestionData.sectionHeaders &&
-                  currentQuestionData.options.map((option, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center space-x-2 p-3 rounded-lg border hover:bg-muted/50 cursor-pointer"
-                    >
-                      <RadioGroupItem value={option} id={`option-${index}`} />
-                      <Label htmlFor={`option-${index}`} className="flex-1 cursor-pointer">
-                        {option}
-                      </Label>
-                    </div>
-                  ))}
-              </RadioGroup>
-
-              {currentQuestionData.encouragement && (
-                <div className="mt-6 p-4 bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 rounded-lg">
-                  <p className="text-sm">{currentQuestionData.encouragement}</p>
+      {step === "email" && (
+        <div className="gate-wrap">
+          <div className="gate-card">
+            <div className="decode-note">THE DECODE STEP · THE IDEAL CLARITY METHOD™</div>
+            <h1 className="serif">You Did It.<br />Now Let&apos;s Show You The Truth.</h1>
+            <p>
+              You just answered <strong>{total} questions</strong> with complete honesty. That takes courage. Most
+              people aren&apos;t willing to face the truth about what&apos;s stopping them. <strong>You are.</strong>
+            </p>
+            <p>Your personalized results are ready. Enter your details to see them:</p>
+            <form onSubmit={submitGate}>
+              <div className="field">
+                <label htmlFor="fof-firstName">First Name</label>
+                <input
+                  id="fof-firstName"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  required
+                  placeholder="Your first name"
+                  autoComplete="given-name"
+                />
+              </div>
+              <div className="field">
+                <label htmlFor="fof-email">Email Address</label>
+                <input
+                  id="fof-email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  placeholder="your.email@example.com"
+                  autoComplete="email"
+                />
+              </div>
+              <label className="chk">
+                <input
+                  type="checkbox"
+                  checked={subscribe}
+                  onChange={(e) => setSubscribe(e.target.checked)}
+                />
+                <span>Yes, send me insights on breaking through fear and getting unstuck (unsubscribe anytime)</span>
+              </label>
+              <div className="privacy">
+                🔒 Your answers and results are completely private. We&apos;ll never share your data.
+                <br />📧 No spam. Just your results — plus helpful insights if you opt in above.
+              </div>
+              {emailStatus === "error" && (
+                <div className="form-error" role="alert">
+                  <p>
+                    <strong>We couldn&apos;t save your details.</strong> {emailError} Your results are still ready —
+                    you can try again or continue without saving.
+                  </p>
+                  <div className="form-error-actions">
+                    <button className="btn btn-sm" onClick={submitGate}>
+                      TRY AGAIN
+                    </button>
+                    <button type="button" className="linklike" onClick={continueToResults}>
+                      Continue to results →
+                    </button>
+                  </div>
                 </div>
               )}
-            </div>
-
-            {/* Encouragement Prompts */}
-            {showEncouragement && currentQuestion === 3 && (
-              <div className="bg-blue-50 dark:bg-blue-950/20 border-2 border-blue-200 dark:border-blue-800 rounded-lg p-6 mb-6">
-                <p className="font-medium mb-2">💭 Pause for a moment.</p>
-                <p className="text-sm">You're doing great. Remember: there are no wrong answers here.</p>
-                <p className="text-sm">Choose what feels MOST true, even if it's hard to admit.</p>
-              </div>
-            )}
-
-            {showEncouragement && currentQuestion === 6 && (
-              <div className="bg-green-50 dark:bg-green-950/20 border-2 border-green-200 dark:border-green-800 rounded-lg p-6 mb-6">
-                <p className="font-medium mb-2">✓ Halfway there.</p>
-                <p className="text-sm">You're being honest. That takes courage.</p>
-                <p className="text-sm">Keep going. The clarity is on the other side of the discomfort.</p>
-              </div>
-            )}
-
-            {showEncouragement && currentQuestion === 8 && (
-              <div className="bg-purple-50 dark:bg-purple-950/20 border-2 border-purple-200 dark:border-purple-800 rounded-lg p-6 mb-6">
-                <p className="font-medium mb-2">🎯 Almost there. Just 2 more questions.</p>
-                <p className="text-sm">You're doing the hard work of being honest.</p>
-                <p className="text-sm">The truth is just ahead.</p>
-              </div>
-            )}
-
-            <Button size="lg" onClick={handleAnswer} disabled={!selectedOption} className="w-full text-lg py-6">
-              NEXT
-            </Button>
+              {emailStatus !== "error" && (
+                <button className="btn" style={{ width: "100%" }} type="submit" disabled={emailStatus === "sending"}>
+                  {emailStatus === "sending" ? "SAVING…" : "SHOW ME MY RESULTS"}
+                </button>
+              )}
+            </form>
           </div>
         </div>
+      )}
 
-        {/* Sticky Footer */}
-        <div className="bg-muted border-t py-3">
-          <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto flex flex-wrap justify-center gap-4 text-xs text-muted-foreground">
-              <span className="flex items-center gap-1">
-                <Lock className="h-3 w-3" /> Private
-              </span>
-              <span className="flex items-center gap-1">
-                <Clock className="h-3 w-3" /> No time limit
-              </span>
-              <span className="flex items-center gap-1">
-                <CheckCircle className="h-3 w-3" /> Total honesty = Best results
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  // EMAIL CAPTURE SCREEN
-  if (step === "email") {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
-        <div className="max-w-2xl w-full bg-card border rounded-lg shadow-lg p-8">
-          <h1 className="text-3xl font-bold mb-4 text-center">You Did It. Now Let's Show You The Truth.</h1>
-          <p className="text-muted-foreground mb-6">
-            You just answered 10 questions with complete honesty. That takes courage. Most people aren't willing to face
-            the truth about what's stopping them. You are.
-          </p>
-          <p className="mb-6">Your personalized results are ready. Enter your details to see them:</p>
-
-          <form onSubmit={handleEmailSubmit} className="space-y-4">
-            <div>
-              <Label htmlFor="firstName">First Name</Label>
-              <Input
-                id="firstName"
-                type="text"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                required
-                placeholder="Your first name"
-                className="mt-1"
-              />
-            </div>
-            <div>
-              <Label htmlFor="email">Email Address</Label>
-              <Input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                placeholder="your.email@example.com"
-                className="mt-1"
-              />
-            </div>
-            <div className="flex items-start space-x-2">
-              <Checkbox
-                id="subscribe"
-                checked={subscribe}
-                onCheckedChange={(checked) => setSubscribe(checked === true)}
-              />
-              <Label htmlFor="subscribe" className="text-sm cursor-pointer">
-                Yes, send me insights on breaking through fear and getting unstuck (unsubscribe anytime)
-              </Label>
-            </div>
-            <div className="bg-muted p-4 rounded-lg text-sm text-muted-foreground">
-              <p>
-                🔒 Your answers and results are completely private. We'll never share your data. 📧 No spam. Just your
-                results + helpful insights when relevant.
-              </p>
-            </div>
-            <Button type="submit" size="lg" className="w-full text-lg py-6">
-              SHOW ME MY RESULTS
-            </Button>
-          </form>
-        </div>
-      </div>
-    )
-  }
-
-  // RESULTS PAGES
-  if (step === "results") {
-    // FEAR-BASED RESULTS
-    if (resultType === "fear") {
-      return (
-        <div className="min-h-screen bg-background">
-          <div className="container mx-auto px-4 py-12 max-w-4xl">
-            <h1 className="text-4xl font-bold mb-4">Your Results: This is FEAR, Not Facts.</h1>
-            <p className="text-xl text-muted-foreground mb-12">
-              Based on your answers, here's the truth you've been avoiding: What you think is a "real obstacle" is
+      {step === "results" && resultType === "fear" && (
+        <>
+          <div className="verdict">
+            <span className="pill">YOUR ASSESSMENT RESULT</span>
+            <h1 className="serif">This is FEAR, <span className="gold">Not Facts.</span></h1>
+            <p className="lead">
+              Here&apos;s the truth you&apos;ve been avoiding: what you think is a &quot;real obstacle&quot; is
               actually fear disguised as logic.
             </p>
-
-            {/* Section 1: Diagnosis */}
-            <section className="mb-12 bg-card border rounded-lg p-8">
-              <h2 className="text-2xl font-bold mb-4">Your Primary Excuse Pattern:</h2>
-              <div className="bg-muted p-4 rounded-lg mb-4">
-                <p className="text-lg italic">"{answers["3"]}"</p>
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Here's what's ACTUALLY happening:</h3>
-              <p className="mb-4">
-                You're using <span className="font-semibold">"{answers["3"]}"</span> as protection.
-              </p>
-              <p className="mb-2 font-semibold">Protection from:</p>
-              <ul className="list-disc list-inside space-y-1 mb-4">
-                <li>Being seen publicly</li>
-                <li>Being judged or criticized</li>
-                <li>Being "found out" as not good enough</li>
-                <li>Failing where everyone can see</li>
-              </ul>
-              <p className="mb-4">It FEELS like a real constraint. Like a logical, responsible reason to wait.</p>
-              <p className="font-semibold">
-                But here's the test: If this obstacle disappeared tomorrow... You'd find another reason to wait.
-              </p>
-              <p className="mt-4">Because the obstacle isn't the issue. The fear is.</p>
-            </section>
-
-            {/* Section 2: The Pattern */}
-            <section className="mb-12">
-              <h2 className="text-2xl font-bold mb-4">Here's the loop that's been running your life:</h2>
-              <ol className="space-y-3 mb-4">
-                <li className="flex gap-3">
-                  <span className="font-bold text-primary">1.</span>
-                  <span>You decide you're going to start</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="font-bold text-primary">2.</span>
-                  <span>Fear shows up disguised as "{answers["3"]}"</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="font-bold text-primary">3.</span>
-                  <span>You tell yourself "I'll start once I solve this"</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="font-bold text-primary">4.</span>
-                  <span>You work on "solving" the obstacle (but it never feels fully solved)</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="font-bold text-primary">5.</span>
-                  <span>Repeat</span>
-                </li>
-              </ol>
-              <p className="mb-2">
-                You've been in this loop for: <span className="font-bold">{answers["2"]}</span>
-              </p>
-              <p className="font-semibold">And you'll stay in it until you see it clearly.</p>
-            </section>
-
-            {/* Section 3: What This Is Costing You */}
-            <section className="mb-12 bg-red-50 dark:bg-red-950/20 border-2 border-red-200 dark:border-red-800 rounded-lg p-8">
-              <h2 className="text-2xl font-bold mb-4">Every month you stay stuck, you're losing:</h2>
-              <ul className="space-y-3 mb-6">
-                <li className="flex gap-3">
-                  <span className="text-red-600 text-xl">✗</span>
-                  <span>
-                    <strong>Opportunities</strong> - Promotions, clients, partnerships, visibility you didn't go for
-                  </span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-red-600 text-xl">✗</span>
-                  <span>
-                    <strong>Momentum</strong> - Other people are building while you're "preparing"
-                  </span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-red-600 text-xl">✗</span>
-                  <span>
-                    <strong>Mental energy</strong> - The same internal debate on repeat is exhausting
-                  </span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-red-600 text-xl">✗</span>
-                  <span>
-                    <strong>Time</strong> - Another 30 days your future self will never get back
-                  </span>
-                </li>
-              </ul>
-
-              <h3 className="text-xl font-bold mb-3">If nothing changes:</h3>
-              <div className="space-y-2 mb-6 text-sm">
-                <p>
-                  <strong>3 months from now:</strong> Still stuck. More frustrated. Deeper shame.
-                </p>
-                <p>
-                  <strong>6 months from now:</strong> Still at the same crossroads. Watching others do what you want to
-                  do.
-                </p>
-                <p>
-                  <strong>1 year from now:</strong> Looking back at today wishing you'd moved.
-                </p>
-                <p>
-                  <strong>5 years from now:</strong> Still wondering "what if?"
-                </p>
-              </div>
-
-              <h3 className="text-xl font-bold mb-3 text-green-700 dark:text-green-400">Or...</h3>
-              <div className="bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-800 rounded-lg p-4">
-                <p className="font-bold mb-2">30 days from now:</p>
-                <p className="mb-2">You've actually DONE the thing.</p>
-                <ul className="list-disc list-inside space-y-1">
-                  <li>Posted the content.</li>
-                  <li>Launched the business.</li>
-                  <li>Stepped into the role.</li>
-                  <li>Had the conversation.</li>
-                  <li>Moved.</li>
-                </ul>
-              </div>
-            </section>
-
-            {/* The Good News */}
-            <section className="mb-12 bg-blue-50 dark:bg-blue-950/20 border-2 border-blue-200 dark:border-blue-800 rounded-lg p-8">
-              <h2 className="text-2xl font-bold mb-4">Here's what changes everything:</h2>
-              <p className="mb-4">Once you SEE that it's fear (not facts), you can choose differently.</p>
-              <p className="mb-2 font-semibold">You don't need to:</p>
-              <ul className="list-disc list-inside space-y-1 mb-4">
-                <li>Wait until you feel ready (that day never comes)</li>
-                <li>Wait until you feel confident (confidence comes AFTER action)</li>
-                <li>Wait for perfect conditions (they don't exist)</li>
-              </ul>
-              <p className="mb-2 font-semibold">You just need to:</p>
-              <p className="text-lg font-bold mb-4">Move anyway. While scared. Imperfectly.</p>
-              <p>And that's exactly what we help you do.</p>
-            </section>
-
-            {/* CTA Section */}
-            <section className="mb-12 text-center">
-              <h2 className="text-3xl font-bold mb-6">Ready to break through?</h2>
-              <Button size="lg" onClick={() => window.open(calendlyLink, "_blank")} className="text-xl px-10 py-7 mb-3">
-                BOOK YOUR FREE CLARITY CALL
-              </Button>
-              <p className="text-sm text-muted-foreground">30 minutes. No pressure. Just clarity.</p>
-            </section>
           </div>
-        </div>
-      )
-    }
-
-    // CONSTRAINT-BASED RESULTS
-    if (resultType === "constraint") {
-      return (
-        <div className="min-h-screen bg-background">
-          <div className="container mx-auto px-4 py-12 max-w-4xl">
-            <h1 className="text-4xl font-bold mb-4">Your Results: You Have a Real Constraint.</h1>
-            <p className="text-xl text-muted-foreground mb-12">But you've been using it as a reason to do nothing.</p>
-
-            {/* Diagnosis */}
-            <section className="mb-12 bg-card border rounded-lg p-8">
-              <h2 className="text-2xl font-bold mb-4">Your Primary Constraint:</h2>
-              <div className="bg-muted p-4 rounded-lg mb-4">
-                <p className="text-lg italic">"{answers["4"]}"</p>
-              </div>
-              <p className="mb-4">
-                Yes, <span className="font-semibold">{answers["4"]}</span> is REAL. It's not just fear. It's not an
-                excuse. It's a legitimate obstacle.
+          <div className="rsec">
+            <div className="diag">
+              <div className="lbl">YOUR PRIMARY EXCUSE PATTERN</div>
+              <p className="quote serif">&quot;{answers["3"]}&quot;</p>
+              <p style={{ marginTop: 14 }}>
+                You&apos;re using this as <strong>protection</strong> — from being seen publicly, being judged, being
+                &quot;found out&quot; as not good enough, failing where everyone can see.
               </p>
-              <p className="mb-4">
-                But: You've been using it as a reason to do NOTHING while you wait for it to be solved.
+              <p style={{ marginTop: 10 }}>It FEELS like a real constraint. Like a logical, responsible reason to wait.</p>
+              <p style={{ marginTop: 10 }}>
+                <strong>But here&apos;s the test:</strong> if this obstacle disappeared tomorrow… you&apos;d find
+                another reason to wait. Because the obstacle isn&apos;t the issue. <strong>The fear is.</strong>
               </p>
-              <p className="mb-2">Instead of building momentum NOW, you've been "stuck waiting."</p>
-            </section>
+            </div>
 
-            {/* Free Resource CTA */}
-            <section className="mb-12 bg-primary/10 border-2 border-primary rounded-lg p-8">
-              <h2 className="text-2xl font-bold mb-4">Download: The Constraint Solution Framework</h2>
-              <p className="mb-4">A practical roadmap to solve your constraint AND build momentum at the same time.</p>
-              <Button
-                size="lg"
-                onClick={() =>
-                  window.open(
-                    `mailto:idealclaritysolutions@gmail.com?subject=Constraint Solution Framework Request&body=Hi, I just completed the Facts or Fear assessment and would like to receive the Constraint Solution Framework. Thank you!`,
-                    "_blank",
-                  )
-                }
-                className="w-full text-lg py-6"
-              >
-                REQUEST FREE FRAMEWORK
-              </Button>
-            </section>
+            <h2 className="serif" style={{ fontSize: 26, margin: "30px 0 6px" }}>
+              Here&apos;s the loop that&apos;s been running your life
+            </h2>
+            <ol className="loop">
+              <li><span className="n">1</span><span>You decide you&apos;re going to start</span></li>
+              <li><span className="n">2</span><span>Fear shows up disguised as a &quot;logical reason&quot;</span></li>
+              <li><span className="n">3</span><span>You tell yourself &quot;I&apos;ll start once I solve this&quot;</span></li>
+              <li><span className="n">4</span><span>You work on &quot;solving&quot; the obstacle (but it never feels fully solved)</span></li>
+              <li><span className="n">5</span><span>Repeat.</span></li>
+            </ol>
 
-            {/* CTA Section */}
-            <section className="mb-12 text-center">
-              <h2 className="text-3xl font-bold mb-4">Want support executing this?</h2>
-              <Button size="lg" onClick={() => window.open(calendlyLink, "_blank")} className="text-xl px-10 py-7 mb-3">
-                BOOK YOUR FREE CLARITY CALL
-              </Button>
-              <p className="text-sm text-muted-foreground">30 minutes. No pressure. Just clarity.</p>
-            </section>
-          </div>
-        </div>
-      )
-    }
-
-    // MIXED RESULTS
-    if (resultType === "mixed") {
-      return (
-        <div className="min-h-screen bg-background">
-          <div className="container mx-auto px-4 py-12 max-w-4xl">
-            <h1 className="text-4xl font-bold mb-4">Your Results: You Have a Constraint AND Fear.</h1>
-            <p className="text-xl text-muted-foreground mb-12">Let's address both.</p>
-
-            <section className="mb-12 bg-card border rounded-lg p-8">
-              <h2 className="text-2xl font-bold mb-4">Here's what's happening:</h2>
-              <p className="mb-4">
-                You have a REAL constraint: <span className="font-semibold">"{answers["4"]}"</span>
-              </p>
-              <p className="mb-4">This is legitimate. It's not just fear.</p>
-              <p className="mb-4">
-                But there's something else going on too: Even if your constraint was solved tomorrow, you'd still
-                hesitate. Because fear is ALSO present.
-              </p>
-              <p className="font-semibold">
-                The constraint gives you a "legitimate" excuse. But fear is what's ACTUALLY keeping you frozen.
-              </p>
-            </section>
-
-            <section className="mb-12 text-center">
-              <h2 className="text-3xl font-bold mb-6">Let's untangle both together.</h2>
-              <Button size="lg" onClick={() => window.open(calendlyLink, "_blank")} className="text-xl px-10 py-7 mb-3">
-                BOOK YOUR FREE CLARITY CALL
-              </Button>
-              <p className="text-sm text-muted-foreground">30 minutes. No pressure. Just clarity.</p>
-            </section>
-          </div>
-        </div>
-      )
-    }
-
-    // UNCLEAR RESULTS
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
-        <div className="max-w-2xl w-full">
-          <div className="bg-card border rounded-lg shadow-lg p-8 text-center">
-            <h1 className="text-4xl font-bold mb-4">Your Results: You Need Clarity Before You Can Move.</h1>
-            <p className="text-xl text-muted-foreground mb-8">
-              Based on your answers, here's the truth: You're not sure what's stopping you. And that uncertainty is
-              keeping you stuck.
-            </p>
-
-            <div className="bg-muted p-6 rounded-lg mb-8 text-left">
-              <h2 className="text-xl font-bold mb-3">You don't need a program yet. You need a conversation.</h2>
-              <p className="mb-4">A conversation where we:</p>
-              <ul className="space-y-2">
-                <li className="flex gap-2">
-                  <CheckCircle className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span>Untangle what's ACTUALLY stopping you</span>
-                </li>
-                <li className="flex gap-2">
-                  <CheckCircle className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span>Expose the hidden patterns you can't see on your own</span>
-                </li>
-                <li className="flex gap-2">
-                  <CheckCircle className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span>Distinguish fear from constraint from lack of clarity</span>
-                </li>
-                <li className="flex gap-2">
-                  <CheckCircle className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span>Map your next step</span>
-                </li>
+            <div className="cost">
+              <h3 className="serif" style={{ fontSize: 22, marginBottom: 10 }}>
+                Every month you stay stuck, you&apos;re losing
+              </h3>
+              <ul>
+                <li><span className="xx">✕</span><span><strong>Opportunities</strong> — promotions, clients, partnerships, visibility you didn&apos;t go for</span></li>
+                <li><span className="xx">✕</span><span><strong>Momentum</strong> — other people are building while you&apos;re &quot;preparing&quot;</span></li>
+                <li><span className="xx">✕</span><span><strong>Mental energy</strong> — the same internal debate on repeat is exhausting</span></li>
+                <li><span className="xx">✕</span><span><strong>Time</strong> — another 30 days your future self will never get back</span></li>
               </ul>
             </div>
 
-            <Button size="lg" onClick={() => window.open(calendlyLink, "_blank")} className="text-xl px-10 py-7 mb-3">
-              BOOK YOUR FREE CLARITY CALL
-            </Button>
-            <p className="text-sm text-muted-foreground">30 minutes. No pressure. Just clarity.</p>
+            <div className="goodnews">
+              <h3 className="serif" style={{ fontSize: 24, marginBottom: 10 }}>Here&apos;s what changes everything</h3>
+              <p>Once you SEE that it&apos;s fear (not facts), you can choose differently.</p>
+              <p style={{ marginTop: 10 }}>
+                <strong>You don&apos;t need to</strong> wait until you feel ready, confident, or until conditions are
+                perfect.
+              </p>
+              <p style={{ marginTop: 10, fontSize: 19 }}>
+                <strong>You just need to move anyway. While scared. Imperfectly.</strong>
+              </p>
+              <p style={{ marginTop: 8 }}>And that&apos;s exactly what we help you do.</p>
+            </div>
 
-            <p className="mt-6 text-muted-foreground">
-              You don't have to stay stuck in uncertainty. Let's figure this out together.
+            <BookingCta
+              heading={<>Ready to break through<br /><span className="gold">in one conversation?</span></>}
+              body="Book a FREE Next Chapter Conversation — 45 minutes with Chi-Chi to name what's actually in the way and map your next move."
+            />
+          </div>
+        </>
+      )}
+
+      {step === "results" && resultType === "constraint" && (
+        <>
+          <div className="verdict">
+            <span className="pill">YOUR ASSESSMENT RESULT</span>
+            <h1 className="serif">You Have a <span className="gold">Real Constraint.</span></h1>
+            <p className="lead">But you&apos;ve been using it as a reason to do nothing.</p>
+          </div>
+          <div className="rsec">
+            <div className="diag">
+              <div className="lbl">YOUR PRIMARY CONSTRAINT</div>
+              <p className="quote serif">&quot;{answers["4"]}&quot;</p>
+              <p style={{ marginTop: 14 }}>
+                Yes — this is REAL. It&apos;s not just fear. It&apos;s not an excuse. It&apos;s a legitimate obstacle.
+              </p>
+              <p style={{ marginTop: 10 }}>
+                <strong>But:</strong> you&apos;ve been using it as a reason to do NOTHING while you wait for it to be
+                solved. Instead of building momentum NOW, you&apos;ve been &quot;stuck waiting.&quot;
+              </p>
+            </div>
+
+            <FrameworkDownload body="A practical roadmap to solve your constraint and build momentum at the same time." />
+
+            <BookingCta
+              heading={<>Want support <span className="gold">executing this?</span></>}
+              body="A real constraint is a design input, not a stop sign. In a FREE Next Chapter Conversation, we'll design around yours — together."
+            />
+          </div>
+        </>
+      )}
+
+      {step === "results" && resultType === "mixed" && (
+        <>
+          <div className="verdict">
+            <span className="pill">YOUR ASSESSMENT RESULT</span>
+            <h1 className="serif">A Constraint <span className="gold">AND</span> Fear.</h1>
+            <p className="lead">
+              Let&apos;s address both — because the constraint gives you a &quot;legitimate&quot; excuse, but fear is
+              what&apos;s ACTUALLY keeping you frozen.
             </p>
           </div>
-        </div>
-      </div>
-    )
-  }
+          <div className="rsec">
+            <div className="diag">
+              <div className="lbl">WHAT&apos;S HAPPENING</div>
+              <p style={{ marginTop: 6 }}>You have a REAL constraint — that&apos;s legitimate, not just fear.</p>
+              <p style={{ marginTop: 10 }}>
+                <strong>But there&apos;s something else too:</strong> even if your constraint was solved tomorrow,
+                you&apos;d still hesitate. Because fear is ALSO present.
+              </p>
+            </div>
 
-  return null
+            <FrameworkDownload body="Start with the practical roadmap for your real constraint — then we'll untangle the fear together." />
+
+            <BookingCta
+              heading={<>Let&apos;s untangle <span className="gold">both together.</span></>}
+              body="Book a FREE Next Chapter Conversation — 45 minutes to separate what's real from what's fear, and map your next move."
+            />
+          </div>
+        </>
+      )}
+
+      {step === "results" && resultType === "unclear" && (
+        <>
+          <div className="verdict">
+            <span className="pill">YOUR ASSESSMENT RESULT</span>
+            <h1 className="serif">You Need <span className="gold">Clarity</span> Before You Can Move.</h1>
+            <p className="lead">You&apos;re not sure what&apos;s stopping you. And that uncertainty is keeping you stuck.</p>
+          </div>
+          <div className="rsec">
+            <div className="diag">
+              <div className="lbl">THE TRUTH</div>
+              <p style={{ marginTop: 6, fontSize: 18 }}>
+                <strong>You don&apos;t need a program yet. You need a conversation.</strong>
+              </p>
+              <p style={{ marginTop: 10 }}>A conversation where we:</p>
+              <ul className="check-list">
+                <li><span className="ck">✓</span><span>Untangle what&apos;s ACTUALLY stopping you</span></li>
+                <li><span className="ck">✓</span><span>Expose the hidden patterns you can&apos;t see on your own</span></li>
+                <li><span className="ck">✓</span><span>Distinguish fear from constraint from lack of clarity</span></li>
+                <li><span className="ck">✓</span><span>Map your next step</span></li>
+              </ul>
+            </div>
+
+            <BookingCta
+              heading={<>You don&apos;t have to stay stuck<br /><span className="gold">in uncertainty.</span></>}
+              body="Let's figure this out together — in a FREE 45-minute Next Chapter Conversation."
+            />
+          </div>
+        </>
+      )}
+    </div>
+  )
 }
 
 export default FactsOrFearClient

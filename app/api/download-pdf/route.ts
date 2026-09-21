@@ -16,6 +16,7 @@ export async function GET(req: NextRequest) {
       "3-blocks": { filename: "3-blocks-keeping-you-stuck.pdf", requiresPayment: false },
       "10-questions": { filename: "10-questions-identify-block.pdf", requiresPayment: false },
       "employed-business": { filename: "running-business-while-employed.pdf", requiresPayment: true },
+      "constraint-framework": { filename: "constraint-solution-framework.pdf", requiresPayment: false },
     }
 
     const pdfInfo = pdfFiles[pdfType]
@@ -30,10 +31,10 @@ export async function GET(req: NextRequest) {
 
     // For free PDFs, serve the file directly
     const filePath = path.join(process.cwd(), "public", "pdfs", pdfInfo.filename)
-    
+
     try {
       const fileBuffer = await readFile(filePath)
-      
+
       return new NextResponse(new Uint8Array(fileBuffer), {
         headers: {
           "Content-Type": "application/pdf",

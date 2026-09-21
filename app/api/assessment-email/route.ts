@@ -3,30 +3,85 @@ import { type NextRequest, NextResponse } from "next/server"
 export const dynamic = "force-dynamic"
 export const revalidate = 0
 
+const FEAR_GROUP_ID = "175087415702062888"
+const CONSTRAINT_GROUP_ID = "175087438358643867"
+const MIXED_GROUP_NAME = "Facts-or-Fear: Mixed/Unclear"
+
+let cachedMixedGroupId: string | null = null
+
+async function mailerliteFetch(apiKey: string, path: string, init?: RequestInit) {
+  return fetch(`https://connect.mailerlite.com/api${path}`, {
+    ...init,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${apiKey}`,
+      ...(init?.headers || {}),
+    },
+  })
+}
+
+// Mixed/Unclear takers get their own group so they are never silently dumped
+// into the constraint (or fear) automation. The group is created on first use
+// and its id is cached for the lifetime of the server instance.
+async function resolveMixedGroupId(apiKey: string): Promise<string | null> {
+  if (cachedMixedGroupId) return cachedMixedGroupId
+  try {
+    const res = await mailerliteFetch(apiKey, "/groups?limit=100")
+    if (res.ok) {
+      const data = await res.json()
+      const found = (data?.data || []).find((g: { name?: string }) => g.name === MIXED_GROUP_NAME)
+      if (found?.id) {
+        cachedMixedGroupId = String(found.id)
+        return cachedMixedGroupId
+      }
+    }
+    const created = await mailerliteFetch(apiKey, "/groups", {
+      method: "POST",
+      body: JSON.stringify({ name: MIXED_GROUP_NAME }),
+    })
+    if (created.ok) {
+      const data = await created.json()
+      if (data?.data?.id) {
+        cachedMixedGroupId = String(data.data.id)
+        return cachedMixedGroupId
+      }
+    }
+  } catch (error) {
+    console.error("[assessment-email] Mixed group resolution failed:", error)
+  }
+  return null
+}
+
 export async function POST(request: NextRequest) {
   try {
-    console.log("[v0] =================================")
-    console.log("[v0] API route called: /api/assessment-email")
+    const { email, firstName, q3Answer, deadline, isFearBased, resultType, consent, block, answers } =
+      await request.json()
 
-    const { email, firstName, q3Answer, deadline, isFearBased, block, answers } = await request.json()
+    if (!email) {
+      return NextResponse.json({ success: false, error: "Email is required" }, { status: 400 })
+    }
 
-    console.log("[v0] Email:", email)
-    console.log("[v0] First Name:", firstName)
-    console.log("[v0] isFearBased:", isFearBased)
-    console.log("[v0] block:", block)
+    // Consent is honored: when the visitor unchecked the marketing checkbox,
+    // they are NOT added to MailerLite. Results are still shown client-side.
+    if (consent === false) {
+      return NextResponse.json({
+        success: true,
+        subscribed: false,
+        message: "Consent not given; visitor not added to MailerLite",
+      })
+    }
 
     const apiKey = process.env.MAILERLITE_API_KEY
 
     if (!apiKey) {
-      console.error("[v0] CRITICAL: MAILERLITE_API_KEY not found in environment")
+      console.error("[assessment-email] MAILERLITE_API_KEY not configured")
       return NextResponse.json({ success: false, error: "MailerLite API key not configured" }, { status: 500 })
     }
 
-    console.log("[v0] MailerLite API key found")
-
     // Determine group + assessment type.
     // If `block` is provided, this is the From-Idea-to-First-Offer (blocks) assessment.
-    // Otherwise fall back to the original Facts-or-Fear (fear/constraint) logic.
+    // Otherwise fall back to the Facts-or-Fear (fear/constraint/mixed/unclear) logic.
     const BLOCK_GROUPS: Record<string, { id: string; name: string }> = {
       validation: { id: "190951354390284159", name: "Validation Block" },
       visibility: { id: "190951338378528727", name: "Visibility Block" },
@@ -42,12 +97,36 @@ export async function POST(request: NextRequest) {
       groupName = BLOCK_GROUPS[block].name
       assessmentTypeLabel = `blocks-${block}`
     } else {
-      groupId = isFearBased ? "175087415702062888" : "175087438358643867"
-      groupName = isFearBased ? "Fear-Based Assessment" : "Constraint-Based Assessment"
-      assessmentTypeLabel = isFearBased ? "fear-based" : "constraint-based"
-    }
+      const type: string =
+        resultType === "fear" || resultType === "constraint" || resultType === "mixed" || resultType === "unclear"
+          ? resultType
+          : isFearBased
+            ? "fear"
+            : "constraint"
 
-    console.log("[v0] Adding subscriber to group:", groupName, `(${groupId})`)
+      if (type === "fear") {
+        groupId = FEAR_GROUP_ID
+        groupName = "Fear-Based Assessment"
+        assessmentTypeLabel = "fear-based"
+      } else if (type === "constraint") {
+        groupId = CONSTRAINT_GROUP_ID
+        groupName = "Constraint-Based Assessment"
+        assessmentTypeLabel = "constraint-based"
+      } else {
+        // Mixed/Unclear: never silently dumped into the fear or constraint groups.
+        const mixedGroupId = await resolveMixedGroupId(apiKey)
+        if (mixedGroupId) {
+          groupId = mixedGroupId
+          groupName = MIXED_GROUP_NAME
+        } else {
+          // Fallback keeps the visitor reachable but tags the true type so the
+          // wrong automation is never triggered blindly.
+          groupId = CONSTRAINT_GROUP_ID
+          groupName = "Constraint-Based Assessment (fallback for mixed/unclear)"
+        }
+        assessmentTypeLabel = type
+      }
+    }
 
     const subscriberData = {
       email: email,
@@ -62,49 +141,28 @@ export async function POST(request: NextRequest) {
       groups: [groupId],
     }
 
-    console.log("[v0] Making MailerLite API request...")
-
-    const response = await fetch("https://connect.mailerlite.com/api/subscribers", {
+    const response = await mailerliteFetch(apiKey, "/subscribers", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
       body: JSON.stringify(subscriberData),
     })
 
-    console.log("[v0] MailerLite response status:", response.status)
-
-    const data = await response.json()
-    console.log("[v0] MailerLite response:", JSON.stringify(data, null, 2))
+    const data = await response.json().catch(() => ({}))
 
     if (!response.ok) {
-      console.error("[v0] MailerLite API error:", data)
+      console.error("[assessment-email] MailerLite API error:", response.status)
       return NextResponse.json(
-        {
-          success: false,
-          error: `MailerLite API error: ${response.status}`,
-          details: data,
-        },
+        { success: false, error: `MailerLite API error: ${response.status}` },
         { status: response.status },
       )
     }
 
-    console.log("[v0] =================================")
-    console.log("[v0] SUCCESS! Subscriber added to MailerLite")
-    console.log("[v0] Email:", email)
-    console.log("[v0] Group:", groupName)
-    console.log("[v0] The automation should trigger now!")
-    console.log("[v0] =================================")
-
     return NextResponse.json({
       success: true,
+      subscribed: true,
       message: "Subscriber added successfully",
-      data: data,
     })
   } catch (error) {
-    console.error("[v0] ERROR in API route:", error)
+    console.error("[assessment-email] ERROR:", error instanceof Error ? error.message : "Unknown error")
     return NextResponse.json(
       {
         success: false,
