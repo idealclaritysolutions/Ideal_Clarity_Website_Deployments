@@ -9,7 +9,7 @@ const CAL_URL =
 const WISTIA_MEDIA_ID = "d9blju2tmz";
 
 // One label for every CTA on the page (hero, video, method, fit, outcomes, sticky)
-const CTA_LABEL = "Book Your FREE Next Chapter Conversation";
+const CTA_LABEL = "Book Your Next Chapter Conversation";
 
 // Renders the <wistia-player> custom element from TSX without type errors
 const WistiaPlayer =
