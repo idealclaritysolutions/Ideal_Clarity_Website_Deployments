@@ -698,7 +698,7 @@ function BookingSteps() {
               </p>
               <strong>Choose your time</strong>
             </div>
-            <span>30 minutes · Private · Complimentary</span>
+            <span>45 minutes · Private · Complimentary</span>
           </div>
 
           <div ref={calRef} className="nc-calendar-embed" />
@@ -1191,7 +1191,7 @@ export default function NextChapterPage() {
             <details data-reveal open>
               <summary>Is this a sales call?</summary>
               <p>
-                No. It&apos;s a focused 30-minute conversation: we name
+                No. It&apos;s a focused 45-minute conversation: we name
                 what&apos;s keeping you stuck, separate facts from
                 fear, and you leave with one clear next step. If it
                 becomes clear that deeper support would help,
@@ -1242,7 +1242,7 @@ export default function NextChapterPage() {
         <div className="nc-shell nc-booking-grid">
           <div className="nc-booking-copy" data-reveal>
             <p className="nc-kicker nc-kicker-light">
-              COMPLIMENTARY 30-MINUTE CONVERSATION
+              COMPLIMENTARY 45-MINUTE CONVERSATION
             </p>
 
             <h2>Let&apos;s find the move you are ready to make.</h2>
