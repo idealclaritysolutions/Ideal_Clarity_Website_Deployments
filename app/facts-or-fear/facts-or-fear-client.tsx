@@ -171,7 +171,7 @@ function FactsOrFearClient() {
   const [selected, setSelected] = useState("")
   const [email, setEmail] = useState("")
   const [firstName, setFirstName] = useState("")
-  const [subscribe, setSubscribe] = useState(true)
+  const [subscribe, setSubscribe] = useState(false)
   const [emailStatus, setEmailStatus] = useState<"idle" | "sending" | "error">("idle")
   const [emailError, setEmailError] = useState("")
   const [startTime] = useState(() => Date.now())
