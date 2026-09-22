@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 
-const PAGE_TITLE = "Go From Circling to Launched in 8 Weeks | Ideal Clarity";
+const PAGE_TITLE = "Go From Postponing to Launched in 8 Weeks | Ideal Clarity";
 const PAGE_DESCRIPTION =
-  "The Dream Accelerator™ for high-achieving professionals. Uncover what's really been keeping you stuck and go from circling your idea to launched in 8 weeks — or Chi-Chi keeps coaching you, free, until you do. Start with a free 30-minute Next Chapter Conversation.";
+  "Dream Accelerator™: From Stuck to Launched — for high-achieving professionals. Uncover what's really been keeping you stuck and go from postponing your idea to launched in 8 weeks — or Chi-Chi keeps coaching you, free, until you do. Start with a free 45-minute Next Chapter Conversation.";
 const OG_IMAGE = "https://idealclarity.com/images/og-image.jpg";
 
 export const metadata: Metadata = {
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
         url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Chi-Chi of Ideal Clarity — Go from circling your idea to launched in 8 weeks. Start with a free 30-minute conversation.",
+        alt: "Chi-Chi of Ideal Clarity — Go from postponing your idea to launched in 8 weeks. Start with a free 45-minute conversation.",
       },
     ],
   },
