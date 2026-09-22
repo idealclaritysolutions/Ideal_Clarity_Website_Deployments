@@ -268,7 +268,7 @@ const METHOD_STEPS = [
     n: 1,
     name: "Define",
     color: "#4A6B9C",
-    text: "Name the thing you've been circling, in plain words.",
+    text: "Name the thing you've been postponing, in plain words.",
   },
   {
     n: 2,
@@ -533,7 +533,7 @@ function BookingSteps() {
       "First name": form.firstName.trim(),
       "Last name": form.lastName.trim(),
       Email: form.email.trim(),
-      "What's the idea you've been circling?": form.idea.trim(),
+      "What's the idea you've been postponing?": form.idea.trim(),
       "How long has it been on your mind?": form.howLong,
       "What's the one thing that's kept you from starting?":
         form.blocker.trim(),
@@ -584,7 +584,7 @@ function BookingSteps() {
               <p className="nc-kicker nc-qual-kicker">
                 LET&apos;S START HERE
               </p>
-              <strong>Tell me what you&apos;ve been circling.</strong>
+              <strong>Tell me what you&apos;ve been postponing.</strong>
             </div>
             <span>About a minute · Then you pick your time</span>
           </div>
@@ -626,7 +626,7 @@ function BookingSteps() {
 
           <div className="nc-qual-field">
             <label htmlFor="nc-idea">
-              What&apos;s the idea you&apos;ve been circling?
+              What&apos;s the idea you&apos;ve been postponing?
             </label>
             <input
               id="nc-idea"
@@ -753,12 +753,11 @@ export default function NextChapterPage() {
       <section className="nc-hero">
         <div className="nc-shell nc-center">
           <p className="nc-kicker" data-reveal>
-            FOR HIGH-ACHIEVING PROFESSIONALS CIRCLING THE IDEA THEY
-            CAN&apos;T SHAKE
+            FOR HIGH-ACHIEVING PROFESSIONALS READY FOR THEIR NEXT CHAPTER
           </p>
 
           <h1 data-reveal>
-            How to Go From Circling to Launched in 8 Weeks With the
+            How to Go From Postponing to Launched in 8 Weeks With the
             Ideal Clarity Method™ — Guaranteed
           </h1>
 
@@ -768,7 +767,7 @@ export default function NextChapterPage() {
 
           <p className="nc-hero-sub" data-reveal>
             You don&apos;t have to quit your job. You don&apos;t need
-            another year of circling. Even if you&apos;ve been stuck
+            another year of putting it off. Even if you&apos;ve been stuck
             for years and every attempt has stalled — this is how you
             get unstuck.
           </p>
@@ -829,7 +828,7 @@ export default function NextChapterPage() {
             <div data-reveal>
               <CheckIcon />
               <p>
-                You have been circling the same idea for months.
+                You have been postponing the same idea for months.
                 Maybe years.
               </p>
             </div>
@@ -987,7 +986,7 @@ export default function NextChapterPage() {
                   <CheckIcon />
                   <span>
                     You&apos;re a high achiever with something
-                    you&apos;ve been circling for months — or years: a
+                    you&apos;ve been putting off for months — or years: a
                     business, a book, a podcast, a nonprofit, or the
                     idea you can&apos;t shake.
                   </span>
