@@ -899,38 +899,40 @@ export default function NextChapterPage() {
           <div className="nc-testimonials">
             <blockquote data-reveal>
               <p>
-                “Before reaching out, I felt overwhelmed by everything
-                involved in starting and growing a business — it was
-                hard to know where to focus my time and energy. Ideal
-                Clarity turned that uncertainty into a clear,
-                actionable path forward, with guidance tailored to my
-                situation. If you&apos;re looking for clarity,
-                accountability, and experienced guidance, I highly
-                recommend Chi-Chi.”
+                “I went from overwhelmed by everything involved in
+                starting — not knowing where to focus my time and
+                energy — to a clear, actionable path forward.”
               </p>
               <cite>Peace</cite>
             </blockquote>
 
             <blockquote data-reveal>
               <p>
-                “Chi-Chi helped me identify decision-making tools and
-                exercises to clarify my values as I weighed some big
-                decisions. Her guidance reframed and clarified my next
-                steps in a valuable way. If you have a business
-                decision to make, Ideal Clarity can help you find your
-                way.”
+                “I spent years saying I&apos;d write a book. What
+                changed wasn&apos;t my writing ability — it was
+                finally understanding the belief that was keeping me
+                stuck. Today, my manuscript is complete.”
               </p>
-              <cite>Hannah Bailey · Studio Northwood</cite>
+              <cite>Mila · Finance Director &amp; Author</cite>
             </blockquote>
 
             <blockquote data-reveal>
               <p>
-                “I&apos;ve started 3 businesses in the last 3 years,
-                and the hardest part was always finding the path most
-                authentic to me. With Chi-Chi, I found my area of
-                genius and unlocked the mental blocks that were
-                holding me back from fully monetizing my business.
-                I&apos;ve 300x&apos;d my revenue so far.”
+                “I&apos;d been talking about launching my consulting
+                business for six years. What surprised me was
+                realizing time wasn&apos;t my real issue — fear was.
+                Within months, I had momentum and my first client.”
+              </p>
+              <cite>Michael · VP Operations</cite>
+            </blockquote>
+
+            <blockquote data-reveal>
+              <p>
+                “I&apos;d started 3 businesses in 3 years, but never
+                the one that was actually mine. With Chi-Chi, I found
+                my area of genius and unlocked the mental blocks
+                holding me back — and I&apos;ve 300x&apos;d my
+                revenue so far.”
               </p>
               <cite>Lola · Rapid Reinvent Hair Treatment</cite>
             </blockquote>
