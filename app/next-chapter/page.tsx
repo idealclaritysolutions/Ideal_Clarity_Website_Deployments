@@ -11,6 +11,18 @@ const WISTIA_MEDIA_ID = "d9blju2tmz";
 // One label for every CTA on the page (hero, video, method, fit, outcomes, sticky)
 const CTA_LABEL = "Book Your FREE Next Chapter Conversation";
 
+// Client text-message screenshots for the "wall of love" marquee
+const TEXT_SHOTS = [
+  { src: "/images/testimonial-texts/rachel-v.jpg", alt: "Text from Rachel V.: I just signed my first consulting client" },
+  { src: "/images/testimonial-texts/nicole-t.jpg", alt: "Text from Nicole T.: my leadership development business is officially launched" },
+  { src: "/images/testimonial-texts/marcus-l.jpg", alt: "Text from Marcus L.: I already have two discovery calls booked for this week" },
+  { src: "/images/testimonial-texts/danielle-k.jpg", alt: "Text from Danielle K.: the nonprofit is incorporated" },
+  { src: "/images/testimonial-texts/jasmine-t.jpg", alt: "Text from Jasmine T.: I just got my third paying client this month" },
+  { src: "/images/testimonial-texts/monica-r.jpg", alt: "Text from Monica R.: I've actually launched my coaching offer, I've got clients" },
+  { src: "/images/testimonial-texts/amanda-s.jpg", alt: "Text from Amanda S.: I just recorded and published my first podcast episode" },
+  { src: "/images/testimonial-texts/kola-a.jpg", alt: "Text from Kola A.: I just completed the first full draft of my book" },
+];
+
 // Renders the <wistia-player> custom element from TSX without type errors
 const WistiaPlayer =
   "wistia-player" as unknown as React.FC<
@@ -940,6 +952,25 @@ export default function NextChapterPage() {
         </div>
       </section>
 
+      {/* TEXT WALL — client screenshot marquee */}
+      <section className="nc-textwall-section">
+        <div className="nc-shell">
+          <div className="nc-section-heading nc-center" data-reveal>
+            <p className="nc-kicker">THE TEXTS KEEP COMING IN</p>
+            <h2>Real clients. Real texts. Real launches.</h2>
+          </div>
+        </div>
+        <div className="nc-marquee" data-reveal>
+          <div className="nc-marquee-track">
+            {TEXT_SHOTS.concat(TEXT_SHOTS).map((shot, i) => (
+              <figure className="nc-marquee-shot" key={i}>
+                <img src={shot.src} alt={shot.alt} loading="lazy" />
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* FIT — for you / not for you */}
       <section className="nc-fit">
         <div className="nc-shell">
@@ -1807,6 +1838,81 @@ const CSS = `
     font-weight: 900;
     letter-spacing: 0.05em;
     text-transform: uppercase;
+  }
+
+  /* ---------- TEXT WALL MARQUEE ---------- */
+
+  .nc-textwall-section {
+    padding: 100px 0;
+    background: var(--white);
+    overflow: hidden;
+  }
+
+  .nc-marquee {
+    margin-top: 48px;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  .nc-marquee-track {
+    display: flex;
+    width: max-content;
+    animation: nc-marquee-scroll 60s linear infinite;
+  }
+
+  .nc-marquee:hover .nc-marquee-track {
+    animation-play-state: paused;
+  }
+
+  .nc-marquee-shot {
+    margin: 0 24px 0 0;
+    flex: 0 0 auto;
+    width: min(360px, 78vw);
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    box-shadow: 0 14px 38px rgba(16, 40, 68, 0.10);
+    background: var(--white);
+  }
+
+  .nc-marquee-shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  @keyframes nc-marquee-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .nc-marquee {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scroll-snap-type: x mandatory;
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+    .nc-marquee-track {
+      animation: none;
+      width: auto;
+      padding: 0 20px;
+    }
+    .nc-marquee-shot {
+      scroll-snap-align: center;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nc-marquee-track {
+      animation: none;
+    }
   }
 
   /* ---------- FIT ---------- */
